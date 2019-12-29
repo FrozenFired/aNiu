@@ -1,0 +1,51 @@
+each size in order.sizes
+	- let taskOrdthd = null;
+	- let taskPdthd = null;
+	- let showThdStock = '';
+	each ordthd in ordsec.ordthds
+		if ordthd.size == size
+			- taskOrdthd = ordthd;
+			- break;
+	if taskOrdthd
+		- taskPdthd = taskOrdthd.pdthd;
+		- showThdStock = parseInt(taskPdthd.stock);
+		each ordthd in taskPdthd.ordthds
+			- showThdStock -= parseInt(ordthd.ship);
+		each macthd in taskPdthd.macthds
+			- showThdStock += parseInt(macthd.ship);
+		each tinthd in taskPdthd.tinthds
+			- showThdStock += parseInt(tinthd.ship);
+	else
+		each pdthd in pdsec.pdthds
+			if pdthd.size == size
+				- taskPdthd = pdthd;
+				- break;
+
+	if taskOrdthd
+		- let ship = parseInt(taskOrdthd.ship);
+		- let less = parseInt(taskOrdthd.quot) - ship;
+		- let shiping;
+		if less < showThdStock
+			- shiping = less;
+		else
+			- shiping = showThdStock;
+		- k++;
+		td
+			if less > 0
+				-a;
+				.row
+					.col-3
+						span.text-info #{ship}
+						br  
+						span.text-warning #{showThdStock}
+					.col-8
+						input.iptsty2.shiping(id="shiping-"+taskOrdthd._id, type="number", name="obj[thds]["+k+"][shiping]", value=shiping)
+						input(id="stock-"+taskOrdthd._id, type="hidden", value=showThdStock)
+						input(type="hidden", name="obj[thds]["+k+"][ordthdId]", value=taskOrdthd._id)
+			else
+				span.text-info #{ship}
+				//- span &nbsp; /  
+				//- span.text-warning #{stock}
+	else
+		//- td.text-danger #{showThdStock}
+		td

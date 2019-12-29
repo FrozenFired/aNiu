@@ -1,0 +1,17 @@
+extends ../aalayout/layout
+
+block content
+	.container
+		form.mt-5(method="post", action=action)
+			.form-group.row
+				label.col-2.col-form-label.text-right(for="sgnCode") <span class="oi oi-person"></span>
+				.col-10.col-md-8
+					input.form-control#sgnCode(type="text", name=code, placeholder="Please input your code")
+			.form-group.row
+				label.col-2.col-form-label.text-right(for="sgnPw") <span class="oi oi-lock-locked"></span>
+				.col-10.col-md-8
+					input.form-control#sgnPwd(type="password", name=pwd, placeholder="Your password")
+			.form-group.row.mt-4
+				.col-2
+				.col-10.col-md-8
+					button.btn.btn-warning.btn-block(type="submit") <span class="oi oi-lock-unlocked"></span>

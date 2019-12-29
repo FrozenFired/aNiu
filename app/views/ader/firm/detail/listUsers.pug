@@ -1,0 +1,16 @@
+if users && users.length > 0
+	-a;
+	h2 公司成员
+	table.table.table-hover.table-bordered
+		thead
+			tr
+				th 账户
+				th 编号
+				th 角色
+		tbody
+			each user in users
+				-a;
+				tr
+					td: a(href="/adUser/"+user._id) #{user.code}
+					td #{user.cd}
+					td #{Conf.usRole[user.role]}

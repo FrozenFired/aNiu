@@ -1,0 +1,66 @@
+extends ../aalayout/layout
+
+block content
+	div(style="height:50px")
+	div(style="height:50px")
+
+	input#langcode(type="hidden", value=Lang.code)
+	input#langname(type="hidden", value=Lang.name)
+	input#langnote(type="hidden", value=Lang.note)
+	input#langunset(type="hidden", value=Lang.unset)
+
+	.container.mt-3
+		.row
+			.col-6
+				a.btn.btn-block.btn-warning(href=thisAct+"Add") <span class="oi oi-plus"></span> <span class="oi oi-person"></span>
+			.col-6.text-right
+				button.btn.btn-info.shield(type="button") <span class="oi oi-shield"></span>
+		input#sortCond(type="hidden", value=sortCond)
+		input#sortVal(type="hidden", value=sortVal)
+		.objsKey.row
+		.objects.row
+
+	.topNav-second.p-1
+		.row.text-center
+			-caret = '<span class="oi oi-elevator"></span>';
+			if sortVal == 1
+				-caretB = '<span class="oi oi-caret-bottom"></span>';
+			else
+				-caretT = '<span class="oi oi-caret-top"></span>';
+
+			-let codeColor = nomeColor = billsColor = 'text-dark';
+			-let codeCaret = nomeCaret = billsCaret = '<span class="oi oi-elevator"></span>'
+			if sortCond == 'code'
+				-codeColor = 'text-primary';
+				if sortVal == 1
+					-codeCaret = '<span class="oi oi-caret-top"></span>';
+				else
+					-codeCaret = '<span class="oi oi-caret-bottom"></span>';
+			else if sortCond == 'nome'
+				-nomeColor = 'text-primary';
+				if sortVal == 1
+					-nomeCaret = '<span class="oi oi-caret-top"></span>';
+				else
+					-nomeCaret = '<span class="oi oi-caret-bottom"></span>';
+			else if sortCond == 'bills'
+				-billsColor = 'text-primary';
+				if sortVal == 1
+					-billsCaret = '<span class="oi oi-caret-top"></span>';
+				else
+					-billsCaret = '<span class="oi oi-caret-bottom"></span>';
+			.col-4
+				a.btn.btn-link(href='/bsCters?sortCond=code&sortVal='+(-parseInt(sortVal)))
+					span #{Lang.code} !{codeCaret}
+			.col-4
+				a.btn.btn-link(href='/bsCters?sortCond=nome&sortVal='+(-parseInt(sortVal)))
+					span #{Lang.name} !{nomeCaret}
+			.col-4
+				a.btn.btn-link(href='/bsCters?sortCond=bills&sortVal='+(-parseInt(sortVal)))
+					span #{Lang.bill} !{billsCaret}
+	.topNav-second2.p-1
+		.row.text-center
+			.col-12
+				form.ajaxForm
+					input.ajaxKey.form-control(type="text", placeholder=Lang.iptHolder, autocomplete="off")
+
+	script(src="/js/bser/customer/list.js")

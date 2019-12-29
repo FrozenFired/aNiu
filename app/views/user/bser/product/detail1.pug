@@ -1,0 +1,96 @@
+extends ../aalayout/layout
+
+block content
+	div(style="height:50px")
+	.container
+	.mx-5
+		.row
+			.col-sm-2.mt-5
+				h2.text-right: a(href="/bsProduct/"+pdfir._id) #{pdfir.code} 
+				//- h3 Name:#{pdfir.nome} | Mat:#{pdfir.material} 
+				//- img(src=pdfir.photo, width="80%", style="display:none")
+			.col-sm-6.mt-5.tblDial(style="display:block")
+				table.table
+					tr
+						td 颜色
+						each size in pdfir.sizes
+							-a;
+							td #{Conf.sizes[size]}
+					tr.text-warning
+						td 半成品
+						each pdsez in pdfir.pdsezs
+							- let quotMsez = shipMsez = 0;
+							-let quotOthds = shipOthds = 0;
+							-let quotTthds = shipTthds = 0;
+							-let needTthds = 0;
+							each macsez in pdsez.macsezs
+								-quotMsez+=parseInt(macsez.quot);
+								-shipMsez+=parseInt(macsez.ship);
+							each pdthd in pdsez.pdthds
+								- let quotOthd = quotTthd = 0;
+								- let shipOthd = shipTthd = 0;
+								each ordthd in pdthd.ordthds
+									- quotOthd += parseInt(ordthd.quot)
+									- shipOthd += parseInt(ordthd.ship)
+								each tinthd in pdthd.tinthds
+									- quotTthd += parseInt(tinthd.quot)
+									- shipTthd += parseInt(tinthd.ship)
+								- quotTthds += quotTthd;
+								- shipTthds += shipTthd;
+								- let showThdStock = parseInt(pdthd.stock) + shipTthd - shipOthd;
+								- needTthds += (quotOthd - shipOthd) - showThdStock - (quotTthd - shipTthd);
+
+							- let showSezStock = parseInt(pdsez.stock) + shipMsez - quotTthds;
+							- let needMac = needTthds - showSezStock - (quotMsez-shipMsez);
+							td
+								include ./detail/tdSemi
+					each pdsec in pdfir.pdsecs
+						-a;
+						tr
+							td #{pdsec.color}
+							each pdthd in pdsec.pdthds
+								-let quotOthd = shipOthd = 0;
+								-let quotTthd = shipTthd = 0;
+								each ordthd in pdthd.ordthds
+									-quotOthd+=parseInt(ordthd.quot);
+									-shipOthd+=parseInt(ordthd.ship);
+								each tinthd in pdthd.tinthds
+									-quotTthd+=parseInt(tinthd.quot);
+									-shipTthd+=parseInt(tinthd.ship);
+								-let needT= quotOthd - parseInt(pdthd.stock) - quotTthd;
+								- let showThdStock = parseInt(pdthd.stock) + shipTthd - shipOthd;
+								td
+									include ./detail/tdCont1
+			.col-md-4.text-center
+				img(src=pdfir.photo, width="300px")
+		.row.mt-5
+			//- h2 hordthd
+			each hordfir in pdfir.hordfirs
+				-a;
+				//- .col-12 #{hordfir}
+	.topNav-second.p-1
+		.row.pt-1
+			.col-1
+				a.btn.btn-info.btn-block(href="/bsProducts") <span class="oi oi-arrow-thick-left"></span>
+			.col-1
+				a.btn.btn-warning.btn-block(href="/bsProductAdd") <span class="oi oi-plus"></span>
+			.col-6.text-center
+				button.pdNav#stock.btn.btn-primary(type="button") 库存
+				span &nbsp;
+				//- button.pdNav#reserve.btn.btn-default(type="button") 屯货
+				span &nbsp;
+				button.pdNav#order.btn.btn-default(type="button") 订量
+				span &nbsp;
+				button.pdNav#needT.btn.btn-default(type="button") 需染
+				span &nbsp;
+				button.pdNav#tint.btn.btn-default(type="button") 在染
+				span &nbsp;
+				button.pdNav#needM.btn.btn-default(type="button") 需产
+				span &nbsp;
+				button.pdNav#machin.btn.btn-default(type="button") 在产
+			.col-4
+				form.ajaxForm
+					input.ajaxKey.productcode.form-control(type="text", autocomplete="off")
+	script(src="/const/const.js")
+	script(src="/js/bser/product/detail.js")
+	script(src="/js/bser/product/detail1.js")

@@ -1,0 +1,29 @@
+<style type="text/css" media=print> .noprint{display: none;} </style>
+.navbar.navbar-expand-xl.navbar-dark.bg-dark.fixed-top.noprint
+	a.navbar-brand.btn.btn-success(href="/") <span class="oi oi-home"></span>
+	if crUser
+		-a;
+		//- span.navbar-brand #{title}
+		button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation")
+			<span class="navbar-toggler-icon"></span>
+
+		.collapse.navbar-collapse#navbarTogglerDemo02
+			ul.navbar-nav.mr-auto.mt-2.mt-xl-0
+				li.nav-item.active
+					a.nav-link(href="/bsProducts") 模特库 <span class="sr-only">(current)</span>
+				li.nav-item.active
+					a.nav-link(href="/bsCters") 客户 <span class="sr-only">(current)</span>
+				li.nav-item.active
+					a.nav-link(href="/bsFders") 工厂 <span class="sr-only">(current)</span>
+				li.nav-item.active
+					a.nav-link(href="/bsTners") 染洗厂 <span class="sr-only">(current)</span>
+				li.nav-item.active.ml-5
+					a.btn.btn-info(href="/bsShow") <span class="oi oi-grid-three-up"></span>
+			ul.navbar-nav
+				li
+					span.navbar-brand 你好, <strong>#{crUser.nome}</strong> 
+					a(href="/bsMyInfo")
+						img.rounded-circle.ml-3(src=crUser.photo, width="40px")
+					span &nbsp;&nbsp;&nbsp;
+.row.noprint
+	div(style="height:59px")

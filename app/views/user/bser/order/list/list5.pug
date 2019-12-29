@@ -1,0 +1,62 @@
+each order in orders
+	- let code = 'view';
+	if order.code
+		-code = order.code;
+	-let txtSatus="";
+	if order.status == 5
+		- txtSatus = "text-info";
+	else if order.status == 10
+		- txtSatus = "text-secondary";
+	- let textTime="";
+	if Date.now() - order.ctAt > 3*24*60*60*1000
+		-textTime="text-danger";
+
+	each ordfir in order.ordfirs
+		-a;
+		table.table.table-bordered.text-center
+			tr(class=txtSatus)
+				th(width="10%") #{moment(order.ctAt).format('MM/DD/YYYY')}
+				th.text-dark(width="8%") 发货日期
+				th(width="5%") 生产
+				th(colspan=order.sizes.length, width="25%")
+					a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
+				th.bg-secondary(width="2%")
+				th(colspan=order.sizes.length)
+					.row
+						.col-6
+							button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+order._id) 发货
+						.col-6
+							form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
+								input(type="hidden", name="orderId", value=order._id)
+								input(type="hidden", name="target", value="bsOrderFinish")
+								input.btn.btn-warning(type="submit", value="完成")
+			tr.bg-light
+				th 样品型号
+				th 客户名称
+				th 颜色
+				each size in order.sizes
+					-a;
+					th #{Conf.sizes[size]}
+				th.bg-secondary
+				each size in order.sizes
+					-a;
+					th #{Conf.sizes[size]}
+			form(id="sendForm-"+order._id, method="post", action="/bsOrderSend", enctype="multipart/form-data")
+				input(type="hidden", name="obj[orderId]", value=order._id)
+				input(type="hidden", name="obj[ordfirId]", value=ordfir._id)
+				- let i = 0, k = 0;
+				each ordsec in ordfir.ordsecs
+					- let pdsec = ordsec.pdsec;
+					- i++;
+					tr
+						if i==1
+							-a;
+							th: a(href="/bsProduct/"+ordfir.pdfir._id) #{ordfir.pdfir.code}
+							th #{order.cter.nome}
+						else
+							th
+							th
+						th.bg-light #{ordsec.color}
+						include ./input/tdBody
+						td.bg-secondary
+						include ./output/tdBody

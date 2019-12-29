@@ -1,0 +1,23 @@
+.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+	a.navbar-brand(href="/ader") Admin 
+	button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation")
+		<span class="navbar-toggler-icon"></span>
+
+	if crAder
+		-a;
+		.collapse.navbar-collapse#navbarTogglerDemo02
+			ul.navbar-nav.mr-auto.mt-2.mt-lg-0
+				li.nav-item.active
+					a.nav-link(href="/adUsers") 用户列表 <span class="sr-only">(current)</span>
+				li.nav-item.active
+					a.nav-link(href="/adUserAdd") 新用户 <span class="sr-only">(current)</span>
+				li.nav-item.active
+					a.nav-link(href="/adFirms") 公司列表 <span class="sr-only">(current)</span>
+				li.nav-item.active
+					a.nav-link(href="/adFirmAdd") 新公司 <span class="sr-only">(current)</span>
+			ul.navbar-nav
+				li: a.btn.btn-info(href="/ader/"+crAder._id) hello: #{crAder.code}
+				span &nbsp;&nbsp;&nbsp;&nbsp;
+				li: a.btn.btn-danger(href="/aderLogout") Logout
+.row
+	div(style="height:80px")

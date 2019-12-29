@@ -1,0 +1,29 @@
+each size in order.sizes
+	- let taskOrdthd = null;
+	- let taskPdthd = null;
+	- let showThdStock = '';
+	each ordthd in ordsec.ordthds
+		if ordthd.size == size
+			- taskOrdthd = ordthd;
+			- break;
+	if taskOrdthd
+		- taskPdthd = taskOrdthd.pdthd;
+		- showThdStock = parseInt(taskPdthd.stock);
+		each ordthd in taskPdthd.ordthds
+			- showThdStock -= parseInt(ordthd.ship);
+		each macthd in taskPdthd.macthds
+			- showThdStock += parseInt(macthd.ship);
+		each tinthd in taskPdthd.tinthds
+			- showThdStock += parseInt(tinthd.ship);
+	else
+		each pdthd in pdsec.pdthds
+			if pdthd.size == size
+				- taskPdthd = pdthd;
+				- break;
+
+	if taskOrdthd
+		-a;
+		td #{taskOrdthd.quot}
+	else
+		//- td.text-danger #{taskPdthd.stock}
+		td

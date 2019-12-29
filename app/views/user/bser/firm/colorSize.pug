@@ -1,0 +1,22 @@
+.row
+	.col-4
+		button#addClBtn.btn.btn-info.btn-block(type="button") 颜色<span class="oi oi-plus"></span>
+	.col-8.text-right
+		button.btn.btn-danger.shieldClBtn(type="button") <span class="oi oi-shield"></span>
+form#addClForm.mt-5.bg-light.pt-2(method="post", action="/bsColorNew", enctype="multipart/form-data", style="display:none")
+	.form-group.row
+		label.col-3.col-sm-2.col-form-label(for="iptColor") 颜色
+		.col-6.col-sm-6
+			input#iptColor.form-control(type="text", name="obj[color]", value=code, autocomplete="off")
+		.col-3.col-sm-4
+			input.btn.btn-info.btn-block(type="submit" value=添加)
+if colors && colors.length > 0
+	-let i=0;;
+	table#colorTable.mt-5.table.table-hover
+		each color in colors
+			-i++;
+			tr(class="color-"+color)
+				td #{i}
+				td #{color}
+				td.shieldClDel.text-right(style="display:none")
+					button.btn.btn-danger.del(type="button", data-color=color) del

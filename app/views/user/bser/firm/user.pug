@@ -1,0 +1,15 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-3
+		if crUser._id == object._id || object.role != 1
+			-a;
+			.row.text-right
+				.col-8
+				.col-2
+					include ./user/upPwd
+				.col-2
+					include ./user/upInfo
+		.row.mt-3
+			include ./user/thisInfo
+	script(src="/js/bser/firm/user.js")

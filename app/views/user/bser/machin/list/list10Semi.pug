@@ -1,0 +1,30 @@
+tr
+	th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
+	th #{machin.fder.nome}
+	th.bg-light 半成品
+	each size in machin.sizes
+		-let quot = '';
+		each macsez in macfir.macsezs
+			if macsez.size == size
+				- quot = macsez.quot;
+				- break;
+		td #{quot}
+	td.bg-secondary
+	each size in machin.sizes
+		-let less = '';
+		-let stock = '';
+		-let ship = '';
+		-let macsezId = '';
+		each macsez in macfir.macsezs
+			if macsez.size == size
+				- macsezId = macsez._id;
+				- stock = parseInt(macsez.pdsez.stock);
+				- ship = parseInt(macsez.ship);
+				- less = parseInt(macsez.quot) - ship;
+				- break;
+		td 
+			if macsezId
+
+				span.text-info #{ship}
+					//- span &nbsp; /  
+					//- span.text-warning #{stock}

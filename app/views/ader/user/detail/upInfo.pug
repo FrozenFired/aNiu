@@ -1,0 +1,44 @@
+a.btn.btn-warning(href="#", data-toggle="modal", data-target="#upInfo") <span class="oi oi-pencil"></span>
+
+#upInfo.modal.fade
+	.modal-dialog
+		.modal-content
+			form#upInfo(method="post", action="/adUserUpInfo", enctype="multipart/form-data")
+				.modal-header: h3 <span class="oi oi-pencil"></span>
+				.modal-body
+					input(type="hidden", name="obj[_id]", value=user._id)
+					.form-group.row
+						label.col-3.col-form-label(for="iptCd") 代号
+						.col-9
+							input#iptCd.form-control(type="text", name="obj[cd]" value=user.cd)
+						.offset-3.col-9.col-form-label.text-danger
+					.form-group.row
+						label.col-3.col-form-label(for="iptNome") Name
+						.col-9
+							input#iptNome.form-control(type="text", name="obj[nome]" value=user.nome)
+						.offset-3.col-9.col-form-label.text-danger
+					.form-group.row
+						label.col-3.col-form-label(for="iptRl") role
+						.col-9
+							select#iptRl.form-control(name="obj[role]", data-style="btn-info")
+								each key in Object.keys(Conf.usRole)
+									-a;
+									if user.role == key
+										-a;
+										option(value=key, selected="selected") #{Conf.usRole[key]}
+									else
+										option(value=key) #{Conf.usRole[key]}
+					.form-group.row
+						label.col-3.col-form-label(for="iptLang") language
+						.col-9
+							select#iptLang.form-control(name="obj[lang]", data-style="btn-info")
+								each key in Object.keys(Conf.usLang)
+									-a;
+									if user.lang == key
+										-a;
+										option(value=key, selected="selected") #{Conf.usLang[key]}
+									else
+										option(value=key) #{Conf.usLang[key]}
+				.modal-footer
+					button.btn.btn-default(type="button" data-dismiss="modal") 取消
+					button.btn.btn-success(type="submit") 提交

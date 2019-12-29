@@ -1,0 +1,38 @@
+a.btn.btn-info(href="#", data-toggle="modal", data-target="#upMgerInfo") <span class="oi oi-cog"></span>
+
+#upMgerInfo.modal.fade
+	.modal-dialog
+		.modal-content
+			form#updateInfo(method="post", action="/bsUserUpdInfo", enctype="multipart/form-data")
+				.modal-header: h3 设置
+				.modal-body
+					input(type="hidden", name="obj[_id]", value=object._id)
+					input(type="hidden", name="obj[photoDir]", value=Conf.photoPath.userPhoto)
+					input(type="hidden", name="obj[orgPhoto]", value=object.photo)
+					input(type="hidden", name="obj[code]", value=object.code)
+					.row
+						.offset-3.col-6
+							img#divImg(src=object.photo, width='100%')
+					hr
+					.form-group.udPhoto.row(style="display:none")
+						.col-12
+							label.col-form-label(for="uploadPhoto") 头像
+							input#uploadPhoto.btn.btn-info.btn-block(type="file", name="uploadPhoto")
+					.form-group.row
+						label.col-4.col-form-label(for="iptName") 名字
+						.col-8
+							input#iptName.form-control(type="text", name="obj[nome]" value=object.nome, autocomplete="off")
+					.form-group.row
+						label.col-4.col-form-label(for="iptLang") 语言
+						.col-8
+							select#iptLang.form-control(name="obj[lang]", data-style="btn-info")
+								each key in Object.keys(Conf.usLang)
+									-a;
+									if object.lang == key
+										-a;
+										option(value=key, selected="selected") #{Conf.usLang[key]}
+									else
+										option(value=key) #{Conf.usLang[key]}
+				.modal-footer
+					button.btn.btn-default(type="button" data-dismiss="modal") <span class="oi oi-x"></span>
+					button.btn.btn-success(type="submit") <span class="oi oi-location"></span>

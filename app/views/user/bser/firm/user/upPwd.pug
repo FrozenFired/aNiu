@@ -1,0 +1,26 @@
+a.btn.btn-info(href="#", data-toggle="modal", data-target="#upPw") <span class="oi oi-key"></span>
+
+#upPw.modal.fade
+	.modal-dialog
+		.modal-content
+			form#upPwd(method="post", action="/bsUserUpdPwd", enctype="multipart/form-data")
+				.modal-header: h3 重置密码
+				.modal-body
+					input(type="hidden", name="obj[_id]", value=object._id)
+					if crUser._id == object._id
+						-a;
+						.form-group.row
+							label.col-4.col-form-label(for="iptOrgPw") 原密码
+							.col-8
+								input#iptOrgPw.form-control(type="text", name="obj[pw]")
+					.form-group.row
+						label.col-4.col-form-label(for="iptPwd") 新密码
+						.col-8
+							input#iptPwd.form-control(type="text", name="obj[pwd]")
+					.form-group.row
+						label.col-4.col-form-label(for="iptCheckPw") 确认
+						.col-8
+							input#iptCheckPw.form-control(type="text")
+				.modal-footer
+					button.btn.btn-default(type="button" data-dismiss="modal") <span class="oi oi-x"></span>
+					button.btn.btn-success(type="submit") <span class="oi oi-location"></span>

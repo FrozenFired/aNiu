@@ -1,0 +1,53 @@
+extends ../layout
+
+block content
+	.containerPDF
+		.rowPDF.text-center
+			h1 <strong class="text-primary"> #{group.code} </strong>
+			h2 PREVENTIVO
+		.col-pdf-8
+			span Addr: #{group.addr}
+			div(style="height:5px")
+			span Tel: #{group.tel}
+		.col-pdf-4
+			span No: <strong>#{order.code}</strong>
+			div(style="height:5px")
+			span Date: #{moment(order.ctAt).format('DD/MM/YYYY')}
+		table.tableA4.border
+			thead
+				tr.text-left
+					th Codice
+					th Desc
+					th 材质
+					th 门幅
+					th 长度
+					th QNT
+					th Prezzo
+					th Total(€)
+			tbody
+				-let pz = 0;
+				each sell in order.sells
+					-let tot = sell.size * sell.quot * sell.price;
+					-pz += sell.quot;
+					tr
+						td #{sell.code}
+						td #{sell.nome}
+						td #{sell.material}
+						td #{sell.width}
+						td #{sell.size}
+						td.textRight #{sell.quot}
+						-let pdPrice = 'NaN';
+						if sell.price && !isNaN(sell.price)
+							- pdPrice = (sell.price).toFixed(2);
+						td.textRight #{pdPrice}
+						td.textRight #{tot.toFixed(2)}
+				tr
+					td(colspan="5") &nbsp;
+		table.tableA4
+			tr
+				th(colspan="2") T.Art: #{order.sells.length}
+				th Tot: #{pz} pz
+				-let odImp = 'NaN'
+				if order.imp && !isNaN(order.imp)
+					-odImp = (order.imp).toFixed(2);
+				th(colspan="2").text-center IMP:  #{odImp} €

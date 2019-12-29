@@ -1,0 +1,51 @@
+a.mt-3.btn.btn-warning(href="#", data-toggle="modal", data-target="#upId") <span class="oi oi-pencil"></span>
+#upId.modal.fade
+	.modal-dialog
+		.modal-content
+			form#upInfo(method="post", action=thisAct+"Upd", enctype="multipart/form-data")
+				.modal-header #{Lang.update}
+				.modal-body
+					input#iptId(type="hidden", name="obj[_id]", value=object._id)
+					.form-group.row
+						label.col-4.col-form-label(for="iptCode") #{Lang.code}
+						.col-8
+							input#iptCode.form-control(type="text", name="obj[code]", value=object.code, autocomplete="off")
+					.form-group.row
+						label.col-4.col-form-label(for="iptNome") #{Lang.name}
+						.col-8
+							input#iptNome.form-control(type="text", name="obj[nome]", value=object.nome, autocomplete="off")
+						.col-12.text-right
+							span#optName(style="display:none").text-danger #{Lang.optName}
+					.form-group.row
+						label.col-4.col-form-label(for="iptTel") Tel
+						.col-8
+							input#iptTel.form-control(type="text", name="obj[tel]", value=object.tel, autocomplete="off")
+					.form-group.row
+						label.col-4.col-form-label(for="iptIvaNum") P.IVA
+						.col-8
+							input#iptIvaNum.form-control(type="text", name="obj[iva]", value=object.iva, autocomplete="off")
+					.form-group.row
+						label.col-4.col-form-label(for="iptCf") #{Lang.cf}
+						.col-8
+							input#iptCf.form-control(type="text", name="obj[cf]", value=object.cf, autocomplete="off")
+					.form-group.row
+						label.col-4.col-form-label(for="iptAddress") Addr.
+						.col-8
+							input#iptAddr.form-control(type="text", name="obj[addr]", value=object.addr, autocomplete="off")
+					.form-group.row
+						label.col-4.col-form-label(for="iptPost") #{Lang.zip}
+						.col-8
+							input#iptPost.form-control(type="text", name="obj[post]", value=object.post, autocomplete="off")
+					.form-group.row
+						label.col-4.col-form-label(for="iptCity") #{Lang.city}
+						.col-8
+							input#iptCity.form-control(type="text", name="obj[city]", value=object.city, autocomplete="off")
+					.form-group.row
+						label.col-4.col-form-label(for="iptDocument") #{Lang.docu}
+						.col-8
+							input#iptDocument.form-control(type="text", name="obj[doct]", value=object.doct, autocomplete="off")
+				.modal-footer
+					button.btn.btn-default(type="button" data-dismiss="modal") <span class="oi oi-x"></span>
+					button.btn.btn-success(type="submit") <span class="oi oi-location"></span>
+
+	script(src="/js/bser/customer/update.js")

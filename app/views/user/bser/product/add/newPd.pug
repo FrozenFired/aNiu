@@ -1,0 +1,72 @@
+form.mt-3#bsProdNew(method="post", action="/bsProductNew", enctype="multipart/form-data")
+	input(type="hidden", name="obj[photoDir]", value=Conf.photoPath.proPhoto)
+	input#iptCode.form-control(type="hidden", name="obj[code]")
+	.row.my-3
+		.col-12(align="center")
+			img#crtImg.rounded-circle(src=dns+"/imgs/createPicture.jpg", width="200px")
+	.form-group.row.udPhoto(style="display:none")
+		input#uploadPhoto.btn.btn-info.btn-block(type="file", name="uploadPhoto")
+	.form-group.row
+		a#nomePoint(href="#nomeAnchor" style="display:none") viewAnchor
+		label.col-lg-1.col-form-label(for="iptNome") <a name="nomeAnchor">名字</a>
+		.col-lg-3
+			input#iptNome.form-control(type="text", name="obj[nome]", autocomplete="off")
+		.col-lg-2
+			span#optNome(style="display:none").text-danger 请输入产品名
+		label.col-lg-1.col-form-label(for="iptMater") 材质
+		.col-lg-3
+			input#iptMater.form-control(type="text", name="obj[material]", autocomplete="off")
+
+	.form-group.row
+		label.col-lg-1.col-form-label(for="iptPrice") 价格
+		.col-lg-3
+			input#iptPrice.form-control(type="number", name="obj[price]", autocomplete="off")
+		.col-lg-2
+			span#optPrice(style="display:none").text-danger 价格输入错误
+		label.col-lg-1.col-form-label(for="iptCost") 成本价
+		.col-lg-3
+			input#iptCost.form-control(type="number", name="obj[cost]", autocomplete="off", value=0)
+		.col-lg-2
+			span#optCost(style="display:none").text-danger 成本输入错误
+	.form-group.row
+		label.col-lg-1.col-form-label(for="iptNote") 备注
+		.col-lg-9
+			textarea#iptNote.form-control(rows="3", name="obj[note]", autocomplete="off")
+	.form-group.row
+		label.col-lg-1.col-form-label 半成品
+		.col-lg-3
+			select.form-control(name="obj[semi]", data-style="btn-info")
+				option(value=0) 成品
+				option(value=1) 半成品
+	.form-group.row
+		label.col-lg-1.col-form-label(for="iptColor") 颜色
+		-var i = 0;
+		each color in colors
+			-i++;
+			if i%12 == 0
+				-i=1;
+				.col-lg-1
+			.col-lg-1.mt-2
+				input.form-check-input(id="color-"+color, type="checkbox", name="obj[colors]", value=color, checked="checked")
+				label.form-check-label(for="color-"+color) #{color}
+	.form-group.row
+		label.col-lg-1.col-form-label(for="iptSize") 尺寸
+		-var i = 0;
+		each key in Object.keys(Conf.sizes)
+			-i++;
+			if i%12 == 0
+				-i=1;
+				.col-lg-1
+			.col-lg-1.mt-2
+				-let checkval=false;
+				if key > 7 && key <14
+					-checkval=true;
+				input.form-check-input(id="sizes-"+key, type="checkbox", name="obj[sizes]", value=key, checked=checkval)
+				label.form-check-label(for="sizes-"+key) #{Conf.sizes[key]} 
+	hr
+	.form-group.row
+		.col-sm-6
+		.col-sm-6.col-12
+			input#btnSubmit.btn.btn-info.btn-block(type="button" value='提交')
+#productImg
+

@@ -1,0 +1,25 @@
+extends ../aalayout/layout
+
+block content
+	input#tint(type="hidden", value=tint)
+	input#products(type="hidden", value=products)
+	input#sizes(type="hidden", value=Conf.sizes)
+	
+	.row.text-center
+		.col-2.pt-2#bsMacs(style="width:100%; height:40px; background: #5599FF")
+			span <span class="oi oi-chevron-left"></span> 生产
+		.col-8.pt-2#bsTinHis(style="width:100%; height:40px; background: #C0C0C0")
+			span 染洗 &nbsp; <span class="oi oi-chevron-top"></span> &nbsp; 历史
+		.col-2.pt-2#bsOrds(style="width:100%; height:40px; background: #5599FF")
+			span 订单 <span class="oi oi-chevron-right"></span>
+	.m-5
+		include ./add/add
+		include ./list/list5
+		
+
+	script(src="/const/const.js")
+	script(src="/js/bser/pagejump.js")
+	script(src="/js/bser/tint/tins.js")
+	script(src="/js/bser/tint/tner.js")
+	script(src="/js/bser/tint/pdsAjax.js")
+	script(src="/js/bser/tint/send.js")

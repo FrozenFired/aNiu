@@ -1,0 +1,26 @@
+.row
+	.col-12.text-right
+		a.btn.btn-warning(href="/bsBillAdd?cter="+object._id) <span class="oi oi-plus"></span>
+if object.bills && object.bills.length > 0
+	-bills = object.bills;
+	table.mt-3.table.border
+		thead
+			tr
+				td #{Lang.order}
+				td #{Lang.bill}
+				td #{Lang.desp}
+		tbody
+			- tot = 0;
+			each bill in bills
+				if !isNaN(parseFloat(bill.unpaid))
+					-tot += parseFloat(bill.unpaid);
+				tr(class="object-id-"+bill._id)
+					td 
+						if bill.order
+							-order = bill.order;
+							a.text-warning(href="/bsorder/"+order._id) #{order.code}
+					td: a.text-warning(href="/bsBill/"+bill._id) #{bill.unpaid}
+					td #{bill.desp}
+			tr.bg-secondary
+				td #{Lang.total}:
+				td(colspan="2") #{tot} €

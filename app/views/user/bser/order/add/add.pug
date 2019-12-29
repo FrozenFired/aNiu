@@ -1,0 +1,40 @@
+form.my-5#orderNew(method="post", action="/bsOrdNew", enctype="multipart/form-data")
+	input#objFir(type="hidden", name="obj[pdfirId]")
+	input#objCter(type="hidden", name="obj[cterId]")
+	table.table.table-bordered.text-center#orderProducts
+		tr(class=txtSatus).bg-secondary
+			th(width="20%") 样品型号
+			th(width="10%") 客户名称
+			th
+			th.changeTd
+			th.changeTd
+			th.changeTd
+			th.changeTd
+			th.changeTd
+			th.changeTd
+			th#changeTh
+				button.btn.btn-success#submitBtn(type="button") 确认
+		tr#changeElem
+			td
+				#pdcode
+				#ajaxPdsForm.input-group
+					input#ajaxPdsCode.productcode.form-control(type="number", data-url="/orderAjaxBsProds", placeholder='模特编号', autocomplete="off", aria-label="Recipient's username", aria-describedby="basic-addon2")
+					.input-group-append
+						button#pdcodeAjaxCancel.btn.btn-outline-secondary(type="button") X
+				#prodPage
+			td
+				#cterBtn
+				#formCters
+					input#ajaxCters.form-control(type="text", placeholder='客户名称或编号', autocomplete="off")
+				.ctersAjax
+			th 颜色
+			th.changeTd XS
+			th.changeTd S
+			th.changeTd M
+			th.changeTd L
+			th.changeTd XL
+			th.changeTd XXL
+			th#changeSize
+
+script(src="/js/bser/order/cter.js")
+script(src="/js/bser/order/pdsAjax.js")

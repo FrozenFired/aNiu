@@ -1,0 +1,47 @@
+each machin in machins
+	- let code = 'view';
+	if machin.code
+		-code = machin.code;
+	-let txtSatus="";
+	if machin.status == 5
+		- txtSatus = "text-info";
+	else if machin.status == 10
+		- txtSatus = "text-secondary";
+	- let textTime="";
+	if Date.now() - machin.ctAt > 3*24*60*60*1000
+		-textTime="text-danger";
+
+	each macfir in machin.macfirs
+		-a;
+		table.table.table-bmachined.text-center
+			tr(class=txtSatus)
+				th(width="10%") #{moment(machin.ctAt).format('MM/DD/YYYY')}
+				th(width="8%") #{moment(machin.fnAt).format('MM/DD/YYYY')}
+				th(width="5%") 生产
+				th(colspan=machin.sizes.length, width="25%")
+					a.btn.btn-link(href="/bsMachin/"+machin._id) #{machin.code}
+				th.bg-secondary(width="2%")
+				th(colspan=machin.sizes.length)
+					.row
+						.col-6
+						.col-6
+							form(method="post", action="/bsMacChangeSts", enctype="multipart/form-data")
+								input(type="hidden", name="machinId", value=machin._id)
+								input(type="hidden", name="target", value="bsMachinBack")
+								input.btn.btn-danger(type="submit", value="未完成")
+			tr.bg-light
+				th 样品型号
+				th 客户名称
+				th 颜色
+				each size in machin.sizes
+					-a;
+					th #{Conf.sizes[size]}
+				th.bg-secondary
+				each size in machin.sizes
+					-a;
+					th #{Conf.sizes[size]}
+			if macfir.pdfir.semi == 1
+				-a;
+				include ./list10Semi.pug
+			else
+				include ./list10Comp.pug

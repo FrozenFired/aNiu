@@ -1,0 +1,21 @@
+a.btn.btn-warning(href="#", data-toggle="modal", data-target="#upPw") <span class="oi oi-key"></span>
+
+#upPw.modal.fade
+	.modal-dialog
+		.modal-content
+			form#upPw(method="post", action="/adUserUpPw", enctype="multipart/form-data")
+				.modal-header: h3 更新密码
+				.modal-body
+					input(type="hidden", name="obj[_id]", value=user._id)
+					.form-group
+						label.col-form-label(for="iptCode") Code
+						input#iptCode.form-control(type="text", value=user.code, readonly="readonly")
+					.form-group
+						label.col-form-label(for="iptPwd") Password
+						input#iptPwd.form-control(type="text", name="obj[pwd]")
+					.form-group
+						label.col-form-label(for="iptCkPwd") CheckPw
+						input#iptCkPwd.form-control(type="text")
+				.modal-footer
+					button.btn.btn-default(type="button" data-dismiss="modal") 取消
+					button.btn.btn-success(type="submit") 提交

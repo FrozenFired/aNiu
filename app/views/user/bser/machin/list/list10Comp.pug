@@ -1,0 +1,38 @@
+- let i = 0, k = 0;
+each macsec in macfir.macsecs
+	- i++;
+	tr
+		if i==1
+			-a;
+			th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
+			th #{machin.fder.nome}
+		else
+			th
+			th
+		th.bg-light #{macsec.pdsec.color}
+		each size in machin.sizes
+			-let quot = '';
+			each macthd in macsec.macthds
+				if macthd.size == size
+					- quot = macthd.quot;
+					- break;
+			td #{quot}
+		td.bg-secondary
+		each size in machin.sizes
+			-let less = '';
+			-let stock = '';
+			-let ship = '';
+			-let macthdId = '';
+			each macthd in macsec.macthds
+				if macthd.size == size
+					- macthdId = macthd._id;
+					- stock = parseInt(macthd.pdthd.stock);
+					- ship = parseInt(macthd.ship);
+					- less = parseInt(macthd.quot) - ship;
+					- break;
+			td 
+				if macthdId
+
+					span.text-info #{ship}
+						//- span &nbsp; /  
+						//- span.text-warning #{stock}

@@ -1,0 +1,23 @@
+extends ../aalayout/layout
+
+block content
+	div(style="height:50px")
+
+	.container.mt-3
+		.basic
+			.row
+				.col-12.text-right
+					include ./detail/update
+			include ./detail/basic
+			include ./detail/note
+			hr
+			div(style="height:50px")
+			include ./detail/delete
+		.billsRcd(style="display:none")
+			include ./detail/bills
+
+	.topNav-second
+		.row.text-center(style="height:100%")
+			.col-6#basic.pt-3.btn-info #{Lang.basic}
+			.col-6#billsRcd.pt-3 #{Lang.bill} [#{object.bills.length}]
+	script(src="/js/bser/customer/detail.js")

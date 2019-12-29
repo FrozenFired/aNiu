@@ -1,0 +1,11 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-3
+		.row
+			.col-12.col-md-6
+				include ./detail/upInfo
+				include ./detail/thisInfo
+			.col-12.col-md-6
+				include ./colorSize
+	script(src="/js/bser/firm/detail.js")

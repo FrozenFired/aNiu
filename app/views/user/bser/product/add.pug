@@ -1,0 +1,19 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-5
+		.ajaxPdForm.row
+			.col-md-6
+				input.ajaxPdKey.form-control(type="text", data-url="/orderAjaxBsProds", autocomplete="off", placeholder="请输入新模特编号")
+			.col-md-6
+				.ajaxInfo.text-info.mt-2(align="center") 产品编号至少包含3位数字
+		button.btnNewPd.btn.btn-info.btn-block.mt-2(type="button", style="display:none") 新模特
+		form.products
+
+		.newPd(style="display:none")
+			include ./add/newPd
+		div(style="height:300px")
+
+	script(src="/const/const.js")
+	script(src="/js/bser/product/add/pdsAjax.js")
+	script(src="/js/bser/product/add/newPd.js")

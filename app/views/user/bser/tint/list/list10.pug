@@ -1,0 +1,80 @@
+each tint in tints
+	- let code = 'view';
+	if tint.code
+		-code = tint.code;
+	-let txtSatus="";
+	if tint.status == 5
+		- txtSatus = "text-info";
+	else if tint.status == 10
+		- txtSatus = "text-secondary";
+	- let textTime="";
+	if Date.now() - tint.ctAt > 3*24*60*60*1000
+		-textTime="text-danger";
+
+	each tinfir in tint.tinfirs
+		-a;
+		table.table.table-btinted.text-center
+			tr(class=txtSatus)
+				th(width="10%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
+				th(width="8%") #{moment(tint.fnAt).format('MM/DD/YYYY')}
+				th(width="5%") 生产
+				th(colspan=tint.sizes.length, width="25%")
+					a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
+				th.bg-secondary(width="2%")
+				th(colspan=tint.sizes.length)
+					.row
+						.col-6
+						.col-6
+							form(method="post", action="/bsTinChangeSts", enctype="multipart/form-data")
+								input(type="hidden", name="tintId", value=tint._id)
+								input(type="hidden", name="target", value="bsTintBack")
+								input.btn.btn-danger(type="submit", value="未完成")
+			tr.bg-light
+				th 样品型号
+				th 客户名称
+				th 颜色
+				each size in tint.sizes
+					-a;
+					th #{Conf.sizes[size]}
+				th.bg-secondary
+				each size in tint.sizes
+					-a;
+					th #{Conf.sizes[size]}
+			- let i = 0, k = 0;
+			each tinsec in tinfir.tinsecs
+				- i++;
+				tr
+					if i==1
+						-a;
+						th: a(href="/bsProduct/"+tinfir.pdfir._id) #{tinfir.pdfir.code}
+						th #{tint.tner.nome}
+					else
+						th
+						th
+					th.bg-light #{tinsec.pdsec.color}
+					each size in tint.sizes
+						-let quot = '';
+						each tinthd in tinsec.tinthds
+							if tinthd.size == size
+								- quot = tinthd.quot;
+								- break;
+						td #{quot}
+					td.bg-secondary
+					each size in tint.sizes
+						-let less = '';
+						-let stock = '';
+						-let ship = '';
+						-let tinthdId = '';
+						each tinthd in tinsec.tinthds
+							if tinthd.size == size
+								- tinthdId = tinthd._id;
+								- stock = parseInt(tinthd.pdthd.stock);
+								- ship = parseInt(tinthd.ship);
+								- less = parseInt(tinthd.quot) - ship;
+								- break;
+						td 
+							if tinthdId
+
+								span.text-info #{ship}
+									//- span &nbsp; /  
+									//- span.text-warning #{stock}

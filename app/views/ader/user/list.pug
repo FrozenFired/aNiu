@@ -1,0 +1,27 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-3
+		.row
+			.col-12.text-right
+				a.btn.btn-warning(href="/adUserAdd") <span class="oi oi-plus"></span>
+		.row.mt-3
+			.col-12
+				table.table.table-hover.table-bordered
+					thead
+						tr
+							th 账户
+							th 编号
+							th 角色
+							th 公司
+					tbody
+						each user in users
+							-a;
+							tr(class="user-id-"+user._id)
+								td: a(href="/aduser/"+user._id) #{user.code}
+								td #{user.cd}
+								td #{Conf.usRole[user.role]}
+								td
+									if user.firm
+										-firm = user.firm;
+										span #{firm.code}

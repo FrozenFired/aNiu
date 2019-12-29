@@ -1,0 +1,29 @@
+{
+  "name": "com",
+  "description": "for company",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "compress-images": "^1.5.6",
+    "connect-mongo": "^2.0.3",
+    "connect-multiparty": "^2.2.0",
+    "cookie-parser": "^1.4.4",
+    "excel4node": "^1.7.2",
+    "express": "^4.16.4",
+    "express-pdf": "^1.2.2",
+    "express-session": "^1.16.1",
+    "html-pdf": "^2.2.0",
+    "moment": "^2.24.0",
+    "mongoose": "^5.5.4",
+    "mongoose-float": "^1.0.4",
+    "node-xlsx": "^0.15.0",
+    "pug": "^2.0.3",
+    "qr-image": "^3.2.0",
+    "serve-static": "^1.13.2",
+    "socket.io": "^2.2.0",
+    "underscore": "^1.9.1",
+    "xto": "^1.1.7"
+  }
+}

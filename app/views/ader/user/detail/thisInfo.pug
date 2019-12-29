@@ -1,0 +1,30 @@
+table.mt-3.table.table-hover
+	if user.firm
+		- firm = user.firm;
+		tr
+			td: strong Firm:
+			td #{firm.code}
+	tr
+		td: strong role:
+		td #{Conf.usRole[user.role]}
+	tr
+		td: strong 语言:
+		td #{Conf.usLang[user.lang]}
+	tr
+		td: strong Code:
+		td #{user.code}
+	tr
+		td: strong Cd:
+		td #{user.cd}
+	tr
+		td: strong name:
+		td #{user.nome}
+	tr
+		td: strong 上次登录时间:
+		td #{moment(user.lgAt).format('DD/MM/YYYY HH:mm:ss')}
+	tr
+		td: strong createAt:
+		td #{moment(user.ctAt).format('DD/MM/YYYY HH:mm:ss')}
+	tr
+		td: strong updateAt:
+		td #{moment(user.upAt).format('DD/MM/YYYY HH:mm:ss')}

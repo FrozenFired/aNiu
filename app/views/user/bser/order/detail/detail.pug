@@ -1,0 +1,24 @@
+extends ../../aalayout/layout
+
+block content
+	.container.mt-5
+		input#orderId(type="hidden", value=order._id)
+		include ./printHead
+		.row.border-top.mb-4.pb-2#optBtn.noprint
+			.col-8.pt-3
+				.row
+					.col-4 订单量
+					.col-4 发货量
+					.col-4 差额
+			.col-4.pt-3.text-right
+				if order.book
+					-a;
+					a(href='/bsBook/'+order.book) 所属生产单
+				span &nbsp; &nbsp; [状态：#{order.status}]
+		.infoPrice
+			include ./infoPrice
+		div.noprint(style="height:300px")
+		a.noprint.btn.btn-danger(href="/bsOrderDel/"+order._id) 删除
+
+
+	script(src="/js/bser/order/detail/detail1.js")

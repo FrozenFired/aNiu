@@ -1,0 +1,12 @@
+.row.orgNote
+	.col-4: button.btn.btn-info#noteLab(type="button") #{Lang.note}
+	.col-8
+		input#orgNote(type="hidden", value=object.note)
+		h3 #{object.note}
+.row.fixNote(style="display:none")
+	.col-12
+		form#cterUpdNote(method="post", action=thisAct+"Upd", enctype="multipart/form-data")
+			input(type="hidden", name="obj[_id]", value=object._id)
+			.form-group.row
+				.col-12
+					textarea#iptNote.form-control(type="text", rows="3", name="obj[note]")

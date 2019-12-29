@@ -1,0 +1,16 @@
+extends ../aalayout/layout
+
+block content
+	.container
+		.row
+			table.table.table-hover.table-bordered
+				thead
+					tr
+						th 账户
+						th delete
+				tbody
+					each object in objects
+						tr(class="object-id-"+object._id)
+							td #{object.code}
+							td: button.btn.btn-danger.del(type="button", data-urldel="/aderDelAjax", data-id=object._id) delete
+	script(src="/js/delete.js")

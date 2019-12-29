@@ -1,0 +1,22 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-3
+		.row
+			.col-12.text-right
+				a.btn.btn-warning(href="/adFirmAdd") <span class="oi oi-plus"></span>
+		.row.mt-3
+			.col-12
+				table.table.table-hover.table-bordered
+					thead
+						tr
+							th code
+							th tel
+							th responser
+					tbody
+						each firm in firms
+							-a;
+							tr(class="firm-id-"+firm._id)
+								td: a(href="/adFirm/"+firm._id) #{firm.code}
+								td #{firm.tel}
+								td #{firm.resp}

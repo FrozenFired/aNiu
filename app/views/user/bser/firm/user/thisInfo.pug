@@ -1,0 +1,29 @@
+.col-8
+	table.table.border
+		tr
+			td 帐号:
+			td #{object.code}
+		tr
+			td 名字:
+			td #{object.nome}
+		tr
+			td 角色:
+			td #{Conf.usRole[object.role]}
+		tr
+			td 语言:
+			td #{Conf.usLang[object.lang]}
+		tr
+			td 代号:
+			td #{object.cd}
+		if object.group
+			-group = object.group;
+			tr
+				td 公司名称:
+				td #{group.code}
+		tr
+			td 最近登录:
+			td #{moment(object.lgAt).format('DD/MM/YYYY HH:mm:ss')}
+.col-4.text-center
+	img(src=object.photo, width="100%", style="max-width: 350px; max-height: 400px")
+	br
+	a.mt-3.btn.btn-danger.btn-block(href="/logout") <span class="oi oi-account-logout"></span>

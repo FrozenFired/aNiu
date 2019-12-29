@@ -1,0 +1,55 @@
+extends ../aalayout/layout
+
+block content
+	.container
+		h1 #{title}
+		hr
+		form#userNew(method="post", action=thisAct+"New", enctype="multipart/form-data")
+			.form-group.row
+				label.col-3.col-sm-2.col-form-label(for="iptCode") 帐号
+				.col-9.col-sm-6
+					input#iptCode.form-control(type="text", name="obj[code]")
+				.offset-3.col-9.col-form-label.text-danger
+			.form-group.row
+				label.col-3.col-sm-2.col-form-label(for="iptPwd") 密码
+				.col-9.col-sm-6
+					input#iptPwd.form-control(type="text", name="obj[pwd]")
+				.offset-3.col-9.col-form-label.text-danger
+			hr
+			.form-group.row
+				label.col-3.col-sm-2.col-form-label(for="iptGp") 公司
+				.col-9.col-sm-6
+					select#iptGp.form-control(name="obj[firm]", data-style="btn-info")
+						each firm in firms
+							-a;
+							option(value=firm._id) #{firm.code}
+				.offset-3.col-9.col-form-label.text-danger
+			.form-group.row
+				label.col-3.col-sm-2.col-form-label(for="iptCd") 代号
+				.col-9.col-sm-6
+					input#iptCd.form-control(type="text", name="obj[cd]", placeholder="只能是两个字符，不能与公司中其他员工相同")
+				.offset-3.col-9.col-form-label.text-danger
+			.form-group.row
+				label.col-3.col-sm-2.col-form-label(for="iptRl") role
+				.col-9.col-sm-6
+					select#iptRl.form-control(name="obj[role]", data-style="btn-info")
+						each key in Object.keys(Conf.usRole)
+							-a;
+							option(value=key) #{Conf.usRole[key]} #{key}
+				.offset-3.col-9.col-form-label.text-danger
+			.form-group.row
+				label.col-3.col-sm-2.col-form-label(for="iptLang") Language
+				.col-9.col-sm-6
+					select#iptLang.form-control(name="obj[lang]", data-style="btn-info")
+						each key in Object.keys(Conf.usLang)
+							-a;
+							option(value=key) #{Conf.usLang[key]} #{key}
+				.offset-3.col-9.col-form-label.text-danger
+			.form-group.row
+				label.col-3.col-sm-2.col-form-label(for="iptNome") Name
+				.col-9.col-sm-6
+					input#iptNome.form-control(type="text", name="obj[nome]")
+				.offset-3.col-9.col-form-label.text-danger
+			.form-group.row
+				.offset-sm-6.col-sm-2
+					input.btn.btn-success.btn-block(type="submit" value="添加")

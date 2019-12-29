@@ -1,0 +1,22 @@
+extends ../aalayout/layout
+
+block content
+	div(style="height:50px")
+
+	.container.mt-3
+		.row
+			each tner in tners
+				-a;
+				h3 #{tner}
+	.topNav-second.p-1
+		.row.text-center
+			.col-1
+				button.btn.btn-info.shield(type="button") <span class="oi oi-shield"></span>
+			.col-2
+				a.btn.btn-block.btn-warning(href="/bsTnerAdd") <span class="oi oi-plus"></span> <span class="oi oi-person"></span>
+			.col-5
+			.col-4
+				form.ajaxForm
+					input.ajaxKey.form-control(type="text", autocomplete="off")
+
+	script(src="/js/bser/tner/list.js")

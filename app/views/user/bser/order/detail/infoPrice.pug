@@ -1,0 +1,58 @@
+table.table.table-borderless.border.border-dark
+	thead
+		tr.textCenter
+			th.border.border-dark Code [Name]
+			th.border.border-dark.text-center Color
+			each size in order.sizes
+				-a;
+				th.border.border-info.text-center #{Conf.sizes[size]}
+			th.border.border-dark.text-right QNT
+			th.border.border-dark.text-right Prezzo(€)
+			th.border.border-dark.text-right Total(€)
+	tbody
+		-let imp=0;
+		each ordfir in order.ordfirs
+			-let pdQuot=0;
+			-let pdShip=0;
+			tr
+				td #{ordfir.code}
+				td(colspan=1+order.sizes.length)
+				td.text-right
+				td.text-right
+				td.text-right
+			each ordsec in ordfir.ordsecs
+				- let cQuot = 0;
+				- let cShip = 0;
+				tr
+					td
+					th #{ordsec.color}
+					if ordsec.ordthds[0].size == 0
+						- ordthd = ordsec.ordthds[0];
+						td #{ordthd.quot}
+					else
+						each size in order.sizes
+							-let taskThd = null;
+							each ordthd in ordsec.ordthds
+								if ordthd.size == size
+									- taskThd = ordthd;
+									- let quot = ordthd.quot;
+									- cQuot += ordthd.quot;
+									- cShip += ordthd.ship;
+									- pdQuot += ordthd.quot;
+									- pdShip += ordthd.ship;
+									- break;
+							td 
+								if taskThd
+									-a;
+									span #{taskThd.ship}
+					td.text-right #{cQuot}
+					td.border-right.border-dark(colspan="2")
+			tr
+				td.border-bottom.border-dark #{ordfir.pdfir.code} [#{ordfir.pdfir.nome}]
+				td.border-bottom.border-dark(colspan=1+order.sizes.length)
+				td.border.border-dark.text-right: h4 #{pdQuot}
+				td.border.border-dark.text-right: h4 #{(ordfir.price).toFixed(2)}
+				td.border.border-dark.text-right: h4 #{(ordfir.price*pdQuot).toFixed(2)}
+				- imp += ordfir.price*pdQuot;
+		tr
+			th.border.border-dark.text-right(colspan=5+order.sizes.length): h3 #{imp.toFixed(2)} €

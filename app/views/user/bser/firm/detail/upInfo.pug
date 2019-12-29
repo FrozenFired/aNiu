@@ -1,0 +1,69 @@
+a.btn.btn-warning(href="#", data-toggle="modal", data-target="#upInfo") <span class="oi oi-pencil"></span>
+
+#upInfo.modal.fade
+	.modal-dialog
+		.modal-content
+			form#upGroup(method="post", action="/bsFirmUpd", enctype="multipart/form-data")
+				.modal-header
+					h5 设置 :
+					h5.text-right [#{firm.code}]
+				.modal-body
+					input(type="hidden", name="obj[_id]", value=firm._id)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptTel") 电话
+						.col-9.col-xs-6
+							input#iptTel.form-control(type="text", name="obj[tel]", value=firm.tel)
+						.col-3
+						.col-9.col-xs-4#optTel.text-danger(style="display:none") 请输入公司电话(长度大于5)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptResp") 负责人
+						.col-9.col-xs-6
+							input#iptResp.form-control(type="text", name="obj[resp]", value=firm.resp)
+						.col-3
+						.col-9.col-xs-4#optResp.text-danger(style="display:none") 请输入公司负责人(长度大于2)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptIva") Iva
+						.col-9.col-xs-6
+							input#iptIva.form-control(type="text", name="obj[iva]", value=firm.iva)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptCf") C.F.
+						.col-9.col-xs-6
+							input#iptCf.form-control(type="text", name="obj[cf]", value=firm.cf)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptPost") 邮编
+						.col-9.col-xs-6
+							input#iptPost.form-control(type="text", name="obj[post]", value=firm.post)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptAddr") 地址
+						.col-9.col-xs-6
+							input#iptAddr.form-control(type="text", name="obj[addr]", value=firm.addr)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptCity") 城市
+						.col-9.col-xs-6
+							input#iptCity.form-control(type="text", name="obj[city]", value=firm.city)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptCt") 城市简称
+						.col-9.col-xs-6
+							input#iptCt.form-control(type="text", name="obj[ct]", value=firm.ct)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptNation") 国家
+						.col-9.col-xs-6
+							input#iptNation.form-control(type="text", name="obj[nation]", value=firm.nation)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptNt") 国家简称
+						.col-9.col-xs-6
+							input#iptNt.form-control(type="text", name="obj[nt]", value=firm.nt)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptBank") 银行
+						.col-9.col-xs-6
+							input#iptBank.form-control(type="text", name="obj[bank]", value=firm.bank)
+					.form-group.row
+						label.col-3.col-xs-2.col-form-label(for="iptIban") Iban
+						.col-9.col-xs-6
+							input#iptIban.form-control(type="text", name="obj[iban]", value=firm.iban)
+				.modal-footer
+					.col-6
+						button.btn.btn-default(type="button" data-dismiss="modal") <span class="oi oi-x"></span>
+					.col-6.text-right
+						button.btn.btn-success(type="submit") <span class="oi oi-location"></span>
+script(src="./js/bser/firm/group.js")

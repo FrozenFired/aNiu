@@ -1,0 +1,30 @@
+if !slipCond
+	-slipCond = "";
+if totalPage > 1
+	-a;
+	ul.pagination.col-12
+		li.page-item
+			a.text-dark.page-link(href=url+'?page=0'+slipCond) <span class="oi oi-media-skip-backward"></span> [1]
+		li.page-item: span &nbsp;&nbsp;
+		- let nowPage = currentPage-2;
+		while nowPage < currentPage+1
+			-a;
+			if nowPage >= 0 && nowPage<totalPage
+				-a;
+				if currentPage > (nowPage+1)
+					-a;
+					li.page-item
+						a.text-dark.page-link(href=url+'?page='+nowPage+slipCond) <span class="oi oi-media-step-backward"></span>
+					li.page-item: span &nbsp;&nbsp;
+				else if currentPage == (nowPage+1)
+					-a;
+					li.page-item.active
+						span.page-link [#{nowPage+1}]
+					li.page-item: span &nbsp;&nbsp;
+				else
+					li.page-item
+						a.text-dark.page-link(href=url+'?page='+nowPage+slipCond) <span class="oi oi-media-step-forward"></span>
+					li.page-item: span &nbsp;&nbsp;
+			-nowPage++;
+		li.page-item
+			a.text-dark.page-link(href=url+'?page=' + (totalPage-1)+slipCond) [#{totalPage}] <span class="oi oi-media-skip-forward"></span>

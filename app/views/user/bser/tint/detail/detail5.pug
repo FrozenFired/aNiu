@@ -1,0 +1,9 @@
+extends ../../aalayout/layout
+
+block content
+	
+	.m-5
+		p #{tint}
+		p #{tint.tinfirs[0].tinsecs[0]}
+		p #{tint.tinfirs[0].tinsecs[0].tinthds[0]}
+		a.btn.btn-danger(href="/bsTintDel/"+tint._id) 删除

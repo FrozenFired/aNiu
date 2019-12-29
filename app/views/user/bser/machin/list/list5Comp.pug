@@ -1,0 +1,46 @@
+input(type="hidden", name="obj[machinId]", value=machin._id)
+input(type="hidden", name="obj[macfirId]", value=macfir._id)
+- let i = 0, k = 0;
+each macsec in macfir.macsecs
+	- i++;
+	tr
+		if i==1
+			-a;
+			th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
+			th #{machin.fder.nome}
+		else
+			th
+			th
+		th.bg-light #{macsec.pdsec.color}
+		each size in machin.sizes
+			-let quot = '';
+			each macthd in macsec.macthds
+				if macthd.size == size
+					- quot = macthd.quot;
+					- break;
+			td #{quot}
+		td.bg-secondary
+		each size in machin.sizes
+			-let ship = '';
+			-let quot = '';
+			-let macthdId = '';
+			each macthd in macsec.macthds
+				if macthd.size == size
+					- macthdId = macthd._id;
+					- ship = parseInt(macthd.ship);
+					- quot = parseInt(macthd.quot);
+					- break;
+			td 
+				if macthdId
+					- k++;
+					-let shiping = quot - ship;
+
+					if shiping > 0
+						-a;
+						input.iptsty2.shiping(id="shiping-"+macthdId, type="number", name="obj[thds]["+k+"][shiping]", value=shiping)
+						input(id="stock-"+macthdId, type="hidden", value=stock)
+						input(type="hidden", name="obj[thds]["+k+"][macthdId]", value=macthdId)
+					else
+						span.text-info #{ship}
+						//- span &nbsp; /  
+						//- span.text-warning #{stock}

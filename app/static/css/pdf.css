@@ -1,0 +1,73 @@
+/*pdf width 595px height 842px */
+.containerPDF {
+	width: 540px;
+	margin: 25px;
+	font-size:80%;
+}
+
+.col-pdf-4 {
+	height: 45px; width: 180px; 
+	float: left;
+}
+.col-pdf-8 {
+  height: 45px; width: 360px; 
+  float: left;
+}
+
+.border {
+  border: 1px solid #343a40 !important;
+}
+
+.border-right {
+  border-right: 1px solid #343a40 !important;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #343a40 !important;
+}
+.border-top {
+  border-top: 1px solid #343a40 !important;
+}
+
+.text-left {
+  text-align: left; !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-info {
+  color: #17a2b8 !important;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.text-primary {
+  color: #007bff !important;
+}
+
+
+.tableA4 {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+
+.tableA4 th,
+.tableA4 td {
+  padding: 0.2rem;
+  vertical-align: top;
+}
+.table-borderless th,
+.table-borderless td,
+.table-borderless thead th,
+.table-borderless tbody + tbody {
+  border: 0;
+}

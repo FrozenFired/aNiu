@@ -1,0 +1,52 @@
+extends ../aalayout/layout
+
+block content
+	div(style="height:50px")
+	.container
+	.row.mx-5
+		each pdfir in products
+			-a;
+			.col-sm-2.mt-5
+				h2.text-right: a(href="/bsProduct/"+pdfir._id) #{pdfir.code} 
+				//- h3 Name:#{pdfir.nome} | Mat:#{pdfir.material} 
+				//- img(src=pdfir.photo, width="80%", style="display:none")
+			.col-sm-9.mt-5.tblDial(style="display:block")
+				table.table
+					tr
+						td 颜色
+						each size in pdfir.sizes
+							-a;
+							td #{Conf.sizes[size]}
+					if pdfir.semi == 1
+						-a;
+						tr.text-warning
+							td 半成品
+							each pdsez in pdfir.pdsezs
+								-a;
+								td #{pdsez.stock}
+					each pdsec in pdfir.pdsecs
+						-a;
+						tr
+							td #{pdsec.color}
+							each pdthd in pdsec.pdthds
+								-a;
+								td #{pdthd.stock}
+	.topNav-second.p-1
+		.row.pt-1
+			.col-1
+				button.btn.btn-info.shield(type="button") <span class="oi oi-shield"></span>
+			.col-1
+				a.btn.btn-warning.btn-block(href="/bsProductAdd") <span class="oi oi-plus"></span>
+			.col-5.text-center
+				h3.row
+					.col-3 库存
+					.col-3 订量
+					.col-3 产量
+					.col-3 发货量
+			.col-1
+				button.btn.btn-default#btnDial(type="button") <span class="oi oi-dial"></span>
+			.col-4
+				form.ajaxForm
+					input.ajaxKey.productcode.form-control(type="text", autocomplete="off")
+	script(src="/const/const.js")
+	script(src="/js/bser/product/list.js")
