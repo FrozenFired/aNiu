@@ -22,15 +22,47 @@ block content
 						tr.text-warning
 							td 半成品
 							each pdsez in pdfir.pdsezs
-								-a;
-								td #{pdsez.stock}
+								- let quotMsez = shipMsez = 0;
+								-let quotOthds = shipOthds = 0;
+								-let quotTthds = shipTthds = 0;
+								-let needTthds = 0;
+								each macsez in pdsez.macsezs
+									-quotMsez+=parseInt(macsez.quot);
+									-shipMsez+=parseInt(macsez.ship);
+								each pdthd in pdsez.pdthds
+									- let quotOthd = shipOthd = 0;
+									- let quotTthd = shipTthd = 0;
+									each ordthd in pdthd.ordthds
+										- quotOthd += parseInt(ordthd.quot);
+										- shipOthd += parseInt(ordthd.ship);
+									each tinthd in pdthd.tinthds
+										- quotTthd += parseInt(tinthd.quot);
+										- shipTthd += parseInt(tinthd.ship);
+									- quotTthds += quotTthd;
+									- shipTthds += shipTthd;
+									- let showThdStock = parseInt(pdthd.stock) + shipTthd - shipOthd;
+								- let showSezStock = parseInt(pdsez.stock) + shipMsez - quotTthds;
+								- let needMac = needTthds - showSezStock - (quotMsez-shipMsez);
+								td #{showSezStock}
 					each pdsec in pdfir.pdsecs
 						-a;
 						tr
 							td #{pdsec.color}
 							each pdthd in pdsec.pdthds
-								-a;
-								td #{pdthd.stock}
+								- let quotOthd = shipOthd = 0;
+								- let quotMthd = shipMthd = 0;
+								- let quotTthd = shipTthd = 0;
+								each ordthd in pdthd.ordthds
+									- quotOthd += parseInt(ordthd.quot);
+									- shipOthd += parseInt(ordthd.ship);
+								each macthd in pdthd.macthds
+									- quotMthd += parseInt(macthd.quot);
+									- shipMthd += parseInt(macthd.ship);
+								each tinthd in pdthd.tinthds
+									- quotTthd += parseInt(tinthd.quot);
+									- shipTthd += parseInt(tinthd.ship);
+								- let showThdStcok = parseInt(pdthd.stock) + shipMthd + shipTthd - shipOthd;
+								td #{showThdStcok}
 	.topNav-second.p-1
 		.row.pt-1
 			.col-1
@@ -38,11 +70,6 @@ block content
 			.col-1
 				a.btn.btn-warning.btn-block(href="/bsProductAdd") <span class="oi oi-plus"></span>
 			.col-5.text-center
-				h3.row
-					.col-3 库存
-					.col-3 订量
-					.col-3 产量
-					.col-3 发货量
 			.col-1
 				button.btn.btn-default#btnDial(type="button") <span class="oi oi-dial"></span>
 			.col-4

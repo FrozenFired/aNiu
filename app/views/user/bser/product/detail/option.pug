@@ -1,0 +1,75 @@
+.row.optionBtn
+	.col-6
+		button.btn.btn-warning.plusColorBtn(type="button") <span class="oi oi-plus"></span> 颜色
+		span &nbsp; &nbsp;
+		button.btn.btn-danger.minusColorBtn(type="button") <span class="oi oi-minus"></span> 颜色
+		input.form-control#colors(type="hidden", value=pdfir.colors)
+	.col-6
+		button.btn.btn-warning.plusSizeBtn(type="button") <span class="oi oi-plus"></span> 尺寸
+		span &nbsp; &nbsp;
+		button.btn.btn-danger.minusSizeBtn(type="button") <span class="oi oi-minus"></span> 尺寸
+		input.form-control#sizes(type="hidden", value=pdfir.sizes)
+.iptPage.plusColor(style="display:none")
+	form#newColorForm(method="post", action="/bsProdNewColor", enctype="multipart/form-data")
+		input.form-control(type="hidden", name="obj[pdfir]", value=pdfir._id)
+		.form-group.row
+			label.col-2.col-form-label(for="plusColor") 颜色
+			.col-3
+				input#plusColor.form-control(type="text", name="obj[color]", autocomplete="off")
+			.col-3.pt-1#optPlusColor.text-danger
+			.col-2
+				button.btn.btn-secondary.cancelBtn(type="button") 取消
+			.col-2
+				input.btn.btn-info.btn-block(type="submit" value='添加')
+.iptPage.minusColor(style="display:none")
+	form#delColorForm(method="post", action="/bsProdDelColor", enctype="multipart/form-data")
+		input.form-control(type="hidden", name="obj[pdfir]", value=pdfir._id)
+		.form-group.row
+			label.col-2.col-form-label(for="plusColor") 颜色
+			.col-3
+				select#minusColor.form-control(name="obj[pdsec]", data-style="btn-info")
+						each pdsec in pdfir.pdsecs
+							-a;
+							option(value=pdsec._id) #{pdsec.color}
+			.col-3.pt-1#optMinusColor.text-danger
+			.col-2
+				button.btn.btn-secondary.cancelBtn(type="button") 取消
+			.col-2
+				input.btn.btn-danger.btn-block(type="submit" value='删除')
+.iptPage.plusSize(style="display:none")
+	form#newSizeForm(method="post", action="/bsProdNewSize", enctype="multipart/form-data")
+		input.form-control(type="hidden", name="obj[pdfir]", value=pdfir._id)
+		.form-group.row
+			label.col-2.col-form-label(for="plusSize") 尺寸
+			.col-3
+				select#plusSize.form-control(name="obj[size]", data-style="btn-info")
+					each size in Object.keys(Conf.sizes)
+						-size = parseInt(size);
+						if size+1 == parseInt(pdfir.sizes[0])
+							-a;
+							option(value=size) #{Conf.sizes[size]}
+						if size-1 == parseInt(pdfir.sizes[pdfir.sizes.length-1])
+							-a;
+							option(value=size) #{Conf.sizes[size]}
+			.col-3
+			.col-2
+				button.btn.btn-secondary.cancelBtn(type="button") 取消
+			.col-2
+				input.btn.btn-info.btn-block(type="submit" value='添加')
+.iptPage.minusSize(style="display:none")
+	form#delSizeForm(method="post", action="/bsProdDelSize", enctype="multipart/form-data")
+		input.form-control(type="hidden", name="obj[pdfir]", value=pdfir._id)
+		.form-group.row
+			label.col-2.col-form-label(for="minusSize") 尺寸
+			.col-3
+				select#minusSize.form-control(name="obj[pdsez]", data-style="btn-info")
+					if pdfir.pdsezs && pdfir.pdsezs.length > 0
+						- let pdsez = pdfir.pdsezs[0];
+						option(value=pdsez._id) #{Conf.sizes[pdsez.size]}
+						- pdsez = pdfir.pdsezs[pdfir.pdsezs.length-1];
+						option(value=pdsez._id) #{Conf.sizes[pdsez.size]}
+			.col-3
+			.col-2
+				button.btn.btn-secondary.cancelBtn(type="button") 取消
+			.col-2
+				input.btn.btn-danger.btn-block(type="submit" value='删除')

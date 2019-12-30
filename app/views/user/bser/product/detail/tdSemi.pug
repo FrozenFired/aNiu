@@ -1,9 +1,5 @@
 .ptCont.pdstock
-	span.dataSp(id="span-stock-"+pdsez._id) #{showSezStock}
-	//- form.dataFm(id="form-stock-"+pdsez._id, method="post", action="/bsPdthdUpd", enctype="multipart/form-data", style="display:none")
-	//- 	input(type="hidden", name="pdthdId", value=pdsez._id)
-	//- 	input.dataOrg(id="org-stock-"+pdsez._id, type="hidden", value=pdsez.stock)
-	//- 	input.iptsty.dataIpt(id="ipt-stock-"+pdsez._id, type="number", name="obj[stock]", value=pdsez.stock)
+	span #{showSezStock}
 
 if needMac <= 0
 	-needMac = 0;

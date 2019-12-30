@@ -4,7 +4,7 @@ let User = require('../controllers/user/bser/user');
 let Firm = require('../controllers/user/bser/firm');
 
 let Product = require('../controllers/user/bser/product')
-// let Pdsec = require('../controllers/user/bser/pdsec')
+let Prod = require('../controllers/user/bser/prod')
 // let Pdsez = require('../controllers/user/bser/pdsez')
 let Pdthd = require('../controllers/user/bser/pdthd')
 
@@ -73,15 +73,19 @@ module.exports = function(app){
 	app.get('/bsPdfirAjaxOneMore', MdRole.bserIsLogin, Product.bsPdfirAjaxOneMore)
 	app.get('/bsPdfirAjaxOne', MdRole.bserIsLogin, Product.bsPdfirAjaxOne)
 	/* ------------------------------ pdfir ------------------------------ */
-	/* ---------------------------------------- pdsec ---------------------------------------- */
-	// app.post('/bsPdsecNew', MdRole.bserIsLogin, postForm, Pdsec.bsPdsecNew)
-	// app.get('/bsPdsecDel/:id', MdRole.bserIsLogin, Pdsec.bsPdsecFilter, Pdsec.bsPdsecDel)
 
-	// app.get('/bsPdsec/:id', MdRole.bserIsLogin, Pdsec.bsPdsecFilter, Pdsec.bsPdsec)
-	// app.post('/bsPdsecUpd', MdRole.bserIsLogin, postForm, Pdsec.bsPdsecUpd)
-	// // app.post('/bsPdsecUpd', MdRole.bserIsLogin, postForm, MdPicture.addNewPhoto, Pdsec.bsPdsecUpd)
+	/* ---------------------------------------- Prod ---------------------------------------- */
+	app.post('/bsProdNewColor', MdRole.bserIsLogin, postForm, Prod.bsProdNewColor)
+	app.post('/bsProdDelColor', MdRole.bserIsLogin, postForm, Prod.bsProdDelColor)
+	app.post('/bsProdNewSize', MdRole.bserIsLogin, postForm, Prod.bsProdNewSize)
+	app.post('/bsProdDelSize', MdRole.bserIsLogin, postForm, Prod.bsProdDelSize)
+	// app.get('/bsProdDel/:id', MdRole.bserIsLogin, Prod.bsProdFilter, Prod.bsProdDel)
 
-	// app.post('/bsPdsecStockAjax', MdRole.bserIsLogin, postForm, Pdsec.bsPdsecStockAjax)
+	// app.get('/bsProd/:id', MdRole.bserIsLogin, Prod.bsProdFilter, Prod.bsProd)
+	// app.post('/bsProdUpd', MdRole.bserIsLogin, postForm, Prod.bsProdUpd)
+	// // app.post('/bsProdUpd', MdRole.bserIsLogin, postForm, MdPicture.addNewPhoto, Prod.bsProdUpd)
+
+	// app.post('/bsProdStockAjax', MdRole.bserIsLogin, postForm, Prod.bsProdStockAjax)
 
 	// /* ---------------------------------------- pdsez ---------------------------------------- */
 	// app.get('/bsPdsezNew', MdRole.bserIsLogin, Pdsez.bsPdsezNew)

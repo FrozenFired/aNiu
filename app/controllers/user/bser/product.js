@@ -64,7 +64,7 @@ exports.bsProducts = function(req, res) {
 					{path: 'tinthds'},
 					{path: 'pdsez'},
 				]},
-				{path: 'macthds'}
+				{path: 'macsezs'},
 			]})
 			.sort({[sortCond]: sortVal})
 			.exec(function(err, products) { if(err) {
@@ -161,7 +161,7 @@ exports.bsProductNew = function(req, res) {
 			} else {
 
 				let _pdfir = new Pdfir(obj);	// 创建pdfir
-				let arrs = new Array();			// 把所有需要创建的数据库放入一个数组可以递归保存
+				let dbs = new Array();			// 把所有需要创建的数据库放入一个数组可以递归保存
 				/* ========== 先把尺寸创建好========== */
 				let pdsezs = new Array();
 				for(let i in obj.sizes) {
@@ -171,7 +171,7 @@ exports.bsProductNew = function(req, res) {
 					let _pdsez = new Pdsez(pdsezObj);
 					pdsezs.push(_pdsez);
 					_pdfir.pdsezs.push(_pdsez._id);
-					arrs.push(_pdsez);
+					dbs.push(_pdsez);
 				}
 				/* ========== 先把尺寸创建好========== */
 
@@ -185,7 +185,7 @@ exports.bsProductNew = function(req, res) {
 
 					pdsecs.push(_pdsec);
 					_pdfir.pdsecs.push(_pdsec._id);
-					arrs.push(_pdsec);
+					dbs.push(_pdsec);
 				}
 				/* ========== 再把颜色创建好========== */
 
@@ -205,16 +205,16 @@ exports.bsProductNew = function(req, res) {
 						pdsez.pdthds.push(_pdthd._id);
 						pdsec.pdthds.push(_pdthd._id);
 						_pdfir.pdthds.push(_pdthd._id);
-						arrs.push(_pdthd);
+						dbs.push(_pdthd);
 					}
 				}
-				bsProductSave(res, _pdfir, arrs, 0);
+				bsProductSave(res, _pdfir, dbs, 0);
 			}
 		})
 	}
 }
-let bsProductSave = function(res, pdfir, arrs, n) {
-	if(n==arrs.length) {
+let bsProductSave = function(res, pdfir, dbs, n) {
+	if(n==dbs.length) {
 		pdfir.save(function(err, pdfirSave) {
 			if(err) {
 				console.log(err);
@@ -226,14 +226,14 @@ let bsProductSave = function(res, pdfir, arrs, n) {
 		})				
 		return;
 	} else {
-		let thisdb = arrs[n];
+		let thisdb = dbs[n];
 		// console.log(thisdb)
 		thisdb.save(function(err, dbSave) {
 			if(err) {
 				console.log(err);
 				console.log(n);
 			}
-			bsProductSave(res, pdfir, arrs, n+1);
+			bsProductSave(res, pdfir, dbs, n+1);
 		})
 	}
 }

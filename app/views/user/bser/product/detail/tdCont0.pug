@@ -1,16 +1,5 @@
 .ptCont.pdstock
-	span.dataSp(id="span-stock-"+pdthd._id) #{showThdStock}
-	//- form.dataFm(id="form-stock-"+pdthd._id, method="post", action="/bsPdthdUpd", enctype="multipart/form-data", style="display:none")
-	//- 	input(type="hidden", name="pdthdId", value=pdthd._id)
-	//- 	input.dataOrg(id="org-stock-"+pdthd._id, type="hidden", value=pdthd.stock)
-	//- 	input.iptsty.dataIpt(id="ipt-stock-"+pdthd._id, type="number", name="obj[stock]", value=pdthd.stock)
-
-//- .ptCont.pdreserve(class=reserveText style="display:none")
-//- 	span.dataSp(id="span-reserve-"+pdthd._id) #{pdthd.stock+pdthd.reserve} | #{pdthd.reserve}
-//- 	form.dataFm(id="form-reserve-"+pdthd._id, method="post", action="/bsPdthdUpd", enctype="multipart/form-data", style="display:none")
-//- 		input(type="hidden", name="pdthdId", value=pdthd._id)
-//- 		input.reserveOrg(id="org-reserve-"+pdthd._id, type="hidden", value=pdthd.reserve)
-//- 		input.iptsty.dataIpt(id="ipt-reserve-"+pdthd._id, type="number", name="obj[reserve]", value=pdthd.reserve)
+	span #{showThdStock}
 
 -let needMText = "text-danger";
 if needMac <= 0

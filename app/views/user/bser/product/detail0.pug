@@ -6,13 +6,14 @@ block content
 	.mx-5
 		.row
 			.col-sm-2.mt-5
-				h2.text-right: a(href="/bsProduct/"+pdfir._id) #{pdfir.code} 
+				h2.text-right: a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
+				button.btn.btn-warning.editStock(type="button") <span class="oi oi-pencil"></span> 
 				//- h3 Name:#{pdfir.nome} | Mat:#{pdfir.material} 
 				//- img(src=pdfir.photo, width="80%", style="display:none")
 			.col-sm-6.mt-5.tblDial(style="display:block")
 				table.table
 					tr
-						td 颜色
+						td(width="18%") 颜色
 						each size in pdfir.sizes
 							-a;
 							td #{Conf.sizes[size]}
@@ -33,6 +34,8 @@ block content
 								- let showThdStock = parseInt(pdthd.stock) + shipMthd - shipOthd;
 								td
 									include ./detail/tdCont0
+				.option.mt-5(style="display:none")
+					include ./detail/option
 			.col-md-4.text-center
 				img(src=pdfir.photo, width="300px")
 		.row.mt-5
@@ -56,8 +59,11 @@ block content
 				button.pdNav#needM.btn.btn-default(type="button") 需产
 				span &nbsp;
 				button.pdNav#machin.btn.btn-default(type="button") 在产
+				span &nbsp; &nbsp;
+				button#option.btn.btn-warning(type="button") <span class="oi oi-cog"></span>
 			.col-4
 				form.ajaxForm
 					input.ajaxKey.productcode.form-control(type="text", autocomplete="off")
 	script(src="/const/const.js")
-	script(src="/js/bser/product/detail.js")
+	script(src="/js/bser/product/detail/detail.js")
+	script(src="/js/bser/product/detail/option.js")
