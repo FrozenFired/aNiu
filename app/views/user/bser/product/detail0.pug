@@ -5,9 +5,10 @@ block content
 	.container
 	.mx-5
 		.row
-			.col-sm-2.mt-5
-				h2.text-right: a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
-				button.btn.btn-warning.editStock(type="button") <span class="oi oi-pencil"></span> 
+			.col-sm-2.mt-5.text-right
+				h2: a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
+				button.btn.btn-warning#editStockBtn(type="button") <span class="oi oi-pencil"></span> 
+				button.btn.btn-info#fnStockBtn(type="button", style="display:none") <span class="oi oi-browser"></span>
 				//- h3 Name:#{pdfir.nome} | Mat:#{pdfir.material} 
 				//- img(src=pdfir.photo, width="80%", style="display:none")
 			.col-sm-6.mt-5.tblDial(style="display:block")

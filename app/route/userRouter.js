@@ -79,6 +79,8 @@ module.exports = function(app){
 	app.post('/bsProdDelColor', MdRole.bserIsLogin, postForm, Prod.bsProdDelColor)
 	app.post('/bsProdNewSize', MdRole.bserIsLogin, postForm, Prod.bsProdNewSize)
 	app.post('/bsProdDelSize', MdRole.bserIsLogin, postForm, Prod.bsProdDelSize)
+	
+	app.post('/bsProdUpStock', MdRole.bserIsLogin, postForm, Prod.bsProdUpStock)
 	// app.get('/bsProdDel/:id', MdRole.bserIsLogin, Prod.bsProdFilter, Prod.bsProdDel)
 
 	// app.get('/bsProd/:id', MdRole.bserIsLogin, Prod.bsProdFilter, Prod.bsProd)

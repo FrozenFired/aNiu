@@ -340,3 +340,55 @@ let bsProdSave = function(req, res, pdfir, dbs, n) {
 		})
 	}
 }
+
+
+exports.bsProdUpStock = function(req, res) {
+	let crUser = req.session.crUser;
+	let obj = req.body.obj;
+	let pdthdId = obj.pdthd;
+	let pdsezId = obj.pdsez;
+	if(pdthdId) {
+		Pdthd.findOne({_id: pdthdId})
+		.exec(function(err, pdthd) {
+			if(err) {
+				console.log(err);
+				info = "bsProdUpStock, Pdthd.findOne, Error！"
+				res.json({success: 0, info: info});
+			} else {
+				pdthd.stock = parseInt(pdthd.stock) + parseInt(obj.stock) - parseInt(obj.stockOrg)
+				pdthd.save(function(err, pdthdSv) {
+					if(err) {
+						console.log(err);
+						info = "bsProdUpStock, pdthd.save, Error！"
+						res.json({success: 0, info: info});
+					} else {
+						res.json({success: 1})
+					}
+				})
+			}
+		})
+	} else if(pdsezId) {
+		Pdsez.findOne({_id: pdsezId})
+		.exec(function(err, pdsez) {
+			if(err) {
+				console.log(err);
+				info = "bsProdUpStock, Pdsez.findOne, Error！"
+				res.json({success: 0, info: info});
+			} else {
+				pdsez.stock = parseInt(pdsez.stock) + parseInt(obj.stock) - parseInt(obj.stockOrg)
+				pdsez.save(function(err, pdsezSv) {
+					if(err) {
+						console.log(err);
+						info = "bsProdUpStock, pdsez.save, Error！"
+						res.json({success: 0, info: info});
+					} else {
+						res.json({success: 1})
+					}
+				})
+			}
+		})
+	} else {
+		info = "数据错误"
+		res.json({success: 0, info: info});
+	}
+}

@@ -1,5 +1,9 @@
 .ptCont.pdstock
-	span #{showThdStock}
+	span.textStock(id="stockText-"+pdthd._id) #{showThdStock}
+	form(id="form-"+pdthd._id, method="post", action="/bsProdUpStock", enctype="multipart/form-data")
+		input(type="hidden", name="obj[pdthd]", value=pdthd._id)
+		input.editStock.iptsty(id="stockIpt-"+pdthd._id, type="number", style="display:none" name="obj[stock]", value=showThdStock)
+		input(id="stockOrg-"+pdthd._id, type="hidden", name="obj[stockOrg]", value=showThdStock)
 
 if needT <= 0
 	-needT = 0;

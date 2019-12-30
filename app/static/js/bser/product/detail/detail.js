@@ -21,4 +21,41 @@ $( function() {
 		$(".editStock").show();
 	})
 	/* = 点击库存按钮，一定要放在点击导航按钮下面 = */
+
+	$("#editStockBtn").click(function(e) {
+		$("#editStockBtn").hide()
+		$("#fnStockBtn").show()
+		$(".textStock").hide()
+		$(".editStock").show()
+	})
+	$("#fnStockBtn").click(function(e) {
+		$("#fnStockBtn").hide()
+		$("#editStockBtn").show()
+		$(".textStock").show()
+		$(".editStock").hide()
+	})
+
+	$(".editStock").blur(function(e) {
+		let pdId = ($(this).attr('id')).split("-")[1];
+		let stock = parseInt($(this).val())
+		let stockOrg = parseInt($("#stockOrg-"+pdId).val())
+		let form = $("#form-"+pdId);
+		let data = form.serialize();
+		let url = form.attr('action');
+		if(stock != stockOrg) {
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: data,
+				success: function(results) {
+					if(results.success == 1) {
+						$("#stockOrg-"+pdId).val(stock)
+						$("#stockText-"+pdId).text(stock)
+					} else {
+						alert(results.info)
+					}
+				}
+			});
+		}
+	})
 } );
