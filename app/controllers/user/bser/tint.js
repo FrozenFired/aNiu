@@ -23,14 +23,15 @@ let moment = require('moment')
 // 模糊查找出产品
 exports.bsTintProdsAjax = function(req, res) {
 	let crUser = req.session.crUser;
-	let keywtin = ' x x x ';
-	if(req.query.keywtin) {
-		keywtin = String(req.query.keywtin);
-		keywtin = keywtin.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-		keywtin = new RegExp(keywtin + '.*');
+	let keyword = ' x x x ';
+	if(req.query.keyword) {
+		keyword = String(req.query.keyword);
+		keyword = keyword.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+		keyword = new RegExp(keyword + '.*');
 	}
-	Pdfir.find({'firm': crUser.firm,'code':  keywtin,})
+	Pdfir.find({'firm': crUser.firm,'code':  keyword, 'semi': 1})
 	.populate({path: 'pdsecs', populate: {path: 'pdthds'}})
+	.populate({path: 'pdsezs', populate: {path: 'pdthds'}})
 	.limit(10)
 	.exec(function(err, pdfirs) { if(err) {
 		res.json({success: 0, info: "bsProdsAjax, Tint.find, Error"})

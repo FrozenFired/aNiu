@@ -18,7 +18,7 @@ $(function() {
 			$('.prodCard').remove(); // 清除上次的ajaxProds
 			$('.prodShow').remove(); // 清除上次的ajaxProds
 			let keyword = encodeURIComponent(str);	// 转化码
-			let url = '/bsOrderProdsAjax?keyword='+keyword;
+			let url = '/bsTintProdsAjax?keyword='+keyword;
 			getObjects(url);
 		}
 	});

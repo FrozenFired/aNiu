@@ -434,6 +434,7 @@ $(function() {
 					}
 				}
 				needMac = quotO - quotM - parseInt(pdthd.stock);
+				if(needMac < 0) needMac = 0;
 				str += '<td>'
 					str += '<input class="iptsty ordQt" type="Number" value='+needMac;
 					str += ' name="obj[secs]['+i+'][thds]['+j+'][quot]" >'
