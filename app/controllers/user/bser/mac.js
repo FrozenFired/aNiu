@@ -92,45 +92,45 @@ let bsMacGetProducts = function(pdfirs) {
 				let needTthds = 0;
 				for (let k=0; k<pdsez.pdthds.length; k++) {
 					let pdthd = pdsez.pdthds[k];
-					let quotOthd = shipOthd = 0;
-					let quotTthd = shipTthd = 0;
+					let quotOthd = shipOthd = lessOthd = 0;
+					let quotTthd = shipTthd = lessTthd = 0;
 					for(let m=0; m<pdthd.ordthds.length; m++) {
 						let ordthd = pdthd.ordthds[m];
-						if(!isNaN(parseInt(ordthd.quot))) {
-							quotOthd += parseInt(ordthd.quot);
-						}
-						if(!isNaN(parseInt(ordthd.ship))) {
-							shipOthd += parseInt(ordthd.ship);
+						let quot = parseInt(ordthd.quot);
+						let ship = parseInt(ordthd.ship);
+						quotOthd += quot; shipOthd += ship;
+						if(quot - ship > 0) {
+							lessOthd += (quot - ship)
 						}
 					}
 					for(let m=0; m<pdthd.tinthds.length; m++) {
 						let tinthd = pdthd.tinthds[m];
-						if(!isNaN(parseInt(tinthd.quot))) {
-							quotTthd += parseInt(tinthd.quot);
-						}
-						if(!isNaN(parseInt(tinthd.ship))) {
-							shipTthd += parseInt(tinthd.ship);
+						let quot = parseInt(tinthd.quot);
+						let ship = parseInt(tinthd.ship);
+						quotTthd += quot; shipTthd += ship;
+						if(quot - ship > 0) {
+							lessTthd += (quot - ship)
 						}
 					}
 					let showThdStock = parseInt(pdthd.stock) + shipTthd - shipOthd;
-					let needTthd = (quotOthd-shipOthd) - (quotTthd-shipTthd) - showThdStock;
+					let needTthd = lessOthd - lessTthd - showThdStock;
 					if(needTthd < 0) needTthd = 0;
 					needTthds += needTthd;
 					quotTthds += quotTthd;	// 正在染色的
 				}
-				let quotMsez = shipMsez = 0;
+				let quotMsez = shipMsez = lessMsez = 0;
 				for(let m=0; m<pdsez.macsezs.length; m++) {
 					let macsez = pdsez.macsezs[m];
-					if(!isNaN(parseInt(macsez.quot))) {
-						quotMsez += parseInt(macsez.quot);
-					}
-					if(!isNaN(parseInt(macsez.ship))) {
-						shipMsez += parseInt(macsez.ship);
+					let quot = parseInt(macsez.quot);
+					let ship = parseInt(macsez.ship);
+					quotMsez += quot; shipMsez += ship;
+					if(quot - ship > 0) {
+						lessMsez += (quot - ship)
 					}
 				}
 				let stock = parseInt(pdsez.stock);
 				let showSezStock = stock + shipMsez - quotTthds
-				needMac += needTthds - showSezStock - (quotMsez - shipMsez);
+				needMac += needTthds - showSezStock - lessMsez;
 			}
 			// console.log(needMac)
 		} else {
@@ -139,28 +139,28 @@ let bsMacGetProducts = function(pdfirs) {
 				let ndsecMac = 0;
 				for(let k=0; k<pdsec.pdthds.length; k++) {
 					let pdthd = pdsec.pdthds[k];
-					let quotOthd = shipOthd = 0;
-					let quotMthd = shipMthd = 0;
+					let quotOthd = shipOthd = lessOthd = 0;
+					let quotMthd = shipMthd = lessMthd = 0;
 					for(let m=0; m<pdthd.ordthds.length; m++) {
 						let ordthd = pdthd.ordthds[m];
-						if(!isNaN(parseInt(ordthd.quot))) {
-							quotOthd += parseInt(ordthd.quot);
-						}
-						if(!isNaN(parseInt(ordthd.ship))) {
-							shipOthd += parseInt(ordthd.ship);
+						let quot = parseInt(ordthd.quot);
+						let ship = parseInt(ordthd.ship);
+						quotOthd += quot; shipOthd += ship;
+						if(quot - ship > 0) {
+							lessOthd += (quot - ship)
 						}
 					}
 					for(let m=0; m<pdthd.macthds.length; m++) {
 						let macthd = pdthd.macthds[m];
-						if(!isNaN(parseInt(macthd.quot))) {
-							quotMthd += parseInt(macthd.quot);
-						}
-						if(!isNaN(parseInt(macthd.ship))) {
-							shipMthd += parseInt(macthd.ship);
+						let quot = parseInt(macthd.quot);
+						let ship = parseInt(macthd.ship);
+						quotMthd += quot; shipMthd += ship;
+						if(quot - ship > 0) {
+							lessMthd += (quot - ship)
 						}
 					}
 					let showStock = parseInt(pdthd.stock) + shipMthd - shipOthd;
-					let ndthdMac = (quotOthd - shipMthd) - (quotMthd - shipMthd) - showStock;
+					let ndthdMac = lessOthd - lessMthd - showStock;
 					if(ndthdMac < 0) ndthdMac = 0;
 					ndsecMac += ndthdMac;
 					needMac += ndthdMac;

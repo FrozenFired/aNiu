@@ -91,29 +91,29 @@ let bsTinGetProducts = function(pdfirs) {
 				let quotTthds = 0;
 				for (let k=0; k<pdsez.pdthds.length; k++) {
 					let pdthd = pdsez.pdthds[k];
-					let quotOthd = shipOthd = 0;
-					let quotTthd = shipTthd = 0;
+					let quotOthd = shipOthd = lessOthd = 0;
+					let quotTthd = shipTthd = lessTthd= 0;
 					for(let m=0; m<pdthd.ordthds.length; m++) {
 						let ordthd = pdthd.ordthds[m];
-						if(!isNaN(parseInt(ordthd.quot))) {
-							quotOthd += parseInt(ordthd.quot);
-						}
-						if(!isNaN(parseInt(ordthd.ship))) {
-							shipOthd += parseInt(ordthd.ship);
+						let quot = parseInt(ordthd.quot);
+						let ship = parseInt(ordthd.ship);
+						quotOthd += quot; shipOthd += ship;
+						if(quot - ship > 0) {
+							lessOthd += (quot - ship)
 						}
 					}
 					for(let m=0; m<pdthd.tinthds.length; m++) {
 						let tinthd = pdthd.tinthds[m];
-						if(!isNaN(parseInt(tinthd.quot))) {
-							quotTthd += parseInt(tinthd.quot);
-						}
-						if(!isNaN(parseInt(tinthd.ship))) {
-							shipTthd += parseInt(tinthd.ship);
+						let quot = parseInt(tinthd.quot);
+						let ship = parseInt(tinthd.ship);
+						quotTthd += quot; shipTthd += ship;
+						if(quot - ship > 0) {
+							lessTthd += (quot - ship)
 						}
 					}
 					let showThdStock = parseInt(pdthd.stock) + shipTthd - shipOthd;
 					quotTthds += quotTthd;
-					let ndthdTin = (quotOthd - shipOthd) - showThdStock - (quotTthd - shipTthd);
+					let ndthdTin = lessOthd - showThdStock - lessTthd;
 					if(ndthdTin <= 0) {
 						ndthdTin = 0;
 					} else {

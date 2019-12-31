@@ -1,16 +1,16 @@
 table.table.table-borderless.border.border-dark
 	thead
 		tr.textCenter
-			th.border.border-dark Code [Name]
-			th.border.border-dark.text-center Color
+			th.border.border-dark(width="15%") Code [Name]
+			th.border.border-dark.text-center(width="8%") Color
 			each size in order.sizes
 				-a;
 				th.border.border-info.text-center #{Conf.sizes[size]}
-			th.border.border-dark.text-right QNT
-			th.border.border-dark.text-right Prezzo(€)
-			th.border.border-dark.text-right Total(€)
+			th.border.border-dark.text-right(width="9%") QNT
+			th.border.border-dark.text-right(width="8%") Prezzo(€)
+			th.border.border-dark.text-right(width="10%") Total(€)
 	tbody
-		-let imp=0;
+		-let impQuot=impShip=0;
 		each ordfir in order.ordfirs
 			-let pdQuot=0;
 			-let pdShip=0;
@@ -41,18 +41,30 @@ table.table.table-borderless.border.border-dark
 									- pdQuot += ordthd.quot;
 									- pdShip += ordthd.ship;
 									- break;
-							td 
+							td.text-center
 								if taskThd
 									-a;
-									span #{taskThd.ship}
-					td.text-right #{cQuot}
+									span.ordCont.ordquot(style="display:none") #{taskThd.quot}
+									span.ordCont.ordship #{taskThd.ship}
+									span.ordCont.ordless(style="display:none") #{taskThd.quot - taskThd.ship}
+					td.text-right
+						span.ordCont.ordquot(style="display:none") #{cQuot}
+						span.ordCont.ordship #{cShip}
 					td.border-right.border-dark(colspan="2")
 			tr
 				td.border-bottom.border-dark #{ordfir.pdfir.code} [#{ordfir.pdfir.nome}]
 				td.border-bottom.border-dark(colspan=1+order.sizes.length)
-				td.border.border-dark.text-right: h4 #{pdQuot}
-				td.border.border-dark.text-right: h4 #{(ordfir.price).toFixed(2)}
-				td.border.border-dark.text-right: h4 #{(ordfir.price*pdQuot).toFixed(2)}
-				- imp += ordfir.price*pdQuot;
+				td.border.border-dark.text-right
+					h4.ordCont.ordquot(style="display:none") #{pdQuot}
+					h4.ordCont.ordship #{pdShip}
+				td.border.border-dark.text-right
+					h4 #{(ordfir.price).toFixed(2)}
+				td.border.border-dark.text-right
+					h4.ordCont.ordquot(style="display:none") #{(ordfir.price*pdQuot).toFixed(2)}
+					h4.ordCont.ordship #{(ordfir.price*pdShip).toFixed(2)}
+				- impQuot += ordfir.price*pdQuot;
+				- impShip += ordfir.price*pdShip;
 		tr
-			th.border.border-dark.text-right(colspan=5+order.sizes.length): h3 #{imp.toFixed(2)} €
+			th.border.border-dark.text-right(colspan=5+order.sizes.length)
+				h3.ordCont.ordquot(style="display:none") #{impQuot.toFixed(2)} €
+				h3.ordCont.ordship #{impShip.toFixed(2)} €

@@ -23,14 +23,18 @@ block content
 						tr
 							td #{pdsec.color}
 							each pdthd in pdsec.pdthds
-								-let quotOthd = shipOthd = 0;
-								-let quotMthd = shipMthd = 0;
+								-let quotOthd = shipOthd = lessOthd = 0;
+								-let quotMthd = shipMthd = lessMthd = 0;
 								each ordthd in pdthd.ordthds
 									-quotOthd+=parseInt(ordthd.quot);
 									-shipOthd+=parseInt(ordthd.ship);
+									if parseInt(ordthd.quot) > parseInt(ordthd.ship)
+										- lessOthd += parseInt(ordthd.quot) - parseInt(ordthd.ship);
 								each macthd in pdthd.macthds
 									-quotMthd+=parseInt(macthd.quot);
 									-shipMthd+=parseInt(macthd.ship);
+									if parseInt(macthd.quot) > parseInt(macthd.ship)
+										- lessMthd += parseInt(macthd.quot) - parseInt(macthd.ship);
 								- let needMac=quotOthd - pdthd.stock - quotMthd;
 								- let showThdStock = parseInt(pdthd.stock) + shipMthd - shipOthd;
 								td

@@ -4,21 +4,29 @@ block content
 	.container.mt-5
 		input#orderId(type="hidden", value=order._id)
 		include ./printHead
-		.row.border-top.mb-4.pb-2#optBtn.noprint
-			.col-8.pt-3
+		.row.border-top.mb-4.py-3#optBtn.noprint
+			.col-6
 				.row
-					.col-4 订单量
-					.col-4 发货量
-					.col-4 差额
-			.col-4.pt-3.text-right
-				if order.book
-					-a;
-					a(href='/bsBook/'+order.book) 所属生产单
-				span &nbsp; &nbsp; [状态：#{order.status}]
+					.col-2: button.ordNav#quot.btn.btn-secondary(type="button") 订单量
+					.col-2: button.ordNav#ship.btn.btn-info(type="button") 发货量
+					.col-2: button.ordNav#less.btn.btn-secondary(type="button") 差额
+					.col-6
+			.col-6.text-right
+				.row
+					if order.status == 5
+						-a;
+						.col-8
+							span [状态：正在处理 (#{order.status})]
+							button.btn.btn-warning(type="button") <span class="oi oi-pencil"></span>
+					else
+						.col-8.pt-2 [状态：历史记录 (#{order.status})]
+					.col-4
+						a.btn.btn-primary(href="javascript:window.print()" target="_self") <span class="oi oi-print"></span>
 		.infoPrice
 			include ./infoPrice
 		div.noprint(style="height:300px")
 		a.noprint.btn.btn-danger(href="/bsOrderDel/"+order._id) 删除
 
 
-	script(src="/js/bser/order/detail/detail1.js")
+	script(src="/js/bser/order/detail/detail.js")
+	script(src="/js/bser/order/detail/edit.js")

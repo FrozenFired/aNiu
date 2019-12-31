@@ -335,7 +335,6 @@ $(function() {
 				let pdsez = selPd.pdsezs[j];
 
 				let quotMsez = shipMsez = 0;
-				let quotOthds = shipOthds = 0;
 				let quotTthds = shipTthds = 0;
 				let needTthds = 0;
 				for(let m=0; m<pdsez.macsezs.length; m++) {
@@ -383,27 +382,28 @@ $(function() {
 			for(let j=0; j<pdsec.pdthds.length; j++) {
 				let pdthd = pdsec.pdthds[j];
 				let needTin = 0;
-				let quotOthd = shipOthd = 0;
-				let quotTthd = shipTthd = 0;
+				let quotOthd = shipOthd = lessOthd = 0;
+				let quotTthd = shipTthd = lessTthd= 0;
 				for (let m = 0; m < pdthd.ordthds.length; m++) {
 					let ordthd = pdthd.ordthds[m];
-					if(!isNaN(parseInt(ordthd.quot))) {
-						quotOthd += parseInt(ordthd.quot);
-					}
-					if(!isNaN(parseInt(ordthd.ship))) {
-						shipOthd += parseInt(ordthd.ship);
+					let quot = parseInt(ordthd.quot);
+					let ship = parseInt(ordthd.ship);
+					quotOthd += quot; shipOthd += ship;
+					if(quot - ship > 0) {
+						lessOthd += (quot - ship)
 					}
 				}
 				for(let m=0; m<pdthd.tinthds.length; m++) {
 					let tinthd = pdthd.tinthds[m];
-					if(!isNaN(parseInt(tinthd.quot))) {
-						quotTthd += parseInt(tinthd.quot);
-					}
-					if(!isNaN(parseInt(tinthd.ship))) {
-						shipTthd += parseInt(tinthd.ship);
+					let quot = parseInt(tinthd.quot);
+					let ship = parseInt(tinthd.ship);
+					quotTthd += quot; shipTthd += ship;
+					if(quot - ship > 0) {
+						lessTthd += (quot - ship)
 					}
 				}
-				needTin = quotOthd - quotTthd - parseInt(pdthd.stock);
+				let showThdStock = parseInt(pdthd.stock) + shipTthd - shipOthd;
+				needTin = lessOthd - showThdStock - lessTthd;
 				let dye = 0;
 				if(needTin>0) {
 					if(stocks[j] < needTin) {

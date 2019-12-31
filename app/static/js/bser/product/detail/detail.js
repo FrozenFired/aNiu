@@ -22,19 +22,25 @@ $( function() {
 	})
 	/* = 点击库存按钮，一定要放在点击导航按钮下面 = */
 
+	/* ========= 点击修改库存按钮 ========= */
 	$("#editStockBtn").click(function(e) {
 		$("#editStockBtn").hide()
 		$("#fnStockBtn").show()
 		$(".textStock").hide()
 		$(".editStock").show()
 	})
+	/* ========= 点击修改库存按钮 ========= */
+
+	/* ========= 点击完成修改按钮 ========= */
 	$("#fnStockBtn").click(function(e) {
 		$("#fnStockBtn").hide()
 		$("#editStockBtn").show()
 		$(".textStock").show()
 		$(".editStock").hide()
 	})
+	/* ========= 点击完成修改按钮 ========= */
 
+	/* =============== 焦点离开修改库存区域 =============== */
 	$(".editStock").blur(function(e) {
 		let pdId = ($(this).attr('id')).split("-")[1];
 		let stock = parseInt($(this).val())
@@ -58,4 +64,5 @@ $( function() {
 			});
 		}
 	})
+	/* =============== 焦点离开修改库存区域 =============== */
 } );

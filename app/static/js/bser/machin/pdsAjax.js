@@ -343,45 +343,45 @@ $(function() {
 				let needTthds = 0;
 				for (let k=0; k<pdsez.pdthds.length; k++) {
 					let pdthd = pdsez.pdthds[k];
-					let quotOthd = shipOthd = 0;
-					let quotTthd = shipTthd = 0;
+					let quotOthd = shipOthd = lessOthd = 0;
+					let quotTthd = shipTthd = lessTthd = 0;
 					for(let m=0; m<pdthd.ordthds.length; m++) {
 						let ordthd = pdthd.ordthds[m];
-						if(!isNaN(parseInt(ordthd.quot))) {
-							quotOthd += parseInt(ordthd.quot);
-						}
-						if(!isNaN(parseInt(ordthd.ship))) {
-							shipOthd += parseInt(ordthd.ship);
+						let quot = parseInt(ordthd.quot);
+						let ship = parseInt(ordthd.ship);
+						quotOthd += quot; shipOthd += ship;
+						if(quot - ship > 0) {
+							lessOthd += (quot - ship)
 						}
 					}
 					for(let m=0; m<pdthd.tinthds.length; m++) {
 						let tinthd = pdthd.tinthds[m];
-						if(!isNaN(parseInt(tinthd.quot))) {
-							quotTthd += parseInt(tinthd.quot);
-						}
-						if(!isNaN(parseInt(tinthd.ship))) {
-							shipTthd += parseInt(tinthd.ship);
+						let quot = parseInt(tinthd.quot);
+						let ship = parseInt(tinthd.ship);
+						quotTthd += quot; shipTthd += ship;
+						if(quot - ship > 0) {
+							lessTthd += (quot - ship)
 						}
 					}
 					let showThdStock = parseInt(pdthd.stock) + shipTthd - shipOthd;
-					let needTthd = (quotOthd-shipOthd) - (quotTthd-shipTthd) - showThdStock;
+					let needTthd = lessOthd - lessTthd - showThdStock;
 					if(needTthd < 0) needTthd = 0;
 					needTthds += needTthd;
 					quotOthds += quotOthd; shipOthds + shipOthd;
 					quotTthds += quotTthd; shipTthds + shipTthd;
 				}
-				let quotMsez = shipMsez = 0;
+				let quotMsez = shipMsez = lessMsez = 0;
 				for(let m=0; m<pdsez.macsezs.length; m++) {
 					let macsez = pdsez.macsezs[m];
-					if(!isNaN(parseInt(macsez.quot))) {
-						quotMsez += parseInt(macsez.quot);
-					}
-					if(!isNaN(parseInt(macsez.ship))) {
-						shipMsez += parseInt(macsez.ship);
+					let quot = parseInt(macsez.quot);
+					let ship = parseInt(macsez.ship);
+					quotMsez += quot; shipMsez += ship;
+					if(quot - ship > 0) {
+						lessMsez += (quot - ship)
 					}
 				}
 				let showSezStock = parseInt(pdsez.stock) + shipMsez - quotTthds
-				let needMac = needTthds - showSezStock - (quotMsez-shipMsez);
+				let needMac = needTthds - showSezStock - lessMsez;
 				if(needMac < 0) needMac = 0;
 				// console.log(needMac)
 				str += '<td>'
@@ -413,27 +413,28 @@ $(function() {
 			for(let j=0; j<pdsec.pdthds.length; j++) {
 				let pdthd = pdsec.pdthds[j];
 				let needMac = 0;
-				let quotO = shipO = 0;
-				let quotM = shipM = 0;
+				let quotOthd = shipOthd = lessOthd = 0;
+				let quotMthd = shipMthd = lessMthd = 0;
 				for (let m=0; m<pdthd.ordthds.length; m++) {
 					let ordthd = pdthd.ordthds[m];
-					if(!isNaN(parseInt(ordthd.quot))) {
-						quotO += parseInt(ordthd.quot);
-					}
-					if(!isNaN(parseInt(ordthd.ship))) {
-						shipO += parseInt(ordthd.ship);
+					let quot = parseInt(ordthd.quot);
+					let ship = parseInt(ordthd.ship);
+					quotOthd += quot; shipOthd += ship;
+					if(quot - ship > 0) {
+						lessOthd += (quot - ship)
 					}
 				}
 				for(let m=0; m<pdthd.macthds.length; m++) {
 					let macthd = pdthd.macthds[m];
-					if(!isNaN(parseInt(macthd.quot))) {
-						quotM += parseInt(macthd.quot);
-					}
-					if(!isNaN(parseInt(macthd.ship))) {
-						shipM += parseInt(macthd.ship);
+					let quot = parseInt(macthd.quot);
+					let ship = parseInt(macthd.ship);
+					quotMthd += quot; shipMthd += ship;
+					if(quot - ship > 0) {
+						lessMthd += (quot - ship)
 					}
 				}
-				needMac = quotO - quotM - parseInt(pdthd.stock);
+				let showStock = parseInt(pdthd.stock) + shipMthd - shipOthd;
+				needMac = lessOthd - lessMthd - showStock;
 				if(needMac < 0) needMac = 0;
 				str += '<td>'
 					str += '<input class="iptsty ordQt" type="Number" value='+needMac;
