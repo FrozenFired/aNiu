@@ -11,16 +11,16 @@ $(function(){
 		if(!isNaN(num) && num >= 0) {
 			// 如果对应的是pd则是新增
 			if(oppo == 'pd') {
-				url = "/bsOrderNewPdAjax";
+				url = "/bsOrdthdNewPdAjax";
 				ordRelpd(url, icon, id);
 			}
 			// 否则是更改或删除
 			else if(num != numOrg){
 				if(num == 0 && numOppo == 0) {
-					url = "/bsOrderDelPdAjax";
+					url = "/bsOrdthdDelPdAjax";
 					ordRelpd(url, icon, id);
 				} else {
-					url = "/bsOrderUpdPdAjax";
+					url = "/bsOrdthdUpdPdAjax";
 					ordRelpd(url, icon, id);
 				}
 			}

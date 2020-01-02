@@ -1,19 +1,22 @@
 let Err = require('../../aaIndex/err');
 
+let Order = require('../../../../models/client/order');
 let Ordsec = require('../../../../models/client/ordsec');
 let Ordthd = require('../../../../models/client/ordthd');
+
+let Pdsec = require('../../../../models/material/pdsec');
 
 let _ = require('underscore')
 
 // orderAdd 操作 order中的 pd
-exports.bsOrderNewPdAjax = function(req, res) {
+exports.bsOrdthdNewPdAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj
 	Ordsec.findOne({_id: obj.ordsec})
 	.exec(function(err, ordsec) {
 		if(err) {
 			console.log(err);
-			res.json({success: 0, info: "bsOrderNewPdAjax, Ordsec.findOne, Error!"})
+			res.json({success: 0, info: "bsOrdthdNewPdAjax, Ordsec.findOne, Error!"})
 		} else if(!ordsec) {
 			res.json({success: 0, info: "操作错误, 请刷新重试!"})
 		} else {
@@ -38,7 +41,7 @@ exports.bsOrderNewPdAjax = function(req, res) {
 	})
 }
 
-exports.bsOrderUpdPdAjax = function(req, res) {
+exports.bsOrdthdUpdPdAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj
 	let ordthdId = req.body.ordthdId
@@ -48,7 +51,7 @@ exports.bsOrderUpdPdAjax = function(req, res) {
 	.exec(function(err, ordthd) {
 		if(err) {
 			console.log(err);
-			res.json({success: 0, info: "bsOrderUpdPdAjax, Ordthd.findOne, Error!"})
+			res.json({success: 0, info: "bsOrdthdUpdPdAjax, Ordthd.findOne, Error!"})
 		} else if(!ordthd) {
 			res.json({success: 0, info: "没有找到数据, 请刷新重试!"})
 		} else {
@@ -56,7 +59,7 @@ exports.bsOrderUpdPdAjax = function(req, res) {
 			_ordthd.save(function(err, ordthdSv) {
 				if(err) {
 					console.log(err);
-					res.json({success: 0, info: "bsOrderUpdPdAjax, _ordthd.save, Error!"})
+					res.json({success: 0, info: "bsOrdthdUpdPdAjax, _ordthd.save, Error!"})
 				} else {
 					res.json({success: 1, ordthdId: ordthdId})
 				}
@@ -65,7 +68,7 @@ exports.bsOrderUpdPdAjax = function(req, res) {
 	})
 }
 
-exports.bsOrderDelPdAjax = function(req, res) {
+exports.bsOrdthdDelPdAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj
 	let ordthdId = req.body.ordthdId
@@ -76,7 +79,7 @@ exports.bsOrderDelPdAjax = function(req, res) {
 	.exec(function(err, ordthd) {
 		if(err) {
 			console.log(err);
-			res.json({success: 0, info: "bsOrderDelPdAjax, Ordthd.findOne, Error!"})
+			res.json({success: 0, info: "bsOrdthdDelPdAjax, Ordthd.findOne, Error!"})
 		} else {
 			let ordsec = ordthd.ordsec;
 			// 如果ordsec中有多个ordthd 可以直接删除
@@ -85,12 +88,12 @@ exports.bsOrderDelPdAjax = function(req, res) {
 				Ordthd.deleteOne({_id: ordthd._id}, function(err, thdRm) {
 					if(err) {
 						console.log(err);
-						res.json({success: 0, info: "bsOrderDelPdAjax, Ordthd.deleteOne, Error!"})
+						res.json({success: 0, info: "bsOrdthdDelPdAjax, Ordthd.deleteOne, Error!"})
 					} else {
 						ordsec.save(function(err, secSv) {
 							if(err) {
 								console.log(err);
-								res.json({success: 0, info: "bsOrderDelPdAjax, ordsec.save, Error!"})
+								res.json({success: 0, info: "bsOrdthdDelPdAjax, ordsec.save, Error!"})
 							} else {
 								res.json({success: 1})
 							}
@@ -113,7 +116,7 @@ exports.bsOrderDelPdAjax = function(req, res) {
 					ordfir.save(function(err, firSv) {
 						if(err) {
 							console.log(err);
-							res.json({success: 0, info: "bsOrderDelPdAjax, ordfir.save, Error!"})
+							res.json({success: 0, info: "bsOrdthdDelPdAjax, ordfir.save, Error!"})
 						} else {
 							res.json({success: 1})
 						}
@@ -124,6 +127,58 @@ exports.bsOrderDelPdAjax = function(req, res) {
 					res.json({success: 0, info: "您是要删除订单吗?"})
 				}
 			}
+		}
+	})
+}
+
+
+
+exports.bsOrdsecNewPdAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let orderId = req.query.order;
+	let pdsecId = req.query.pdsec;
+	Pdsec.findOne({_id: pdsecId})
+	.exec(function(err, pdsec) {
+		if(err) {
+			console.log(err);
+			res.json({success: 0, info: "bsOrdsecNewPdAjax, Pdsec.findOne, Error!"})
+		} else if(!pdsec) {
+			res.json({success: 0, info: "bsOrdsecNewPdAjax, 操作错误, 请刷新重试!"})
+		} else {
+			Order.findOne({_id: orderId})
+			.populate({path: 'ordfirs'})
+			.exec(function(err, order) {
+				if(err) {
+					console.log(err);
+					res.json({success: 0, info: "bsOrdsecNewPdAjax, Order.findOne, Error!"})
+				} else if(!order) {
+					res.json({success: 0, info: "bsOrdsecNewPdAjax, 操作错误, 请刷新重试!"})
+				} else {
+					let ordfir = order.ordfirs[0];
+					let ordsecObj = new Object();
+					ordsecObj.order = order._id;
+					ordsecObj.ordfir = ordfir._id;
+					ordsecObj.pdsec = pdsec._id;
+					ordsecObj.color = pdsec.color;
+					let _ordsec = new Ordsec(ordsecObj);
+					ordfir.ordsecs.push(_ordsec._id);
+					_ordsec.save(function(err, secSv) {
+						if(err) {
+							console.log(err);
+							res.json({success: 0, info: "bsOrdsecNewPdAjax, Order.findOne, Error!"})
+						} else {
+							ordfir.save(function(err, firSv) {
+								if(err) {
+									console.log(err);
+									res.json({success: 0, info: "bsOrdsecNewPdAjax, Order.findOne, Error!"})
+								} else {
+									res.json({success: 1})
+								}
+							})
+						}
+					})
+				}
+			})
 		}
 	})
 }

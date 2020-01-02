@@ -26,27 +26,23 @@ table.table.table-borderless.border.border-dark
 				tr
 					td
 					th #{ordsec.color}
-					if ordsec.ordthds[0].size == 0
-						- ordthd = ordsec.ordthds[0];
-						td #{ordthd.quot}
-					else
-						each size in order.sizes
-							-let taskThd = null;
-							each ordthd in ordsec.ordthds
-								if ordthd.size == size
-									- taskThd = ordthd;
-									- let quot = ordthd.quot;
-									- cQuot += ordthd.quot;
-									- cShip += ordthd.ship;
-									- pdQuot += ordthd.quot;
-									- pdShip += ordthd.ship;
-									- break;
-							td.text-center
-								if taskThd
-									-a;
-									span.ordCont.ordquot(style="display:none") #{taskThd.quot}
-									span.ordCont.ordship #{taskThd.ship}
-									span.ordCont.ordless(style="display:none") #{taskThd.quot - taskThd.ship}
+					each size in order.sizes
+						-let taskThd = null;
+						each ordthd in ordsec.ordthds
+							if ordthd.size == size
+								- taskThd = ordthd;
+								- let quot = ordthd.quot;
+								- cQuot += ordthd.quot;
+								- cShip += ordthd.ship;
+								- pdQuot += ordthd.quot;
+								- pdShip += ordthd.ship;
+								- break;
+						td.text-center
+							if taskThd
+								-a;
+								span.ordCont.ordquot(style="display:none") #{taskThd.quot}
+								span.ordCont.ordship #{taskThd.ship}
+								span.ordCont.ordless(style="display:none") #{taskThd.quot - taskThd.ship}
 					td.text-right
 						span.ordCont.ordquot(style="display:none") #{cQuot}
 						span.ordCont.ordship #{cShip}

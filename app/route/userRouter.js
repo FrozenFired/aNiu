@@ -126,12 +126,13 @@ module.exports = function(app){
 
 	/* -------------------------------------- ordthd -------------------------------------- */
 	// order添加prod
-	app.post('/bsOrderNewPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrderNewPdAjax);
+	app.post('/bsOrdthdNewPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrdthdNewPdAjax);
 	// order更改prod
-	app.post('/bsOrderUpdPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrderUpdPdAjax);
+	app.post('/bsOrdthdUpdPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrdthdUpdPdAjax);
 	// order删除prod
-	app.post('/bsOrderDelPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrderDelPdAjax);
+	app.post('/bsOrdthdDelPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrdthdDelPdAjax);
 	/* -------------------------------------- ordthd -------------------------------------- */
+	app.get('/bsOrdsecNewPdAjax', MdRole.bserIsLogin, Ordthd.bsOrdsecNewPdAjax);
 	/* ======================================== order ======================================== */
 
 
