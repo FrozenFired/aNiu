@@ -17,16 +17,13 @@ block content
 						-a;
 						.col-8
 							span [状态：正在处理 (#{order.status})]
-							button.btn.btn-warning(type="button") <span class="oi oi-pencil"></span>
+							a.btn.btn-warning(href="/bsOrderUp/"+order._id) <span class="oi oi-pencil"></span>
 					else
 						.col-8.pt-2 [状态：历史记录 (#{order.status})]
 					.col-4
 						a.btn.btn-primary(href="javascript:window.print()" target="_self") <span class="oi oi-print"></span>
 		.infoPrice
 			include ./infoPrice
-		div.noprint(style="height:300px")
-		a.noprint.btn.btn-danger(href="/bsOrderDel/"+order._id) 删除
-
+		div.noprint(style="height:100px")
 
 	script(src="/js/bser/order/detail/detail.js")
-	script(src="/js/bser/order/detail/edit.js")

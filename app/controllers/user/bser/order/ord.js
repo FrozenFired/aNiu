@@ -1,15 +1,15 @@
-let Err = require('../aaIndex/err');
-let Conf = require('../../../confile/conf');
-let SaveOrderPre = require('../../../confile/middle/saveOrderPre');
+let Err = require('../../aaIndex/err');
+let Conf = require('../../../../confile/conf');
+let SaveOrderPre = require('../../../../confile/middle/saveOrderPre');
 
 let moment = require('moment')
 
-let Order = require('../../../models/client/order');
-let Ordfir = require('../../../models/client/ordfir');
-let Ordsec = require('../../../models/client/ordsec');
-let Ordthd = require('../../../models/client/ordthd');
+let Order = require('../../../../models/client/order');
+let Ordfir = require('../../../../models/client/ordfir');
+let Ordsec = require('../../../../models/client/ordsec');
+let Ordthd = require('../../../../models/client/ordthd');
 
-let Pdfir = require('../../../models/material/pdfir');
+let Pdfir = require('../../../../models/material/pdfir');
 
 exports.bsOrds = function(req, res) {
 	let crUser = req.session.crUser;

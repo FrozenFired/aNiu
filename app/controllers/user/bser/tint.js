@@ -417,6 +417,7 @@ exports.bsTintDel = function(req, res) {
 		} else {
 			// 删除染洗单时 pd和tin解除关联
 			SaveTintPre.pdRelTintDel(tint, 'bsTintDel');
+			SaveTintPre.bsTintDelPre(tint._id);
 			Tint.deleteOne({_id: id}, function(err, tintRm) {
 				if(err) {
 					info = "bsTintDel, Tint.deleteOne, Error!";

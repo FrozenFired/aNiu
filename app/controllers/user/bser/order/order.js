@@ -1,23 +1,20 @@
-let Err = require('../aaIndex/err');
-let Conf = require('../../../confile/conf');
-let SaveOrderPre = require('../../../confile/middle/saveOrderPre');
+let Err = require('../../aaIndex/err');
+let SaveOrderPre = require('../../../../confile/middle/saveOrderPre');
 
-let Order = require('../../../models/client/order');
-let Ordfir = require('../../../models/client/ordfir');
-let Ordsec = require('../../../models/client/ordsec');
-let Ordthd = require('../../../models/client/ordthd');
+let Order = require('../../../../models/client/order');
+let Ordsec = require('../../../../models/client/ordsec');
+let Ordthd = require('../../../../models/client/ordthd');
 
-let Pdfir = require('../../../models/material/pdfir');
-let Pdsec = require('../../../models/material/pdsec');
-let Pdthd = require('../../../models/material/pdthd');
+let Pdfir = require('../../../../models/material/pdfir');
+let Pdsec = require('../../../../models/material/pdsec');
+let Pdthd = require('../../../../models/material/pdthd');
 
-let User = require('../../../models/login/user');
-let Cter = require('../../../models/client/cter');
+let User = require('../../../../models/login/user');
+let Cter = require('../../../../models/client/cter');
 
 let _ = require('underscore')
 let moment = require('moment')
 
-/* ------------------------------- 添加订单时的产品操作 ------------------------------- */
 // 模糊查找出产品
 exports.bsOrderProdsAjax = function(req, res) {
 	let crUser = req.session.crUser;
@@ -37,154 +34,6 @@ exports.bsOrderProdsAjax = function(req, res) {
 		res.json({success: 1, pdfirs: pdfirs})
 	} })
 }
-// orderAdd 操作 order中的 pd
-exports.bsOrderNewPdAjax = function(req, res) {
-	let crUser = req.session.crUser;
-	let obj = req.body.obj
-	Ordsec.findOne({_id: obj.ordsec})
-	.exec(function(err, ordsec) {
-		if(err) {
-			console.log(err);
-			res.json({success: 0, info: "bsOrderNewPdAjax, Ordsec.findOne, Error!"})
-		} else if(!ordsec) {
-			res.json({success: 0, info: "操作错误, 请刷新重试!"})
-		} else {
-			let _ordthd = new Ordthd(obj)
-			ordsec.ordthds.push(_ordthd._id);
-			_ordthd.save(function(err, ordthdSave) {
-				if(err) {
-					console.log(err);
-					res.json({success: 0, info: "flag=2, _ordthd.Save, Error!"})
-				} else {
-					ordsec.save(function(err, ordsec) {
-						if(err) {
-							console.log(err);
-							res.json({success: 0, info: "flag=2, ordsec.Save, Error!"})
-						} else {
-							res.json({success: 1, ordthdId: ordthdSave._id})
-						}
-					})
-				}
-			})
-		}
-	})
-}
-
-exports.bsOrderUpdPdAjax = function(req, res) {
-	let crUser = req.session.crUser;
-	let obj = req.body.obj
-	let ordthdId = req.body.ordthdId
-	if(obj.quot) obj.quot = parseInt(obj.quot);
-	if(obj.ship) obj.ship = parseInt(obj.ship);
-	Ordthd.findOne({_id: ordthdId})
-	.exec(function(err, ordthd) {
-		if(err) {
-			console.log(err);
-			res.json({success: 0, info: "bsOrderUpdPdAjax, Ordthd.findOne, Error!"})
-		} else if(!ordthd) {
-			res.json({success: 0, info: "没有找到数据, 请刷新重试!"})
-		} else {
-			let _ordthd = _.extend(ordthd, obj)
-			_ordthd.save(function(err, ordthdSv) {
-				if(err) {
-					console.log(err);
-					res.json({success: 0, info: "bsOrderUpdPdAjax, _ordthd.save, Error!"})
-				} else {
-					res.json({success: 1, ordthdId: ordthdId})
-				}
-			})
-		}
-	})
-}
-
-exports.bsOrderDelPdAjax = function(req, res) {
-	let crUser = req.session.crUser;
-	let obj = req.body.obj
-	let ordthdId = req.body.ordthdId
-	let orderId = req.body.orderId
-
-	Ordthd.findOne({_id: ordthdId})
-	.populate({path: 'ordsec', populate: {path: 'ordfir', populate: {path: 'order'}}})
-	.exec(function(err, ordthd) {
-		if(err) {
-			console.log(err);
-			res.json({success: 0, info: "bsOrderDelPdAjax, Ordthd.findOne, Error!"})
-		} else {
-			let ordsec = ordthd.ordsec;
-			// 如果ordsec中有多个ordthd 可以直接删除
-			if(ordsec.ordthds.length > 1) {
-				ordsec.ordthds.remove(ordthd._id);
-				Ordthd.deleteOne({_id: ordthd._id}, function(err, thdRm) {
-					if(err) {
-						console.log(err);
-						res.json({success: 0, info: "bsOrderDelPdAjax, Ordthd.deleteOne, Error!"})
-					} else {
-						ordsec.save(function(err, secSv) {
-							if(err) {
-								console.log(err);
-								res.json({success: 0, info: "bsOrderDelPdAjax, ordsec.save, Error!"})
-							} else {
-								res.json({success: 1})
-							}
-						})
-					}
-				})
-			}
-			// 否则 要判断是否能够删除ordsec或者不能删除
-			else {
-				let ordfir = ordsec.ordfir;
-				// 如果ordfir中有多个ordsec 可以直接删除
-				if(ordfir.ordsecs.length > 1) {
-					ordfir.ordsecs.remove(ordsec._id);
-					Ordthd.deleteOne({_id: ordthd._id}, function(err, thdRm) {
-						if(err) console.log(err);
-					})
-					Ordsec.deleteOne({_id: ordsec._id}, function(err, secRm) {
-						if(err) console.log(err);
-					})
-					ordfir.save(function(err, firSv) {
-						if(err) {
-							console.log(err);
-							res.json({success: 0, info: "bsOrderDelPdAjax, ordfir.save, Error!"})
-						} else {
-							res.json({success: 1})
-						}
-					})
-				}
-				// 否则 不能删除
-				else {
-					res.json({success: 0, info: "您是要删除订单吗?"})
-				}
-			}
-		}
-	})
-}
-
-/* ------------------------------- 添加订单时的产品操作 ------------------------------- */
-
-
-// YYMMDDXXNUM   190205KL0012
-let bsOrderGetCode = function(order, userCd) {
-	let today =parseInt(moment(Date.now()).format('YYMMDD')) // 计算今天的日期
-	let preDate = 0, dayNum = 0;
-
-	if(order && order.code){ // 找出上个订单的日期和序列号
-		preDate = parseInt(order.code.slice(0,6))
-		dayNum = parseInt(order.code.slice(8,12))
-	}
-	if(today == preDate) {	// 判断上个订单的日期是否是今天
-		dayNum = dayNum+1
-	} else {					// 如果不是则从1开始
-		dayNum = 1
-	}
-	for(let len = (dayNum + "").length; len < 4; len = dayNum.length) { // 序列号补0
-		dayNum = "0" + dayNum;            
-	}
-	let code = String(today)+ userCd + String(dayNum);
-	return code;
-}
-
-
 
 
 
@@ -289,6 +138,8 @@ exports.bsOrderDel = function(req, res) {
 		} else {
 			// 删除订单时 pd和ord解除关联
 			SaveOrderPre.pdRelOrderDel(order, 'bsOrderDel');
+			// 同时要把订单中的ordfir ordsec ordthd 删除
+			SaveOrderPre.bsOrderDelPre(order._id); 
 			Order.deleteOne({_id: id}, function(err, orderRm) {
 				if(err) {
 					info = "bsOrderDel, Order.deleteOne, Error!";

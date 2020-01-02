@@ -1,0 +1,114 @@
+extends ../../aalayout/layout
+
+block content
+	.container.mt-5
+		input#orderId(type="hidden", value=order._id)
+		.row.border-bottom.mb-4.py-3#optBtn.noprint
+			.col-2: h3 #{order.code}
+			.col-2: h3 #{order.ordfirs[0].pdfir.code}
+			.col-2: h3 #{order.ordfirs[0].pdfir.nome}
+			.col-2: h3 #{order.cter.nome}
+			.col-4.text-right
+				if order.status == 5
+					-a;
+					span [状态：正在处理 (#{order.status})]
+				else
+					span [状态：历史记录 (#{order.status})]
+		.infoQuot
+			.row
+				.col-2
+					h2 订单
+				.col-10.text-right #{moment(order.ctAt).format('YYYY/MM/DD HH:mm:ss')}
+			table.table.table-borderless.border.border-dark.text-center
+				thead
+					tr
+						th.border.border-dark(width="8%") 颜色
+						each size in order.sizes
+							-a;
+							th.border.border-info #{Conf.sizes[size]}
+				tbody
+					each ordfir in order.ordfirs
+						- a;
+						each ordsec in ordfir.ordsecs
+							- let pdsec = ordsec.pdsec;
+							tr
+								th #{ordsec.color}
+								each size in order.sizes
+									- let taskThd = null;
+									each ordthd in ordsec.ordthds
+										if ordthd.size == size
+											- taskThd = ordthd;
+											- break;
+									- let pdthd = null;
+									each selthd in pdsec.pdthds
+										if selthd.size == size
+											- pdthd = selthd;
+											- break;
+									td
+										if taskThd
+											-a;
+											form(id="quotForm-"+taskThd._id, method="post")
+												input(type="hidden", name="orderId", value=order._id)
+												input(type="hidden", name="ordthdId", value=taskThd._id)
+												input.iptsty.iptBlur(id="quot-ship-"+taskThd._id, type="number", name="obj[quot]", value=taskThd.quot)
+												input(id="quotOrg-"+taskThd._id, type="hidden", value=taskThd.quot)
+										else
+											form(id="quotForm-"+pdthd._id, method="post")
+												input(type="hidden", name="obj[order]", value=order._id)
+												input(type="hidden", name="obj[ordfir]", value=ordfir._id)
+												input(type="hidden", name="obj[ordsec]", value=ordsec._id)
+												input(type="hidden", name="obj[pdthd]", value=pdthd._id)
+												input(type="hidden", name="obj[color]", value=ordsec.color)
+												input(type="hidden", name="obj[size]", value=size)
+												input(type="hidden", name="obj[ship]", value=0)
+												input.iptsty.iptBlur(id="quot-pd-"+pdthd._id, type="number", name="obj[quot]")
+		div.noprint(style="height:100px")
+		.infoShip
+			h2 发货
+			table.table.table-borderless.border.border-dark.text-center
+				thead
+					tr
+						th.border.border-dark(width="10%") 颜色
+						each size in order.sizes
+							-a;
+							th.border.border-info #{Conf.sizes[size]}
+				tbody
+					each ordfir in order.ordfirs
+						- a;
+						each ordsec in ordfir.ordsecs
+							- let pdsec = ordsec.pdsec;
+							tr
+								th #{ordsec.color}
+								each size in order.sizes
+									-let taskThd = null;
+									each ordthd in ordsec.ordthds
+										if ordthd.size == size
+											- taskThd = ordthd;
+											- break;
+									- let pdthd = null;
+									each selthd in pdsec.pdthds
+										if selthd.size == size
+											- pdthd = selthd;
+											- break;
+									td
+										if taskThd
+											-a;
+											form(id="shipForm-"+taskThd._id, method="post")
+												input(type="hidden", name="orderId", value=order._id)
+												input(type="hidden", name="ordthdId", value=taskThd._id)
+												input.iptsty.iptBlur(id="ship-quot-"+taskThd._id, type="number", name="obj[ship]", value=taskThd.ship)
+												input(id="shipOrg-"+taskThd._id, type="hidden", value=taskThd.ship)
+										else
+											form(id="shipForm-"+pdthd._id, method="post")
+												input(type="hidden", name="obj[order]", value=order._id)
+												input(type="hidden", name="obj[ordfir]", value=ordfir._id)
+												input(type="hidden", name="obj[ordsec]", value=ordsec._id)
+												input(type="hidden", name="obj[pdthd]", value=pdthd._id)
+												input(type="hidden", name="obj[color]", value=ordsec.color)
+												input(type="hidden", name="obj[size]", value=size)
+												input(type="hidden", name="obj[quot]", value=0)
+												input.iptsty.iptBlur(id="ship-pd-"+pdthd._id, type="number", name="obj[ship]")
+		div.noprint(style="height:100px")
+		a.noprint.btn.btn-danger(href="/bsOrderDel/"+order._id) 删除
+
+	script(src="/js/bser/order/update/update.js")

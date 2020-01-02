@@ -418,6 +418,7 @@ exports.bsMachinDel = function(req, res) {
 		} else {
 			// 删除生产单时 pd和mac解除关联
 			SaveMachinPre.pdRelMachinDel(machin, 'bsMachinDel');
+			SaveMachinPre.bsMachinDelPre(machin._id);
 			Machin.deleteOne({_id: id}, function(err, machinRm) {
 				if(err) {
 					info = "bsMachinDel, Machin.deleteOne, Error!";

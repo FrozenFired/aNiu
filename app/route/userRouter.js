@@ -8,9 +8,10 @@ let Prod = require('../controllers/user/bser/prod')
 // let Pdsez = require('../controllers/user/bser/pdsez')
 let Pdthd = require('../controllers/user/bser/pdthd')
 
-let Cter = require('../controllers/user/bser/cter')
-let Ord = require('../controllers/user/bser/ord')
-let Order = require('../controllers/user/bser/order')
+let Cter = require('../controllers/user/bser/order/cter')
+let Ord = require('../controllers/user/bser/order/ord')
+let Order = require('../controllers/user/bser/order/order')
+let Ordthd = require('../controllers/user/bser/order/ordthd')
 
 let Fder = require('../controllers/user/bser/fder')
 let Mac = require('../controllers/user/bser/mac')
@@ -81,23 +82,6 @@ module.exports = function(app){
 	app.post('/bsProdDelSize', MdRole.bserIsLogin, postForm, Prod.bsProdDelSize)
 	
 	app.post('/bsProdUpStock', MdRole.bserIsLogin, postForm, Prod.bsProdUpStock)
-	// app.get('/bsProdDel/:id', MdRole.bserIsLogin, Prod.bsProdFilter, Prod.bsProdDel)
-
-	// app.get('/bsProd/:id', MdRole.bserIsLogin, Prod.bsProdFilter, Prod.bsProd)
-	// app.post('/bsProdUpd', MdRole.bserIsLogin, postForm, Prod.bsProdUpd)
-	// // app.post('/bsProdUpd', MdRole.bserIsLogin, postForm, MdPicture.addNewPhoto, Prod.bsProdUpd)
-
-	// app.post('/bsProdStockAjax', MdRole.bserIsLogin, postForm, Prod.bsProdStockAjax)
-
-	// /* ---------------------------------------- pdsez ---------------------------------------- */
-	// app.get('/bsPdsezNew', MdRole.bserIsLogin, Pdsez.bsPdsezNew)
-	// app.get('/bsPdsezDel', MdRole.bserIsLogin, Pdsez.bsPdsezDel)
-
-	// app.get('/bsPdsez/:id', MdRole.bserIsLogin, Pdsez.bsPdsezFilter, Pdsez.bsPdsez)
-	// app.post('/bsPdsezUpdAjax', MdRole.bserIsLogin, postForm, Pdsez.bsPdsezUpdAjax)
-
-	// app.get('/bsPdsezProof/:id', MdRole.bserIsLogin, Pdsez.bsPdsezFilter, Pdsez.bsPdsezProof)
-	// app.delete('/bsPdsezDelSell', MdRole.bserIsLogin, Pdsez.bsPdsezDelSell)
 	/* ------------------------------ pdthd ------------------------------ */
 	app.post('/bsPdthdUpd', MdRole.bserIsLogin, postForm, Pdthd.bsPdthdUpd)
 	/* ======================================== product ======================================== */
@@ -131,14 +115,6 @@ module.exports = function(app){
 	/* ======================================== order ======================================== */
 	// orderAdd 模糊查询
 	app.get('/bsOrderProdsAjax', MdRole.bserIsLogin, Order.bsOrderProdsAjax);
-	// order添加prod
-	app.post('/bsOrderNewPdAjax', MdRole.bserIsLogin, postForm, Order.bsOrderNewPdAjax);
-	// order更改prod
-	app.post('/bsOrderUpdPdAjax', MdRole.bserIsLogin, postForm, Order.bsOrderUpdPdAjax);
-	// order删除prod
-	app.post('/bsOrderDelPdAjax', MdRole.bserIsLogin, postForm, Order.bsOrderDelPdAjax);
-	// order添加prod
-	app.get('/bsOrderConnCterAjax', MdRole.bserIsLogin, Order.bsOrderConnCterAjax);
 
 	app.get('/bsOrderUp/:id', MdRole.bserIsLogin, Order.bsOrderUp);
 
@@ -148,6 +124,14 @@ module.exports = function(app){
 	// app.get('/bsOrderExcel/:id', MdRole.bserIsLogin, Order.bsOrderFilter, Order.bsOrderExcel)
 	app.get('/bsOrderDel/:id', MdRole.bserIsLogin, Order.bsOrderDel)
 
+	/* -------------------------------------- ordthd -------------------------------------- */
+	// order添加prod
+	app.post('/bsOrderNewPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrderNewPdAjax);
+	// order更改prod
+	app.post('/bsOrderUpdPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrderUpdPdAjax);
+	// order删除prod
+	app.post('/bsOrderDelPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrderDelPdAjax);
+	/* -------------------------------------- ordthd -------------------------------------- */
 	/* ======================================== order ======================================== */
 
 
