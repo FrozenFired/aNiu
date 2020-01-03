@@ -324,162 +324,33 @@ exports.bsProduct = function(req, res) {
 
 
 
-exports.bsPdfirUpd = function(req, res) {
-	let crUser = req.session.crUser;
-	let obj = req.body.obj;
-	if(obj.code) obj.code= obj.code.replace(/\s+/g,"").toUpperCase();
-	if(obj.nome) obj.nome= obj.nome.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-
-	if(obj.price) obj.price = parseFloat(obj.price);
-	if(obj.cost) {
-		obj.cost = parseFloat(obj.cost);
-		if(isNaN(obj.cost)) obj.cost = 0;
-	}
-
-	if(obj.stock && !isNaN(parseInt(obj.stock))) {
-		obj.stock = parseInt(obj.stock);
-	}
-
-	Pdfir.findOne({_id: obj._id, 'firm': crUser.firm})
-	.exec(function(err, object) {
-		if(err) {
-			info = "修改产品信息时，数据库查找出错, 请联系管理员";
-			Err.usError(req, res, info);
-		} else if(!object) {
-			info = "此产品已经被删除";
-			Err.usError(req, res, info);
-		} else if(object.firm != crUser.firm) {
-			info = "您只能修改自己公司的产品";
-			Err.usError(req, res, info);
-		} else {
-			Pdfir.findOne({code: obj.code, 'firm': crUser.firm})
-			.where('_id').ne(obj._id)
-			.exec(function(err, pdfirSame) {
-				if(err) console.log(err);
-				if(pdfirSame) {
-					info = "已经存在此编号，请重新输入编号";
-					Err.usError(req, res, info);
-				} else {
-					let _pdfir = _.extend(object, obj);
-					_pdfir.save(function(err, objSave){
-						if(err) {
-							console.log(err);
-							info = "修改产品信息时，数据库保存出错, 请联系管理员";
-							Err.usError(req, res, info);
-						} else {
-							res.redirect('/bsProd/'+objSave._id);
-						}
-					})
-				}
-			})
-		}
-	})
-}
-
 
 exports.bsPdfirDel = function(req, res) {
 	let crUser = req.session.crUser;
 	let id = req.params.id;
 	Pdfir.findOne({_id: id, 'firm': crUser.firm})
-	.populate({path: 'pdsecs', populate: {path: 'pdthd'}})
-	.exec(function(err, object){
-		if(object.pdsecs.length == 0) {
-			let orgPhoto = object.photo;
+	.populate({path: 'pdsecs'})
+	.exec(function(err, pdfir){
+		if(err) {
+			console.log(err);
+			info = "bsPdfirDel, Pdfir.findOne, Error！";
+			Err.usError(req, res, info);
+		} else if(!pdfir) {
+			info = "此产品已经被删除, 请刷新查看!";
+			Err.usError(req, res, info);
+		} else if(pdfir.pdsecs.length > 0 || pdfir.pdsezs.length >0) {
+			res.redirect('/bsProduct/'+id);
+		} else {
+			let orgPhoto = pdfir.photo;
 			MdPicture.deleteOldPhoto(orgPhoto, Conf.photoPath.proPhoto);
-			Pdfir.deleteOne({_id: object._id}, function(err, objRm) {
+			Pdfir.deleteOne({_id: pdfir._id}, function(err, objRm) {
 				if(err) {
 					info = "bsPdfirDel, Pdfir.findOne, Error!";
 					Err.usError(req, res, info);
 				} else {
-					res.redirect('/bsProds');
+					res.redirect('/bsProducts');
 				}
 			})
-		} else {
-			info = "bsProdDel, 先删除所有颜色子元素, 请联系管理员";
-			Err.usError(req, res, info);
-		}
-	})
-}
-
-
-
-
-
-
-exports.bsPdfirDelAjax = function(req, res) {
-	let crUser = req.session.crUser;
-	let id = req.query.id
-	Pdfir.findOne({_id: id, 'firm': crUser.firm})
-	.populate('pdsecs')
-	.exec(function(err, object){
-		if(err) {
-			info = "bsPdfirDelAjax, Pdfir.findOne, Error!";
-			Err.usError(req, res, info);
-		} else if(!object){
-			res.json({success: 0, info: "已被删除，按F5刷新页面查看"})
-		} else if(object.pdsecs && object.pdsecs.length > 0){
-			res.json({success: 0, info: "请先删除颜色, 再删除产品"})
-		} else {
-			MdPicture.deleteOldPhoto(object.photo, Conf.photoPath.proPhoto)
-			Pdfir.deleteOne({_id: object._id}, function(err, objRm) {
-				if(err) {
-					res.json({success: 0, info: "删除产品时，数据库删除出错, 请联系管理员"})
-				} else {
-					res.json({success: 1})
-				}
-			})
-		}
-	})
-}
-
-
-
-
-
-exports.bsPdfirAjaxOneMore = function(req, res) {
-	let crUser = req.session.crUser;
-	let keytype = req.query.keytype
-	let keyword = req.query.keyword
-	keyword = String(keyword).replace(/(\s*$)/g, "").replace( /^\s*/, '');
-
-	Pdfir.findOne({[keytype]: keyword, 'firm': crUser.firm})
-	.exec(function(err, object){
-		if(err) {
-			res.json({success: 0, info: "bs获取产品时，数据库查找错误, 请联系管理员"});
-		} else if(object){
-			res.json({ success: 1, pdfir: object})
-		} else {
-			Pdfir.find({
-				'firm': crUser.firm,
-				[keytype]: new RegExp(keyword + '.*')
-			})
-			.exec(function(err, objects){
-				if(err) {
-					res.json({success: 0, info: "bs获取产品列表时，数据库查找错误, 请联系管理员"});
-				} else if(objects && objects.length > 0){
-					res.json({ success: 2, pdfirs: objects});
-				} else {
-					res.json({success: 0})
-				}
-			})
-		}
-	})
-}
-
-
-exports.bsPdfirAjaxOne = function(req, res) {
-	let crUser = req.session.crUser;
-	let keytype = req.query.keytype
-	let keyword = req.query.keyword
-	keyword = String(keyword).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-	Pdfir.findOne({[keytype]: keyword, 'firm': crUser.firm})
-	.exec(function(err, object){
-		if(err) {
-			res.json({success: 0, info: "bs获取产品时，数据库查找错误, 请联系管理员"});
-		} else if(object){
-			res.json({ success: 1, pdfir: object})
-		} else {
-			res.json({success: 0})
 		}
 	})
 }

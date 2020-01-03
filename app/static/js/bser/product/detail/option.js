@@ -71,5 +71,18 @@ $(function() {
 	})
 	/* ======= 点击删除尺寸的按钮 ======= */
 
-
+	$(".pdfirDelBtn").click(function(e) {
+		let target = $(e.target);
+		let id = target.data('id');
+		let pdfir = JSON.parse($("#pdfir").val());
+		let numSecs = pdfir.pdsecs.length
+		let numSezs = pdfir.pdsezs.length
+		if(numSecs > 0) {
+			alert("请先删除所有颜色再删除产品");
+		} else if(numSezs > 0){
+			alert("请先删除所有尺寸再删除产品");
+		} else {
+			window.location.href="/bsPdfirDel/"+id;
+		}
+	})
 })

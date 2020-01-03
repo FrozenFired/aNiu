@@ -143,11 +143,6 @@ exports.bsProdDelColor = function(req, res) {
 	let obj = req.body.obj;
 	let pdfirId = obj.pdfir;
 	let pdsecId = obj.pdsec;
-	// if(!pdfirId || !pdsecId) {
-	// 	info = "删除产品颜色时, 数据出现错误, 请重试！";
-	// 	Err.usError(req, res, info);
-	// 	return;
-	// }
 	Pdfir.findOne({_id: pdfirId})
 	.exec(function(err, pdfir) {
 		if(err) {
@@ -169,7 +164,12 @@ exports.bsProdDelColor = function(req, res) {
 				Err.usError(req, res, info);
 			} else {
 				Pdsec.findOne({'_id': pdsecId})
-				.populate({path: 'pdthds', populate: {path: 'pdsez'}})
+				.populate({path: 'pdthds', populate: [
+					{path: 'pdsez'},
+					{path: 'ordthds'}, {path: 'hordthds'},
+					{path: 'tinthds'}, {path: 'htinthds'},
+					{path: 'macthds'}, {path: 'hmacthds'},
+				]})
 				.exec(function(err, pdsec) {
 					if(err) {
 						console.log(err);
@@ -229,11 +229,6 @@ exports.bsProdDelSize = function(req, res) {
 	let obj = req.body.obj;
 	let pdfirId = obj.pdfir;
 	let pdsezId = obj.pdsez;
-	// if(!pdfirId || !pdsecId) {
-	// 	info = "删除产品颜色时, 数据出现错误, 请重试！";
-	// 	Err.usError(req, res, info);
-	// 	return;
-	// }
 	Pdfir.findOne({_id: pdfirId})
 	.exec(function(err, pdfir) {
 		if(err) {
@@ -255,16 +250,18 @@ exports.bsProdDelSize = function(req, res) {
 				Err.usError(req, res, info);
 			} else {
 				Pdsez.findOne({'_id': pdsezId})
-				.populate({path: 'pdthds', populate: {path: 'pdsec'}})
+				.populate({path: 'pdthds', populate: [
+					{path: 'pdsec'},
+					{path: 'ordthds'}, {path: 'hordthds'},
+					{path: 'tinthds'}, {path: 'htinthds'},
+					{path: 'macthds'}, {path: 'hmacthds'},
+				]})
 				.exec(function(err, pdsez) {
 					if(err) {
 						console.log(err);
 						info = "bsProdNewColor, Pdthd.find Error！";
 						Err.usError(req, res, info);
 					} else if(!pdsez) {
-						info = "此尺寸已经被删除, 请刷新查看！";
-						Err.usError(req, res, info);
-					} else if(!pdsez.pdthds || pdsez.pdthds.length < 1) {
 						info = "此尺寸已经被删除, 请刷新查看！";
 						Err.usError(req, res, info);
 					} else {

@@ -45,13 +45,11 @@ module.exports = function(app){
 	/* ------------------------------- Basic ------------------------------- */
 	app.get('/bsFirm', MdRole.bserIsLogin, Firm.bsFirm);
 	app.post('/bsFirmUpd', MdRole.bserIsLogin, postForm, Firm.bsFirmUpd);
-	/* ------------------------------- Basic ------------------------------- */
 	/* ------------------------------- Color ------------------------------- */
 	app.post('/bsColorNew', MdRole.bserIsLogin, postForm, Firm.bsColorNew)
 	app.delete('/bsColorDelAjax', MdRole.bserIsLogin, Firm.bsColorDelAjax)
 	// app.post('/bsSizeNew', MdRole.bserIsLogin, postForm, Firm.bsSizeNew)
 	// app.delete('/bsSizeDelAjax', MdRole.bserIsLogin, Firm.bsSizeDelAjax)
-	/* ------------------------------- Color ------------------------------- */
 	/* =================================== Firm =================================== */
 
 
@@ -66,13 +64,7 @@ module.exports = function(app){
 	/* ------------------------------ product ------------------------------ */
 
 	/* ------------------------------ pdfir ------------------------------ */
-	app.post('/bsPdfirUpd', MdRole.bserIsLogin, postForm, MdPicture.addNewPhoto, Product.bsPdfirUpd)
-
-	app.get('/bsPdfirDel/:id', MdRole.bserIsLogin, Product.bsProdFilter, Product.bsPdfirDel)
-	app.delete('/bsPdfirDelAjax', MdRole.bserIsLogin, Product.bsPdfirDelAjax)
-
-	app.get('/bsPdfirAjaxOneMore', MdRole.bserIsLogin, Product.bsPdfirAjaxOneMore)
-	app.get('/bsPdfirAjaxOne', MdRole.bserIsLogin, Product.bsPdfirAjaxOne)
+	app.get('/bsPdfirDel/:id', MdRole.bserIsLogin, Product.bsPdfirDel)
 	/* ------------------------------ pdfir ------------------------------ */
 
 	/* ---------------------------------------- Prod ---------------------------------------- */
