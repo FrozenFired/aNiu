@@ -5,7 +5,9 @@ var cmpImg = require('compress-images');
 let MiddlePicture = {
 	deleteOldPhoto : function(orgPhoto, photoDir){
 		if(orgPhoto != '/upload' + photoDir + '1.jpg') {
-			fs.unlink(path.join(__dirname, '../../public' + orgPhoto), function(err) { });
+			fs.unlink(path.join(__dirname, '../../../public' + orgPhoto), function(err) {
+				if(err) console.log(err);
+			});
 		}
 	},
 
