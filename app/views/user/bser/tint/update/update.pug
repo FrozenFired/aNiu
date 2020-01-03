@@ -1,0 +1,33 @@
+extends ../../aalayout/layout
+
+block content
+	.container.mt-5
+		input#tintId(type="hidden", value=tint._id)
+		.row.border-bottom.mb-4.py-3#optBtn.noprint
+			.col-2: h3 #{tint.code}
+			.col-2: h3 #{tint.tinfirs[0].pdfir.code}
+			.col-2: h3 #{tint.tinfirs[0].pdfir.nome}
+			.col-2: h3 #{tint.tner.nome}
+			.col-4.text-right
+				if tint.status == 5
+					-a;
+					span [状态：正在处理 (#{tint.status})]
+				else
+					span [状态：历史记录 (#{tint.status})]
+		.info.infoQuot
+			.row
+				.col-2
+					h2 订单
+				.col-10.text-right #{moment(tint.ctAt).format('YYYY/MM/DD HH:mm:ss')}
+			.row.show-colors-quot
+			include ./quot
+		div.noprint(style="height:100px")
+		.info.infoShip
+			h2 发货
+			.row.show-colors-ship
+			include ./ship
+		div.noprint(style="height:100px")
+		a.noprint.btn.btn-danger(href="/bsTintDel/"+tint._id) 删除
+
+	script(src="/js/bser/tint/update/upthd.js")
+	script(src="/js/bser/tint/update/addsec.js")

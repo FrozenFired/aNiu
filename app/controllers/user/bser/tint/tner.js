@@ -1,7 +1,7 @@
-let Err = require('../aaIndex/err');
+let Err = require('../../aaIndex/err');
 
-let Tner = require('../../../models/dryer/tner');
-let Tint = require('../../../models/dryer/tint');
+let Tner = require('../../../../models/dryer/tner');
+let Tint = require('../../../../models/dryer/tint');
 
 let _ = require('underscore');
 

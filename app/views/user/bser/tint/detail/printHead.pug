@@ -1,0 +1,23 @@
+.downBtn.noprint(style="display:none")
+	.row.text-center.my-4
+		.col-6: a.btn.btn-info(href="/bsOrderPDF/"+tint._id, download) <span class="oi oi-data-transfer-download"></span> PDF
+		.col-6: a.btn.btn-info(href="/bsOrderExcel/"+tint._id, download) <span class="oi oi-data-transfer-download"></span> EXCEL
+.row.text-center
+	.col-sm-12
+		h2(style="font-size: 40px"): strong #{firm.code}
+		h3 PREVENTIVO
+.row
+	.col-sm-4
+		h4 地址: #{firm.addr}
+		div(style="height:5px")
+		h4 电话: #{firm.tel}
+	.col-sm-4
+		- let tnerCp = new Object();
+		if tint.tner
+			- tnerCp = tint.tner;
+		h4 客户: #{tnerCp.nome}
+		div(style="height:5px")
+		h4 电话: #{tnerCp.tel}
+	.col-sm-4
+		h5 No: #{tint.code}
+		h5 Date: #{moment(tint.ctAt).format('DD/MM/YYYY')}

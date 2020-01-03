@@ -1,0 +1,43 @@
+table.table.table-borderless.border.border-dark
+	thead
+		tr.textCenter
+			th.border.border-dark(width="15%") Code [Name]
+			th.border.border-dark.text-center(width="8%") Color
+			each size in tint.sizes
+				-a;
+				th.border.border-info.text-center #{Conf.sizes[size]}
+			th.border.border-dark.text-center(width="10%") Quot.
+	tbody
+		-let impQuot=impShip=0;
+		each tinfir in tint.tinfirs
+			-let pdQuot=0;
+			-let pdShip=0;
+			-let pdfir = new Object();
+			if tinfir.pdfir
+				- pdfir = tinfir.pdfir;
+			each tinsec in tinfir.tinsecs
+				- let cQuot = 0;
+				- let cShip = 0;
+				tr
+					td
+					th #{tinsec.pdsec.color}
+					each size in tint.sizes
+						-let taskThd = null;
+						each tinthd in tinsec.tinthds
+							if tinthd.size == size
+								- taskThd = tinthd;
+								- let quot = tinthd.quot;
+								- cQuot += tinthd.quot;
+								- cShip += tinthd.ship;
+								- pdQuot += tinthd.quot;
+								- pdShip += tinthd.ship;
+								- break;
+						td.text-center
+							if taskThd
+								-a;
+								span.tinCont.tinquot(style="display:none") #{taskThd.quot}
+								span.tinCont.tinship #{taskThd.ship}
+								span.tinCont.tinless(style="display:none") #{taskThd.quot - taskThd.ship}
+					td.text-right
+						span.tinCont.tinquot(style="display:none") #{cQuot}
+						span.tinCont.tinship #{cShip}

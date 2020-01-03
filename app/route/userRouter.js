@@ -18,9 +18,10 @@ let Mac = require('../controllers/user/bser/machin/mac');
 let Machin = require('../controllers/user/bser/machin/machin');
 let Macthd = require('../controllers/user/bser/machin/macthd');
 
-let Tner = require('../controllers/user/bser/tner');
-let Tin = require('../controllers/user/bser/tin');
-let Tint = require('../controllers/user/bser/tint');
+let Tner = require('../controllers/user/bser/tint/tner');
+let Tin = require('../controllers/user/bser/tint/tin');
+let Tint = require('../controllers/user/bser/tint/tint');
+let Tinthd = require('../controllers/user/bser/tint/tinthd');
 
 let MdBcrypt = require('../confile/middle/middleBcrypt');
 let MdRole = require('../confile/middle/middleRole');
@@ -167,7 +168,7 @@ module.exports = function(app){
 	app.get('/bsMachin/:id', MdRole.bserIsLogin, Machin.bsMachinFilter, Machin.bsMachin);
 
 	app.get('/bsMachinDel/:id', MdRole.bserIsLogin, Machin.bsMachinDel)
-	/* -------------------------------------- ordthd -------------------------------------- */
+	/* -------------------------------------- macthd -------------------------------------- */
 	// macthd添加prod
 	app.post('/bsMacthdNewPdAjax', MdRole.bserIsLogin, postForm, Macthd.bsMacthdNewPdAjax);
 	// macthd更改prod
@@ -180,7 +181,7 @@ module.exports = function(app){
 	app.post('/bsMacsezUpdPdAjax', MdRole.bserIsLogin, postForm, Macthd.bsMacsezUpdPdAjax);
 	// macsez删除prod
 	app.post('/bsMacsezDelPdAjax', MdRole.bserIsLogin, postForm, Macthd.bsMacsezDelPdAjax);
-	/* -------------------------------------- ordthd -------------------------------------- */
+	/* -------------------------------------- macthd -------------------------------------- */
 	app.get('/bsMacsecNewPdAjax', MdRole.bserIsLogin, Macthd.bsMacsecNewPdAjax);
 	/* ======================================== Machin ======================================== */
 
@@ -214,13 +215,6 @@ module.exports = function(app){
 	/* ======================================== Tint ======================================== */
 	// orderAdd 模糊查询
 	app.get('/bsTintProdsAjax', MdRole.bserIsLogin, Tint.bsTintProdsAjax);
-	// order添加prod
-	app.post('/bsTintNewPdAjax', MdRole.bserIsLogin, postForm, Tint.bsTintNewPdAjax);
-	// order更改prod
-	app.post('/bsTintUpdPdAjax', MdRole.bserIsLogin, postForm, Tint.bsTintUpdPdAjax);
-	// order删除prod
-	app.post('/bsTintDelPdAjax', MdRole.bserIsLogin, postForm, Tint.bsTintDelPdAjax);
-	// order添加prod
 
 	app.get('/bsTintUp/:id', MdRole.bserIsLogin, Tint.bsTintUp);
 
@@ -230,7 +224,14 @@ module.exports = function(app){
 	// app.get('/bsTintPDF/:id', MdRole.bserIsLogin, Tint.bsTintFilter, Tint.bsTintPDF)
 	// app.get('/bsTintExcel/:id', MdRole.bserIsLogin, Tint.bsTintFilter, Tint.bsTintExcel)
 	app.get('/bsTintDel/:id', MdRole.bserIsLogin, Tint.bsTintDel)
-
+	/* -------------------------------------- tinthd -------------------------------------- */
+	// order添加prod
+	app.post('/bsTinthdNewPdAjax', MdRole.bserIsLogin, postForm, Tinthd.bsTinthdNewPdAjax);
+	// order更改prod
+	app.post('/bsTinthdUpdPdAjax', MdRole.bserIsLogin, postForm, Tinthd.bsTinthdUpdPdAjax);
+	// order删除prod
+	app.post('/bsTinthdDelPdAjax', MdRole.bserIsLogin, postForm, Tinthd.bsTinthdDelPdAjax);
+	/* -------------------------------------- tinthd -------------------------------------- */
 	/* ======================================== Tint ======================================== */
 
 };

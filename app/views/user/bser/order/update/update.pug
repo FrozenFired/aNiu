@@ -20,12 +20,12 @@ block content
 					h2 订单
 				.col-10.text-right #{moment(order.ctAt).format('YYYY/MM/DD HH:mm:ss')}
 			.row.show-colors-quot
-			include ./optQuot
+			include ./quot
 		div.noprint(style="height:100px")
 		.info.infoShip
 			h2 发货
 			.row.show-colors-ship
-			include ./optShip
+			include ./ship
 		div.noprint(style="height:100px")
 		a.noprint.btn.btn-danger(href="/bsOrderDel/"+order._id) 删除
 

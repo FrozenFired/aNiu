@@ -1,15 +1,15 @@
-let Err = require('../aaIndex/err');
-let Conf = require('../../../confile/conf');
-let SaveTintpre = require('../../../confile/middle/saveTintPre');
+let Err = require('../../aaIndex/err');
+let Conf = require('../../../../confile/conf');
+let SaveTintpre = require('../../../../confile/middle/saveTintPre');
 
 let moment = require('moment')
 
-let Tint = require('../../../models/dryer/tint');
-let Tinfir = require('../../../models/dryer/tinfir');
-let Tinsec = require('../../../models/dryer/tinsec');
-let Tinthd = require('../../../models/dryer/tinthd');
+let Tint = require('../../../../models/dryer/tint');
+let Tinfir = require('../../../../models/dryer/tinfir');
+let Tinsec = require('../../../../models/dryer/tinsec');
+let Tinthd = require('../../../../models/dryer/tinthd');
 
-let Pdfir = require('../../../models/material/pdfir');
+let Pdfir = require('../../../../models/material/pdfir');
 
 exports.bsTins = function(req, res) {
 	let crUser = req.session.crUser;

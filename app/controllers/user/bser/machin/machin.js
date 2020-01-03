@@ -46,7 +46,10 @@ exports.bsMachinFilter = function(req, res, next) {
 	.populate('fder')
 	.populate({path:'macfirs', populate: [
 		{path: 'pdfir', populate:{path: 'pdsecs', populate:{path: 'pdthds'}}}, 
-		{path: 'macsecs', populate: {path: 'macthds', populate: {path: 'pdthd'}}},
+		{path: 'macsecs', populate: [
+			{path: 'macthds', populate: {path: 'pdthd'}},
+			{path: 'pdsec'}
+		]},
 		{path: 'macsezs', populate: {path: 'pdsez'}}
 	] })
 	.exec(function(err, machin) { if(err) {

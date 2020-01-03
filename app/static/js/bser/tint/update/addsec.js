@@ -2,13 +2,13 @@ $(function(){
 	$(".colorsBtn").click(function(e) {
 		let strs = ($(this).attr("id")).split("-");
 		let icon = strs[0];
-		let machinId = strs[3];
+		let tintId = strs[3];
 		let colors = JSON.parse($("#colors-"+icon).val());
 		let str="";
 		for(let i=0; i<colors.length; i++) {
 			let color = colors[i];
 			str += '<div class="col-2 show-color">';
-				str += '<button id='+color+'-'+icon+'-'+machinId+' class="btn btn-warning addColorBtn" type="button">'
+				str += '<button id='+color+'-'+icon+'-'+tintId+' class="btn btn-warning addColorBtn" type="button">'
 					str += color
 				str += '</button>';
 			str += '</div>';
@@ -28,11 +28,11 @@ $(function(){
 		let strs = ($(this).attr("id")).split("-");
 		let color = strs[0];
 		let icon = strs[1];
-		let machinId = strs[2];
+		let tintId = strs[2];
 		let pdsecId = $("#pdsec-"+icon+"-"+color).val();
 		$.ajax({
 			type: "GET",
-			url: '/bsMacsecNewPdAjax?machin='+machinId+'&pdsec='+pdsecId,
+			url: '/bsTinsecNewPdAjax?tint='+tintId+'&pdsec='+pdsecId,
 			success: function(results) {
 				if(results.success == 1) {
 				} else {
