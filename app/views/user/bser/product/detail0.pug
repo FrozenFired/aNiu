@@ -43,7 +43,7 @@ block content
 				.option.mt-5(style="display:none")
 					include ./detail/option
 			.col-md-4.text-center
-				img(src=pdfir.photo, width="300px")
+				include ./detail/pdimg
 		.row.mt-5
 			//- h2 hordthd
 			each hordfir in pdfir.hordfirs
@@ -73,3 +73,4 @@ block content
 	script(src="/const/const.js")
 	script(src="/js/bser/product/detail/detail.js")
 	script(src="/js/bser/product/detail/option.js")
+	script(src="/js/bser/product/detail/pdImg.js")

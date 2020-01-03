@@ -223,7 +223,7 @@ let bsProductSave = function(res, pdfir, dbs, n) {
 			} else {
 				res.redirect('/bsProduct/'+pdfirSave._id)
 			}
-		})				
+		})
 		return;
 	} else {
 		let thisdb = dbs[n];

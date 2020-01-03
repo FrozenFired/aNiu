@@ -11,6 +11,33 @@ let Firm = require('../../../models/login/firm');
 
 let _ = require('underscore');
 
+exports.bsProdImg = function(req, res) {
+	let crUser = req.session.crUser;
+	let obj = req.body.obj;
+	Pdfir.findOne({_id: obj._id})
+	.exec(function(err, pdfir) {
+		if(err) {
+			console.log(err);
+			info = "bsProdImg, Pdfir.findOne Error！";
+			Err.usError(req, res, info);
+		} else if(!pdfir) {
+			info = "此模特不存在, 请刷新重试!";
+			Err.usError(req, res, info);
+		} else {
+			let _pdfir = _.extend(pdfir, obj)
+			_pdfir.save(function(err, firSv) {
+				if(err) {
+					console.log(err);
+					info = "bsProdImg, _pdfir.save Error！";
+					Err.usError(req, res, info);
+				} else {
+					res.redirect("/bsProduct/"+firSv._id);
+				}
+			})
+		}
+	})
+}
+
 exports.bsProdNewColor = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj;

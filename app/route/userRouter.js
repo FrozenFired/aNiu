@@ -68,6 +68,8 @@ module.exports = function(app){
 	/* ------------------------------ pdfir ------------------------------ */
 
 	/* ---------------------------------------- Prod ---------------------------------------- */
+	app.post('/bsProdImg', MdRole.bserIsLogin, postForm, MdPicture.addNewPhoto, Prod.bsProdImg)
+
 	app.post('/bsProdNewColor', MdRole.bserIsLogin, postForm, Prod.bsProdNewColor)
 	app.post('/bsProdDelColor', MdRole.bserIsLogin, postForm, Prod.bsProdDelColor)
 	app.post('/bsProdNewSize', MdRole.bserIsLogin, postForm, Prod.bsProdNewSize)

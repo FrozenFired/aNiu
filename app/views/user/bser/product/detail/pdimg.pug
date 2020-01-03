@@ -1,0 +1,16 @@
+img#proImg(src=pdfir.photo, width="300px")
+
+form#upForm(style="display:none", method="post", action="/bsProdImg", enctype="multipart/form-data")
+	input(type="hidden", name="obj[_id]", value=pdfir._id)
+	input(type="hidden", name="obj[photoDir]", value=Conf.photoPath.proPhoto)
+	input(type="hidden", name="obj[orgPhoto]", value=pdfir.photo)
+	input(type="hidden", name="obj[code]", value=pdfir.code)
+	hr
+	.form-group.udPhoto.row(style="display:none")
+		.col-12
+			label.col-form-label(for="uploadPhoto") pdImg
+			input#uploadPhoto.btn.btn-info.btn-block(type="file", name="uploadPhoto")
+	.form-group.row
+		.col-4: a.btn.btn-secondary(href="/bsProduct/"+pdfir._id) 取消
+		.col-8.text-right
+			input#btnSubmit.btn.btn-info(type="submit" value="更改图片")
