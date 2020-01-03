@@ -104,7 +104,7 @@ exports.bsOrderUp = function(req, res) {
 			Err.usError(req, res, info);
 		} else {
 			res.render('./user/bser/order/update/update', {
-				title : '订单',
+				title : '订单更新',
 				crUser: crUser,
 				order : order,
 			});

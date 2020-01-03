@@ -1,0 +1,51 @@
+table.table.table-borderless.border.border-dark.text-center
+	thead
+		tr
+			th.border.border-dark(width="10%")
+				button.btn.btn-info.colorsBtn(id="ship-color-btn-"+machin._id, type="button") 颜色 <span class="oi oi-plus"></span>
+				button.btn.btn-secondary.colorsCancelBtn(id="ship-color-CancelBtn", type="button", style="display:none") 颜色 <span class="oi oi-x"></span>
+			each size in machin.sizes
+				-a;
+				th.border.border-info #{Conf.sizes[size]}
+	tbody
+		each macfir in machin.macfirs
+			- let pdfir = macfir.pdfir;
+			each pdsec in pdfir.pdsecs
+				-a;
+				input(type="hidden", id="pdsec-ship-"+pdsec.color, value=pdsec._id)
+			- let colors = pdfir.colors;
+			each macsec in macfir.macsecs
+				- colors.remove(macsec.color);
+				- let pdsec = macsec.pdsec;
+				tr
+					th #{macsec.color}
+					each size in machin.sizes
+						- let taskThd = null;
+						each macthd in macsec.macthds
+							if macthd.size == size
+								- taskThd = macthd;
+								- break;
+						- let pdthd = null;
+						each selthd in pdsec.pdthds
+							if selthd.size == size
+								- pdthd = selthd;
+								- break;
+						td
+							if taskThd
+								-a;
+								form(id="shipForm-"+taskThd._id, method="post")
+									input(type="hidden", name="machinId", value=machin._id)
+									input(type="hidden", name="macthdId", value=taskThd._id)
+									input.iptsty.iptBlur(id="ship-quot-"+taskThd._id, type="number", name="obj[ship]", value=taskThd.ship)
+									input(id="shipOrg-"+taskThd._id, type="hidden", value=taskThd.ship)
+							else
+								form(id="shipForm-"+pdthd._id, method="post")
+									input(type="hidden", name="obj[machin]", value=machin._id)
+									input(type="hidden", name="obj[macfir]", value=macfir._id)
+									input(type="hidden", name="obj[macsec]", value=macsec._id)
+									input(type="hidden", name="obj[pdthd]", value=pdthd._id)
+									input(type="hidden", name="obj[color]", value=macsec.color)
+									input(type="hidden", name="obj[size]", value=size)
+									input(type="hidden", name="obj[quot]", value=0)
+									input.iptsty.iptBlur(id="ship-pd-"+pdthd._id, type="number", name="obj[ship]")
+			input(id="colors-ship", type="hidden",value=colors)

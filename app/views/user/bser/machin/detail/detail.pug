@@ -1,7 +1,29 @@
 extends ../../aalayout/layout
 
 block content
-	
-	.m-5
-		p #{machin}
-		a.btn.btn-danger(href="/bsMachinDel/"+machin._id) 删除
+	.container.mt-5
+		input#machinId(type="hidden", value=machin._id)
+		include ./printHead
+		.row.bmachin-top.mb-4.py-3#optBtn.noprint
+			.col-6
+				.row
+					.col-2: button.macNav#quot.btn.btn-secondary(type="button") 订单量
+					.col-2: button.macNav#ship.btn.btn-info(type="button") 发货量
+					.col-2: button.macNav#less.btn.btn-secondary(type="button") 差额
+					.col-6
+			.col-6.text-right
+				.row
+					if machin.status == 5
+						-a;
+						.col-8
+							span [状态：正在处理 (#{machin.status})]
+							a.btn.btn-warning(href="/bsMachinUp/"+machin._id) <span class="oi oi-pencil"></span>
+					else
+						.col-8.pt-2 [状态：历史记录 (#{machin.status})]
+					.col-4
+						a.btn.btn-primary(href="javascript:window.print()" target="_self") <span class="oi oi-print"></span>
+		.infoPrice
+			include ./infoPrice
+		div.noprint(style="height:100px")
+
+	script(src="/js/bser/machin/detail/detail.js")

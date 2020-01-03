@@ -1,0 +1,69 @@
+table.table.table-borderless.border.border-dark
+	thead
+		tr.textCenter
+			th.border.border-dark(width="15%") Code [Name]
+			th.border.border-dark.text-center(width="8%") Color
+			each size in machin.sizes
+				-a;
+				th.border.border-info.text-center #{Conf.sizes[size]}
+			th.border.border-dark.text-center(width="10%") Quot.
+	tbody
+		-let impQuot=impShip=0;
+		each macfir in machin.macfirs
+			-let pdQuot=0;
+			-let pdShip=0;
+			-let pdfir = new Object();
+			if macfir.pdfir
+				- pdfir = macfir.pdfir;
+			if pdfir.semi == 1
+				-a;
+				tr
+					td #{pdfir.code}
+					td 半成品
+					- let cQuot = 0;
+					- let cShip = 0;
+					each size in machin.sizes
+						-let taskSez = null;
+						each macsez in macfir.macsezs
+							if macsez.size == size
+								- taskSez = macsez;
+								- let quot = macsez.quot;
+								- cQuot += macsez.quot;
+								- cShip += macsez.ship;
+								- break;
+						td.text-center
+							if taskSez
+								-a;
+								span.macCont.macquot(style="display:none") #{taskSez.quot}
+								span.macCont.macship #{taskSez.ship}
+								span.macCont.macless(style="display:none") #{taskSez.quot - taskSez.ship}
+					td.text-right
+						span.macCont.macquot(style="display:none") #{cQuot}
+						span.macCont.macship #{cShip}
+			else
+				each macsec in macfir.macsecs
+					- let cQuot = 0;
+					- let cShip = 0;
+					tr
+						td
+						th #{pdfir.color} 2
+						each size in machin.sizes
+							-let taskThd = null;
+							each macthd in macsec.macthds
+								if macthd.size == size
+									- taskThd = macthd;
+									- let quot = macthd.quot;
+									- cQuot += macthd.quot;
+									- cShip += macthd.ship;
+									- pdQuot += macthd.quot;
+									- pdShip += macthd.ship;
+									- break;
+							td.text-center
+								if taskThd
+									-a;
+									span.macCont.macquot(style="display:none") #{taskThd.quot}
+									span.macCont.macship #{taskThd.ship}
+									span.macCont.macless(style="display:none") #{taskThd.quot - taskThd.ship}
+						td.text-right
+							span.macCont.macquot(style="display:none") #{cQuot}
+							span.macCont.macship #{cShip}

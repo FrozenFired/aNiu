@@ -3,28 +3,29 @@ let Index = require('../controllers/user/bser/index');
 let User = require('../controllers/user/bser/user');
 let Firm = require('../controllers/user/bser/firm');
 
-let Product = require('../controllers/user/bser/product')
-let Prod = require('../controllers/user/bser/prod')
-// let Pdsez = require('../controllers/user/bser/pdsez')
-let Pdthd = require('../controllers/user/bser/pdthd')
+let Product = require('../controllers/user/bser/product');
+let Prod = require('../controllers/user/bser/prod');
+// let Pdsez = require('../controllers/user/bser/pdsez');
+let Pdthd = require('../controllers/user/bser/pdthd');
 
-let Cter = require('../controllers/user/bser/order/cter')
-let Ord = require('../controllers/user/bser/order/ord')
-let Order = require('../controllers/user/bser/order/order')
-let Ordthd = require('../controllers/user/bser/order/ordthd')
+let Cter = require('../controllers/user/bser/order/cter');
+let Ord = require('../controllers/user/bser/order/ord');
+let Order = require('../controllers/user/bser/order/order');
+let Ordthd = require('../controllers/user/bser/order/ordthd');
 
-let Fder = require('../controllers/user/bser/fder')
-let Mac = require('../controllers/user/bser/mac')
-let Machin = require('../controllers/user/bser/machin')
+let Fder = require('../controllers/user/bser/machin/fder');
+let Mac = require('../controllers/user/bser/machin/mac');
+let Machin = require('../controllers/user/bser/machin/machin');
+let Macthd = require('../controllers/user/bser/machin/macthd');
 
-let Tner = require('../controllers/user/bser/tner')
-let Tin = require('../controllers/user/bser/tin')
-let Tint = require('../controllers/user/bser/tint')
+let Tner = require('../controllers/user/bser/tner');
+let Tin = require('../controllers/user/bser/tin');
+let Tint = require('../controllers/user/bser/tint');
 
 let MdBcrypt = require('../confile/middle/middleBcrypt');
 let MdRole = require('../confile/middle/middleRole');
-let MdPicture = require('../confile/middle/middlePicture')
-let MdExcel = require('../confile/middle/middleExcel')
+let MdPicture = require('../confile/middle/middlePicture');
+let MdExcel = require('../confile/middle/middleExcel');
 
 let multipart = require('connect-multiparty');
 let postForm = multipart();
@@ -158,23 +159,29 @@ module.exports = function(app){
 	app.post('/bsMachinSend', MdRole.bserIsLogin, postForm, Mac.bsMachinSend);
 
 	/* ======================================== Machin ======================================== */
-	// orderAdd 模糊查询
+	// machinAdd 模糊查询
 	app.get('/bsMachinProdsAjax', MdRole.bserIsLogin, Machin.bsMachinProdsAjax);
-	// order添加prod
-	app.post('/bsMachinNewPdAjax', MdRole.bserIsLogin, postForm, Machin.bsMachinNewPdAjax);
-	// order更改prod
-	app.post('/bsMachinUpdPdAjax', MdRole.bserIsLogin, postForm, Machin.bsMachinUpdPdAjax);
-	// order删除prod
-	app.post('/bsMachinDelPdAjax', MdRole.bserIsLogin, postForm, Machin.bsMachinDelPdAjax);
 
 	app.get('/bsMachinUp/:id', MdRole.bserIsLogin, Machin.bsMachinUp);
 
 	app.get('/bsMachin/:id', MdRole.bserIsLogin, Machin.bsMachinFilter, Machin.bsMachin);
 
-	// app.get('/bsMachinPDF/:id', MdRole.bserIsLogin, Machin.bsMachinFilter, Machin.bsMachinPDF)
-	// app.get('/bsMachinExcel/:id', MdRole.bserIsLogin, Machin.bsMachinFilter, Machin.bsMachinExcel)
 	app.get('/bsMachinDel/:id', MdRole.bserIsLogin, Machin.bsMachinDel)
-
+	/* -------------------------------------- ordthd -------------------------------------- */
+	// macthd添加prod
+	app.post('/bsMacthdNewPdAjax', MdRole.bserIsLogin, postForm, Macthd.bsMacthdNewPdAjax);
+	// macthd更改prod
+	app.post('/bsMacthdUpdPdAjax', MdRole.bserIsLogin, postForm, Macthd.bsMacthdUpdPdAjax);
+	// macthd删除prod
+	app.post('/bsMacthdDelPdAjax', MdRole.bserIsLogin, postForm, Macthd.bsMacthdDelPdAjax);
+	// macsez添加prod
+	app.post('/bsMacsezNewPdAjax', MdRole.bserIsLogin, postForm, Macthd.bsMacsezNewPdAjax);
+	// macsez更改prod
+	app.post('/bsMacsezUpdPdAjax', MdRole.bserIsLogin, postForm, Macthd.bsMacsezUpdPdAjax);
+	// macsez删除prod
+	app.post('/bsMacsezDelPdAjax', MdRole.bserIsLogin, postForm, Macthd.bsMacsezDelPdAjax);
+	/* -------------------------------------- ordthd -------------------------------------- */
+	app.get('/bsMacsecNewPdAjax', MdRole.bserIsLogin, Macthd.bsMacsecNewPdAjax);
 	/* ======================================== Machin ======================================== */
 
 

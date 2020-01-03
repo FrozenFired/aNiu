@@ -1,0 +1,41 @@
+table.table.table-borderless.border.border-dark.text-center
+	thead
+		tr
+			th.border.border-dark(width="10%")
+				button.btn.btn-info.colorsBtn(id="ship-color-btn-"+machin._id, type="button") 颜色 <span class="oi oi-plus"></span>
+				button.btn.btn-secondary.colorsCancelBtn(id="ship-color-CancelBtn", type="button", style="display:none") 颜色 <span class="oi oi-x"></span>
+			each size in machin.sizes
+				-a;
+				th.border.border-info #{Conf.sizes[size]}
+	tbody
+		each macfir in machin.macfirs
+			- let pdfir = macfir.pdfir;
+			tr
+				td
+				each size in machin.sizes
+					- let taskSez = null;
+					each macsez in macfir.macsezs
+						if macsez.size == size
+							- taskSez = macsez;
+							- break;
+					- let pdsez = null;
+					each selsez in pdfir.pdsezs
+						if selsez.size == size
+							- pdsez = selsez;
+							- break;
+					td
+						if taskSez
+							-a;
+							form(id="shipForm-"+taskSez._id, method="post")
+								input(type="hidden", name="machinId", value=machin._id)
+								input(type="hidden", name="macsezId", value=taskSez._id)
+								input.iptsty.iptBlur(id="ship-quot-"+taskSez._id, type="number", name="obj[ship]", value=taskSez.ship)
+								input(id="shipOrg-"+taskSez._id, type="hidden", value=taskSez.ship)
+						else
+							form(id="shipForm-"+pdsez._id, method="post")
+								input(type="hidden", name="obj[machin]", value=machin._id)
+								input(type="hidden", name="obj[macfir]", value=macfir._id)
+								input(type="hidden", name="obj[pdsez]", value=pdsez._id)
+								input(type="hidden", name="obj[size]", value=size)
+								input(type="hidden", name="obj[quot]", value=0)
+								input.iptsty.iptBlur(id="ship-pd-"+pdsez._id, type="number", name="obj[ship]")

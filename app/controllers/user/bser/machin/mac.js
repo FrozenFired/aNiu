@@ -1,16 +1,16 @@
-let Err = require('../aaIndex/err');
-let Conf = require('../../../confile/conf');
-let SaveMachinpre = require('../../../confile/middle/saveMachinPre');
+let Err = require('../../aaIndex/err');
+let Conf = require('../../../../confile/conf');
+let SaveMachinpre = require('../../../../confile/middle/saveMachinPre');
 
 let moment = require('moment')
 
-let Machin = require('../../../models/foundry/machin');
-let Macfir = require('../../../models/foundry/macfir');
-let Macsec = require('../../../models/foundry/macsec');
-let Macsez = require('../../../models/foundry/macsez');
-let Macthd = require('../../../models/foundry/macthd');
+let Machin = require('../../../../models/foundry/machin');
+let Macfir = require('../../../../models/foundry/macfir');
+let Macsec = require('../../../../models/foundry/macsec');
+let Macsez = require('../../../../models/foundry/macsez');
+let Macthd = require('../../../../models/foundry/macthd');
 
-let Pdfir = require('../../../models/material/pdfir');
+let Pdfir = require('../../../../models/material/pdfir');
 
 exports.bsMacs = function(req, res) {
 	let crUser = req.session.crUser;

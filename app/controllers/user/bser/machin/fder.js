@@ -1,7 +1,7 @@
-let Err = require('../aaIndex/err');
+let Err = require('../../aaIndex/err');
 
-let Fder = require('../../../models/foundry/fder');
-let Machin = require('../../../models/foundry/machin');
+let Fder = require('../../../../models/foundry/fder');
+let Machin = require('../../../../models/foundry/machin');
 
 let _ = require('underscore');
 
