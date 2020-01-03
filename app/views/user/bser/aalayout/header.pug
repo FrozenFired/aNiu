@@ -18,12 +18,17 @@
 				li.nav-item.active
 					a.nav-link(href="/bsTners") 染洗厂 <span class="sr-only">(current)</span>
 				li.nav-item.active.ml-5
-					a.btn.btn-info(href="/bsShow") <span class="oi oi-grid-three-up"></span>
+					a.btn.btn-success(href="/bsTins") <span class="oi oi-beaker"></span>
+				li.nav-item.active.ml-5
+					a.btn.btn-success(href="/bsShow") <span class="oi oi-grid-three-up"></span>
 			ul.navbar-nav
 				li
-					span.navbar-brand 你好, <strong>#{crUser.nome}</strong> 
+					a(href="/bsFirm")
+						span.navbar-brand 你好, <strong>#{crUser.nome}</strong> 
 					a(href="/bsMyInfo")
-						img.rounded-circle.ml-3(src=crUser.photo, width="40px")
+						img.rounded-circle.mx-3(src=crUser.photo, width="40px")
+					a(href="/bsMyInfo")
+						img.ml-3(src="/imgs/index/office.jpg", width="40px")
 					span &nbsp;&nbsp;&nbsp;
 .row.noprint
 	div(style="height:59px")
