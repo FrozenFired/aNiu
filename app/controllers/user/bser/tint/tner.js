@@ -73,15 +73,21 @@ exports.bsTnerFilter = function(req, res, next) {
 	let crUser = req.session.crUser;
 	let id = req.params.id
 	Tner.findOne({_id: id, 'firm': crUser.firm})
-	// .populate({path:'bills', populate: {path: 'tint'} })
-	.exec(function(err, object) { if(err) {
+	.populate({path:'tints', populate: {
+		path: 'tinfirs', populate: [
+			{path: 'pdfir'},
+			{path: 'tinsecs', populate: [{path: 'tinthds'}, {path: 'pdsec'}]},
+			{path: 'tinsezs'},
+		]
+	} })
+	.exec(function(err, tner) { if(err) {
 		info = "bsTnerFilter, Tner.findOne, Error!";
 		Err.usError(req, res, info);
-	} else if(!object) {
+	} else if(!tner) {
 		info = "此染洗厂已经被删除";
 		Err.usError(req, res, info);
 	} else {
-		req.body.object = object;
+		req.body.tner = tner;
 		next();
 	} })
 }
@@ -89,8 +95,8 @@ exports.bsTner = function(req, res) {
 	let crUser = req.session.crUser;
 
 	let objBody = new Object();
-	objBody.object = req.body.object;
-	// console.log(objBody.object)
+	objBody.tner = req.body.tner;
+	// console.log(objBody.tner)
 	objBody.title = '染洗厂信息';
 	objBody.crUser = crUser;
 	objBody.thisAct = "/bsTner";
@@ -100,12 +106,12 @@ exports.bsTner = function(req, res) {
 
 
 exports.bsTnerDel = function(req, res) {
-	let object = req.body.object;
-	if(object.bills && object.bills.length > 0) {
+	let tner = req.body.tner;
+	if(tner.bills && tner.bills.length > 0) {
 		info = "此染洗厂还有未付清的账款,不可以删除";
 		Err.usError(req, res, info);
 	} else {
-		Tner.deleteOne({_id: object._id}, function(err, objRm) { if(err) {
+		Tner.deleteOne({_id: tner._id}, function(err, objRm) { if(err) {
 			info = "bs删除染洗厂时, 染洗厂数据库删除错误, 请联系管理员";
 			Err.usError(req, res, info);
 		} else {

@@ -73,15 +73,20 @@ exports.bsCterFilter = function(req, res, next) {
 	let crUser = req.session.crUser;
 	let id = req.params.id
 	Cter.findOne({_id: id, 'firm': crUser.firm})
-	// .populate({path:'bills', populate: {path: 'order'} })
-	.exec(function(err, object) { if(err) {
+	.populate({path:'orders', populate: {
+		path: 'ordfirs', populate: [
+			{path: 'ordsecs', populate: {path: 'ordthds'}},
+			{path: 'pdfir'}
+		]
+	} })
+	.exec(function(err, cter) { if(err) {
 		info = "bsCterFilter, Cter.findOne, Error!";
 		Err.usError(req, res, info);
-	} else if(!object) {
+	} else if(!cter) {
 		info = "此客户已经被删除";
 		Err.usError(req, res, info);
 	} else {
-		req.body.object = object;
+		req.body.cter = cter;
 		next();
 	} })
 }
@@ -89,7 +94,7 @@ exports.bsCter = function(req, res) {
 	let crUser = req.session.crUser;
 
 	let objBody = new Object();
-	objBody.object = req.body.object;
+	objBody.cter = req.body.cter;
 	// console.log(objBody.object)
 	objBody.title = '客户信息';
 	objBody.crUser = crUser;
@@ -100,12 +105,12 @@ exports.bsCter = function(req, res) {
 
 
 exports.bsCterDel = function(req, res) {
-	let object = req.body.object;
-	if(object.bills && object.bills.length > 0) {
+	let cter = req.body.cter;
+	if(cter.bills && cter.bills.length > 0) {
 		info = "此客户还有未付清的账款,不可以删除";
 		Err.usError(req, res, info);
 	} else {
-		Cter.deleteOne({_id: object._id}, function(err, objRm) { if(err) {
+		Cter.deleteOne({_id: cter._id}, function(err, objRm) { if(err) {
 			info = "bs删除客户时, 客户数据库删除错误, 请联系管理员";
 			Err.usError(req, res, info);
 		} else {

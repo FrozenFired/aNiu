@@ -1,0 +1,76 @@
+extends ../aalayout/layout
+
+block content
+	.m-5
+		.row
+			.col-12
+				h3 #{tner.code} &nbsp; #{tner.nome} &nbsp; #{tner.tel}
+		.row
+			each tint in tner.tints
+				-a;
+				each tinfir in tint.tinfirs
+					-a;
+					table.table.table-border.text-center.mt-4
+						tr(class=txtSatus)
+							th(width="10%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
+							th(width="8%") #{moment(tint.fnAt).format('MM/DD/YYYY')}
+							th(width="5%") 生产
+							th(colspan=tint.sizes.length, width="25%")
+								a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
+							th.bg-secondary(width="2%")
+							th(colspan=tint.sizes.length)
+								.row
+									.col-6
+									.col-6
+										if tint.status == 5
+											-a;
+											span 正在处理...
+										else
+											span 已经完成
+						tr.bg-light
+							th 样品型号
+							th 客户名称
+							th 颜色
+							each size in tint.sizes
+								-a;
+								th #{Conf.sizes[size]}
+							th.bg-secondary
+							each size in tint.sizes
+								-a;
+								th #{Conf.sizes[size]}
+						- let i = 0, k = 0;
+						each tinsec in tinfir.tinsecs
+							- i++;
+							tr
+								if i==1
+									-a;
+									th: a(href="/bsProduct/"+tinfir.pdfir._id) #{tinfir.pdfir.code}
+									th #{tint.tner.nome}
+								else
+									th
+									th
+								th.bg-light #{tinsec.color}
+								each size in tint.sizes
+									-let quot = '';
+									each tinthd in tinsec.tinthds
+										if tinthd.size == size
+											- quot = tinthd.quot;
+											- break;
+									td #{quot}
+								td.bg-secondary
+								each size in tint.sizes
+									-let less = '';
+									-let stock = '';
+									-let ship = '';
+									-let tinthdId = '';
+									each tinthd in tinsec.tinthds
+										if tinthd.size == size
+											- tinthdId = tinthd._id;
+											- stock = parseInt(tinthd.pdthd.stock);
+											- ship = parseInt(tinthd.ship);
+											- less = parseInt(tinthd.quot) - ship;
+											- break;
+									td 
+										if tinthdId
+
+											span.text-info #{ship}

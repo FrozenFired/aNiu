@@ -1,0 +1,76 @@
+extends ../aalayout/layout
+
+block content
+	.m-5
+		.row
+			.col-12
+				h3 #{cter.code} &nbsp; #{cter.nome} &nbsp; #{cter.tel}
+		.row
+			each order in cter.orders
+				-a;
+				each ordfir in order.ordfirs
+					-a;
+					table.table.table-bordered.text-center.mt-4
+						tr(class=txtSatus)
+							th(width="10%") #{moment(order.ctAt).format('MM/DD/YYYY')}
+							th(width="8%") #{moment(order.fnAt).format('MM/DD/YYYY')}
+							th(width="5%") 生产
+							th(colspan=order.sizes.length, width="25%")
+								a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
+							th.bg-secondary(width="2%")
+							th(colspan=order.sizes.length)
+								.row
+									.col-6
+									.col-6
+										if order.status == 5
+											-a;
+											span 正在处理...
+										else
+											span 已经完成
+						tr.bg-light
+							th 样品型号
+							th 客户名称
+							th 颜色
+							each size in order.sizes
+								-a;
+								th #{Conf.sizes[size]}
+							th.bg-secondary
+							each size in order.sizes
+								-a;
+								th #{Conf.sizes[size]}
+						- let i = 0, k = 0;
+						each ordsec in ordfir.ordsecs
+							- i++;
+							tr
+								if i==1
+									-a;
+									th: a(href="/bsProduct/"+ordfir.pdfir._id) #{ordfir.pdfir.code}
+									th #{order.cter.nome}
+								else
+									th
+									th
+								th.bg-light #{ordsec.color}
+								each size in order.sizes
+									-let quot = '';
+									each ordthd in ordsec.ordthds
+										if ordthd.size == size
+											- quot = ordthd.quot;
+											- break;
+									td #{quot}
+								td.bg-secondary
+								each size in order.sizes
+									-let less = '';
+									-let stock = '';
+									-let ship = '';
+									-let ordthdId = '';
+									each ordthd in ordsec.ordthds
+										if ordthd.size == size
+											- ordthdId = ordthd._id;
+											- stock = parseInt(ordthd.pdthd.stock);
+											- ship = parseInt(ordthd.ship);
+											- less = parseInt(ordthd.quot) - ship;
+											- break;
+									td 
+										if ordthdId
+
+											span.text-info #{ship}

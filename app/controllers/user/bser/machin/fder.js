@@ -73,15 +73,21 @@ exports.bsFderFilter = function(req, res, next) {
 	let crUser = req.session.crUser;
 	let id = req.params.id
 	Fder.findOne({_id: id, 'firm': crUser.firm})
-	// .populate({path:'bills', populate: {path: 'machin'} })
-	.exec(function(err, object) { if(err) {
+	.populate({path:'machins', populate: {
+		path: 'macfirs', populate: [
+			{path: 'pdfir'},
+			{path: 'macsecs', populate: [{path: 'macthds'}, {path: 'pdsec'}]},
+			{path: 'macsezs'},
+		]
+	} })
+	.exec(function(err, fder) { if(err) {
 		info = "bsFderFilter, Fder.findOne, Error!";
 		Err.usError(req, res, info);
-	} else if(!object) {
+	} else if(!fder) {
 		info = "此工厂已经被删除";
 		Err.usError(req, res, info);
 	} else {
-		req.body.object = object;
+		req.body.fder = fder;
 		next();
 	} })
 }
@@ -89,7 +95,7 @@ exports.bsFder = function(req, res) {
 	let crUser = req.session.crUser;
 
 	let objBody = new Object();
-	objBody.object = req.body.object;
+	objBody.fder = req.body.fder;
 	// console.log(objBody.object)
 	objBody.title = '工厂信息';
 	objBody.crUser = crUser;
@@ -100,12 +106,12 @@ exports.bsFder = function(req, res) {
 
 
 exports.bsFderDel = function(req, res) {
-	let object = req.body.object;
-	if(object.bills && object.bills.length > 0) {
+	let tner = req.body.tner;
+	if(tner.bills && tner.bills.length > 0) {
 		info = "此工厂还有未付清的账款,不可以删除";
 		Err.usError(req, res, info);
 	} else {
-		Fder.deleteOne({_id: object._id}, function(err, objRm) { if(err) {
+		Fder.deleteOne({_id: tner._id}, function(err, objRm) { if(err) {
 			info = "bs删除工厂时, 工厂数据库删除错误, 请联系管理员";
 			Err.usError(req, res, info);
 		} else {

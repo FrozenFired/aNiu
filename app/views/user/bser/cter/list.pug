@@ -7,7 +7,11 @@ block content
 		.row
 			each cter in cters
 				-a;
-				h3 #{cter}
+				.col-sm-6.col-md-4.col-lg-3.mt-3
+					a(href='/bsCter/'+cter._id)
+						.card.bg-light.text-center.py-2
+							h5 #{cter.code}
+							h5 #{cter.nome}
 	.topNav-second.p-1
 		.row.text-center
 			.col-1
