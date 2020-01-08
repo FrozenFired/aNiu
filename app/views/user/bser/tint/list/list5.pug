@@ -1,12 +1,4 @@
 each tint in tints
-	- let code = 'view';
-	if tint.code
-		-code = tint.code;
-	-let txtSatus="";
-	if tint.status == 5
-		- txtSatus = "text-info";
-	else if tint.status == 10
-		- txtSatus = "text-secondary";
 	- let textTime="";
 	if Date.now() - tint.ctAt > 3*24*60*60*1000
 		-textTime="text-danger";
@@ -14,7 +6,7 @@ each tint in tints
 	each tinfir in tint.tinfirs
 		-a;
 		table.table.table-btinted.text-center
-			tr(class=txtSatus)
+			tr(class=textTime)
 				th(width="10%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
 				th(width="8%") 收货日期
 				th(width="5%") 生产
@@ -32,7 +24,7 @@ each tint in tints
 								input.btn.btn-warning(type="submit", value="完成")
 			tr.bg-light
 				th 样品型号
-				th 客户名称
+				th 染洗厂
 				th 颜色
 				each size in tint.sizes
 					-a;

@@ -1,7 +1,4 @@
 each order in orders
-	- let code = 'view';
-	if order.code
-		-code = order.code;
 	-let txtSatus="";
 	if order.status == 5
 		- txtSatus = "text-info";
@@ -14,7 +11,7 @@ each order in orders
 	each ordfir in order.ordfirs
 		-a;
 		table.table.table-bordered.text-center
-			tr(class=txtSatus)
+			tr(class=textTime)
 				th(width="10%") #{moment(order.ctAt).format('MM/DD/YYYY')}
 				th.text-dark(width="8%") 发货日期
 				th(width="5%") 生产

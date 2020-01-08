@@ -1,15 +1,5 @@
 each order in orders
-	- let code = 'view';
-	if order.code
-		-code = order.code;
-	-let txtSatus="";
-	if order.status == 5
-		- txtSatus = "text-info";
-	else if order.status == 10
-		- txtSatus = "text-secondary";
-	- let textTime="";
-	if Date.now() - order.ctAt > 3*24*60*60*1000
-		-textTime="text-danger";
+	- let txtSatus = "text-secondary";
 
 	each ordfir in order.ordfirs
 		-a;

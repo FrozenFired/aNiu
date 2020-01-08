@@ -209,11 +209,7 @@ exports.bsMacHis = function(req, res) {
 		'firm': crUser.firm,
 		'fder': {[symFder]: condFder},
 		'status': 10,
-		'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
-		// $or:[
-		// 	{'status': 5},
-		// 	{'status': 10,'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}},
-		// ],
+		// 'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
 	})
 	.populate('fder', 'nome')
 	.populate({path: 'macfirs', populate: [

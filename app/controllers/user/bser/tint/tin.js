@@ -186,11 +186,7 @@ exports.bsTinHis = function(req, res) {
 		'firm': crUser.firm,
 		'tner': {[symTner]: condTner},
 		'status': 10,
-		'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
-		// $or:[
-		// 	{'status': 5},
-		// 	{'status': 10,'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}},
-		// ],
+		// 'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
 	})
 	.populate('tner', 'nome')
 	.populate({path: 'tinfirs', populate: [

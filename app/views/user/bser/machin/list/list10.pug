@@ -1,15 +1,5 @@
 each machin in machins
-	- let code = 'view';
-	if machin.code
-		-code = machin.code;
-	-let txtSatus="";
-	if machin.status == 5
-		- txtSatus = "text-info";
-	else if machin.status == 10
-		- txtSatus = "text-secondary";
-	- let textTime="";
-	if Date.now() - machin.ctAt > 3*24*60*60*1000
-		-textTime="text-danger";
+	- let txtSatus = "text-secondary";
 
 	each macfir in machin.macfirs
 		-a;
@@ -31,7 +21,7 @@ each machin in machins
 								input.btn.btn-danger(type="submit", value="未完成")
 			tr.bg-light
 				th 样品型号
-				th 客户名称
+				th 工厂名称
 				th 颜色
 				each size in machin.sizes
 					-a;

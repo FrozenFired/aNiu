@@ -88,11 +88,7 @@ exports.bsOrdHis = function(req, res) {
 		'firm': crUser.firm,
 		'cter': {[symCter]: condCter},
 		'status': 10,
-		'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
-		// $or:[
-		// 	{'status': 5},
-		// 	{'status': 10,'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}},
-		// ],
+		// 'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
 	})
 	.populate('cter', 'nome')
 	.populate({path: 'ordfirs', populate: [

@@ -1,15 +1,5 @@
 each tint in tints
-	- let code = 'view';
-	if tint.code
-		-code = tint.code;
-	-let txtSatus="";
-	if tint.status == 5
-		- txtSatus = "text-info";
-	else if tint.status == 10
-		- txtSatus = "text-secondary";
-	- let textTime="";
-	if Date.now() - tint.ctAt > 3*24*60*60*1000
-		-textTime="text-danger";
+	- let txtSatus = "text-secondary";
 
 	each tinfir in tint.tinfirs
 		-a;
@@ -31,7 +21,7 @@ each tint in tints
 								input.btn.btn-danger(type="submit", value="未完成")
 			tr.bg-light
 				th 样品型号
-				th 客户名称
+				th 染洗厂
 				th 颜色
 				each size in tint.sizes
 					-a;
