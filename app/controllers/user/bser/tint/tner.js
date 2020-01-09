@@ -261,7 +261,7 @@ exports.bsTnerNew = function(req, res) {
 }
 
 
-exports.ajaxBsTnerAdd = function(req, res) {
+exports.bsTnerIsAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let keytype = req.query.keytype
 	let keyword = req.query.keyword
@@ -272,28 +272,7 @@ exports.ajaxBsTnerAdd = function(req, res) {
 	})
 	.exec(function(err, object){
 		if(err) {
-			res.json({success: 0, info: "ajaxBsTnerAdd, Tner.findOne, Error!"});
-		} else if(object){
-			res.json({ success: 1, object: object})
-		} else {
-			res.json({success: 0})
-		}
-	})
-}
-exports.ajaxBsTnerUp = function(req, res) {
-	let crUser = req.session.crUser;
-	let id = req.query.id
-	let keytype = req.query.keytype
-	let keyword = req.query.keyword
-	keyword = String(keyword).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-	Tner.findOne({
-		'firm': crUser.firm,
-		[keytype]: keyword
-	})
-	.where('_id').ne(id)
-	.exec(function(err, object){
-		if(err) {
-			res.json({success: 0, info: "ajaxBsTnerUp, Tner.findOne, Error!"});
+			res.json({success: 0, info: "bsTnerIsAjax, Tner.findOne, Error!"});
 		} else if(object){
 			res.json({ success: 1, object: object})
 		} else {
@@ -302,8 +281,7 @@ exports.ajaxBsTnerUp = function(req, res) {
 	})
 }
 
-
-exports.ajaxBsTners = function(req, res) {
+exports.bsTnersObjAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let keytype = req.query.keytype
 	let keyword = req.query.keyword
@@ -320,21 +298,6 @@ exports.ajaxBsTners = function(req, res) {
 		if(err) {
 			res.json({success: 0, info: "bs获取染洗厂列表时，数据库查找错误, 请联系管理员"});
 		} else if(tners){
-			res.json({ success: 1, tners: tners})
-		} else {
-			res.json({success: 0})
-		}
-	})
-}
-
-exports.ajaxBsTnerAll = function(req, res) {
-	let crUser = req.session.crUser;
-	Tner.find({'firm': crUser.firm})
-	.limit(20)					// 防止染洗厂太多 添加订单时 初始化所有染洗厂时堵塞，并且染洗厂太多必须精准查询
-	.exec(function(err, tners){
-		if(err) console.log(err);
-		if(tners){
-			// console.log(tners)
 			res.json({ success: 1, tners: tners})
 		} else {
 			res.json({success: 0})

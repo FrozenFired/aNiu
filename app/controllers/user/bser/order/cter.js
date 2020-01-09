@@ -260,7 +260,7 @@ exports.bsCterNew = function(req, res) {
 }
 
 
-exports.ajaxBsCterAdd = function(req, res) {
+exports.bsCterIsAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let keytype = req.query.keytype
 	let keyword = req.query.keyword
@@ -271,28 +271,7 @@ exports.ajaxBsCterAdd = function(req, res) {
 	})
 	.exec(function(err, object){
 		if(err) {
-			res.json({success: 0, info: "ajaxBsCterAdd, Cter.findOne, Error!"});
-		} else if(object){
-			res.json({ success: 1, object: object})
-		} else {
-			res.json({success: 0})
-		}
-	})
-}
-exports.ajaxBsCterUp = function(req, res) {
-	let crUser = req.session.crUser;
-	let id = req.query.id
-	let keytype = req.query.keytype
-	let keyword = req.query.keyword
-	keyword = String(keyword).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-	Cter.findOne({
-		'firm': crUser.firm,
-		[keytype]: keyword
-	})
-	.where('_id').ne(id)
-	.exec(function(err, object){
-		if(err) {
-			res.json({success: 0, info: "ajaxBsCterUp, Cter.findOne, Error!"});
+			res.json({success: 0, info: "bsCterIsAjax, Cter.findOne, Error!"});
 		} else if(object){
 			res.json({ success: 1, object: object})
 		} else {
@@ -302,7 +281,7 @@ exports.ajaxBsCterUp = function(req, res) {
 }
 
 
-exports.ajaxBsCters = function(req, res) {
+exports.bsCtersObtAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let keytype = req.query.keytype
 	let keyword = req.query.keyword
@@ -319,21 +298,6 @@ exports.ajaxBsCters = function(req, res) {
 		if(err) {
 			res.json({success: 0, info: "bs获取客户列表时，数据库查找错误, 请联系管理员"});
 		} else if(cters){
-			res.json({ success: 1, cters: cters})
-		} else {
-			res.json({success: 0})
-		}
-	})
-}
-
-exports.ajaxBsCterAll = function(req, res) {
-	let crUser = req.session.crUser;
-	Cter.find({'firm': crUser.firm})
-	.limit(20)					// 防止客户太多 添加订单时 初始化所有客户时堵塞，并且客户太多必须精准查询
-	.exec(function(err, cters){
-		if(err) console.log(err);
-		if(cters){
-			// console.log(cters)
 			res.json({ success: 1, cters: cters})
 		} else {
 			res.json({success: 0})

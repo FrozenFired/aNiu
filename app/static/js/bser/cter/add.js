@@ -1,5 +1,5 @@
 $(function() {
-	let ajaxUrl = '/ajaxBsCterAdd?';
+	let ajaxUrl = '/bsCterIsAjax?';
 	$("#iptNome").blur(function(e) {
 		ajaxFilter($(this).val())
 	});

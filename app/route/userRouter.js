@@ -95,10 +95,8 @@ module.exports = function(app){
 	app.get('/bsCterAdd', MdRole.bserIsLogin, Cter.bsCterAdd)
 	app.post('/bsCterNew', MdRole.bserIsLogin, postForm, Cter.bsCterNew)
 
-	app.get('/ajaxBsCterAdd', MdRole.bserIsLogin, Cter.ajaxBsCterAdd)
-	app.get('/ajaxBsCterUp', MdRole.bserIsLogin, Cter.ajaxBsCterUp)
-	app.get('/ajaxBsCters', MdRole.bserIsLogin, Cter.ajaxBsCters)
-	app.get('/ajaxBsCterAll', MdRole.bserIsLogin, Cter.ajaxBsCterAll)
+	app.get('/bsCterIsAjax', MdRole.bserIsLogin, Cter.bsCterIsAjax)
+	app.get('/bsCtersObtAjax', MdRole.bserIsLogin, Cter.bsCtersObtAjax)
 	/* =================================== cter =================================== */
 
 	/* =================================== ord =================================== */
@@ -148,10 +146,8 @@ module.exports = function(app){
 	app.get('/bsFderAdd', MdRole.bserIsLogin, Fder.bsFderAdd)
 	app.post('/bsFderNew', MdRole.bserIsLogin, postForm, Fder.bsFderNew)
 
-	app.get('/ajaxBsFderAdd', MdRole.bserIsLogin, Fder.ajaxBsFderAdd)
-	app.get('/ajaxBsFderUp', MdRole.bserIsLogin, Fder.ajaxBsFderUp)
-	app.get('/ajaxBsFders', MdRole.bserIsLogin, Fder.ajaxBsFders)
-	app.get('/ajaxBsFderAll', MdRole.bserIsLogin, Fder.ajaxBsFderAll)
+	app.get('/bsFderIsAjax', MdRole.bserIsLogin, Fder.bsFderIsAjax)
+	app.get('/bsFdersObjAjax', MdRole.bserIsLogin, Fder.bsFdersObjAjax)
 	/* =================================== Fder =================================== */
 
 	/* =================================== Mac =================================== */
@@ -203,10 +199,8 @@ module.exports = function(app){
 	app.get('/bsTnerAdd', MdRole.bserIsLogin, Tner.bsTnerAdd)
 	app.post('/bsTnerNew', MdRole.bserIsLogin, postForm, Tner.bsTnerNew)
 
-	app.get('/ajaxBsTnerAdd', MdRole.bserIsLogin, Tner.ajaxBsTnerAdd)
-	app.get('/ajaxBsTnerUp', MdRole.bserIsLogin, Tner.ajaxBsTnerUp)
-	app.get('/ajaxBsTners', MdRole.bserIsLogin, Tner.ajaxBsTners)
-	app.get('/ajaxBsTnerAll', MdRole.bserIsLogin, Tner.ajaxBsTnerAll)
+	app.get('/bsTnerIsAjax', MdRole.bserIsLogin, Tner.bsTnerIsAjax)
+	app.get('/bsTnersObjAjax', MdRole.bserIsLogin, Tner.bsTnersObjAjax)
 	/* =================================== Tner =================================== */
 
 	/* =================================== Tin =================================== */
