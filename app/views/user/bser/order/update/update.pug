@@ -5,16 +5,20 @@ block content
 		input#orderId(type="hidden", value=order._id)
 		.row.border-bottom.mb-4.py-3#optBtn.noprint
 			.col-2: h3 #{order.code}
-			.col-2: h3 #{order.ordfirs[0].pdfir.code}
+			.col-1.text-right: h3 #{order.ordfirs[0].pdfir.code}
 			.col-2: h3 #{order.ordfirs[0].pdfir.nome}
-			.col-2: h3 #{order.cter.nome}
-			.col-4.text-right
+			.col-3.text-right: h3#cterBtn #{order.cter.nome}
+			.col-2
+				#formCters
+					input#ajaxCters.form-control(type="text", placeholder='客户名称或编号', autocomplete="off")
+			.col-2.text-right
 				if order.status == 5
 					-a;
 					span [状态：正在处理 (#{order.status})]
 				else
 					span [状态：历史记录 (#{order.status})]
 		.info.infoQuot
+			.ctersAjax.row.my-3
 			.row
 				.col-2
 					h2 订单
@@ -29,5 +33,6 @@ block content
 		div.noprint(style="height:100px")
 		a.noprint.btn.btn-danger(href="/bsOrderDel/"+order._id) 删除
 
+	script(src="/js/bser/order/update/cter.js")
 	script(src="/js/bser/order/update/upthd.js")
 	script(src="/js/bser/order/update/addsec.js")

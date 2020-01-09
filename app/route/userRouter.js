@@ -113,6 +113,8 @@ module.exports = function(app){
 	app.get('/bsOrderProdsAjax', MdRole.bserIsLogin, Order.bsOrderProdsAjax);
 
 	app.get('/bsOrderUp/:id', MdRole.bserIsLogin, Order.bsOrderUp);
+	
+	app.get('/bsOrderRelCterAjax', MdRole.bserIsLogin, Order.bsOrderRelCterAjax);
 
 	app.get('/bsOrder/:id', MdRole.bserIsLogin, Order.bsOrderFilter, Order.bsOrder);
 
@@ -164,6 +166,8 @@ module.exports = function(app){
 	app.get('/bsMachinProdsAjax', MdRole.bserIsLogin, Machin.bsMachinProdsAjax);
 
 	app.get('/bsMachinUp/:id', MdRole.bserIsLogin, Machin.bsMachinUp);
+
+	app.get('/bsMachinRelFderAjax', MdRole.bserIsLogin, Machin.bsMachinRelFderAjax);
 
 	app.get('/bsMachin/:id', MdRole.bserIsLogin, Machin.bsMachinFilter, Machin.bsMachin);
 
@@ -217,6 +221,8 @@ module.exports = function(app){
 	app.get('/bsTintProdsAjax', MdRole.bserIsLogin, Tint.bsTintProdsAjax);
 
 	app.get('/bsTintUp/:id', MdRole.bserIsLogin, Tint.bsTintUp);
+
+	app.get('/bsTintRelTnerAjax', MdRole.bserIsLogin, Tint.bsTintRelTnerAjax);
 
 	app.get('/bsTint/:id', MdRole.bserIsLogin, Tint.bsTintFilter, Tint.bsTint);
 

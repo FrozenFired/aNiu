@@ -5,16 +5,20 @@ block content
 		input#tintId(type="hidden", value=tint._id)
 		.row.border-bottom.mb-4.py-3#optBtn.noprint
 			.col-2: h3 #{tint.code}
-			.col-2: h3 #{tint.tinfirs[0].pdfir.code}
+			.col-1.text-right: h3 #{tint.tinfirs[0].pdfir.code}
 			.col-2: h3 #{tint.tinfirs[0].pdfir.nome}
-			.col-2: h3 #{tint.tner.nome}
-			.col-4.text-right
+			.col-3.text-right: h3#tnerBtn #{tint.tner.nome}
+			.col-2
+				#formTners
+					input#ajaxTners.form-control(type="text", placeholder='染洗厂名称或编号', autocomplete="off")
+			.col-2.text-right
 				if tint.status == 5
 					-a;
 					span [状态：正在处理 (#{tint.status})]
 				else
 					span [状态：历史记录 (#{tint.status})]
 		.info.infoQuot
+			.tnersAjax.row.my-3
 			.row
 				.col-2
 					h2 订单
@@ -29,5 +33,6 @@ block content
 		div.noprint(style="height:100px")
 		a.noprint.btn.btn-danger(href="/bsTintDel/"+tint._id) 删除
 
+	script(src="/js/bser/tint/update/tner.js")
 	script(src="/js/bser/tint/update/upthd.js")
 	script(src="/js/bser/tint/update/addsec.js")

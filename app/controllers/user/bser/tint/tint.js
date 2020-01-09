@@ -128,6 +128,45 @@ exports.bsTintUp = function(req, res) {
 
 
 
+exports.bsTintRelTnerAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let tintId = req.query.tintId
+	let tnerId = req.query.tnerId
+	
+	Tint.findOne({_id: tintId}, function(err, tint){
+		if(err) {
+			console.log(err);
+			info = "bsTintRelTnerAjax, Tint.findOne, Error!"
+			res.json({success: 0, info: info})
+		} else if(!tint) {
+			info = "没有找到订单， 请刷新重试!"
+			res.json({success: 0, info: info})
+		} else {
+			Tner.findOne({_id: tnerId}, function(err, tner) {
+				if(err) {
+					console.log(err);
+					info = "bsTintRelTnerAjax, Tner.findOne, Error!"
+					res.json({success: 0, info: info})
+				} else if(!tner) {
+					info = "没有找到选择的客户， 请刷新重试!"
+					res.json({success: 0, info: info})
+				} else {
+					tint.tner = tner._id;
+					tint.save(function(err, tintSv){
+						if(err) {
+							console.log(err);
+							info = "bsTintRelTnerAjax, tint.save, Error!"
+							res.json({success: 0, info: info})
+						} else {
+							res.json({success: 1})
+						}
+					})
+				}
+			})
+		}
+	})
+}
+
 
 
 

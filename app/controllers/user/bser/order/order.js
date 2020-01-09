@@ -116,6 +116,46 @@ exports.bsOrderUp = function(req, res) {
 
 
 
+exports.bsOrderRelCterAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let orderId = req.query.orderId
+	let cterId = req.query.cterId
+	
+	Order.findOne({_id: orderId}, function(err, order){
+		if(err) {
+			console.log(err);
+			info = "bsOrderRelCterAjax, Order.findOne, Error!"
+			res.json({success: 0, info: info})
+		} else if(!order) {
+			info = "没有找到订单， 请刷新重试!"
+			res.json({success: 0, info: info})
+		} else {
+			Cter.findOne({_id: cterId}, function(err, cter) {
+				if(err) {
+					console.log(err);
+					info = "bsOrderRelCterAjax, Cter.findOne, Error!"
+					res.json({success: 0, info: info})
+				} else if(!cter) {
+					info = "没有找到选择的客户， 请刷新重试!"
+					res.json({success: 0, info: info})
+				} else {
+					order.cter = cter._id;
+					order.save(function(err, orderSv){
+						if(err) {
+							console.log(err);
+							info = "bsOrderRelCterAjax, order.save, Error!"
+							res.json({success: 0, info: info})
+						} else {
+							res.json({success: 1})
+						}
+					})
+				}
+			})
+		}
+	})
+}
+
+
 
 
 exports.bsOrderDel = function(req, res) {

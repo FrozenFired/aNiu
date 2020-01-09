@@ -135,6 +135,46 @@ exports.bsMachinUp = function(req, res) {
 
 
 
+exports.bsMachinRelFderAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let machinId = req.query.machinId
+	let fderId = req.query.fderId
+	
+	Machin.findOne({_id: machinId}, function(err, machin){
+		if(err) {
+			console.log(err);
+			info = "bsMachinRelFderAjax, Machin.findOne, Error!"
+			res.json({success: 0, info: info})
+		} else if(!machin) {
+			info = "没有找到订单， 请刷新重试!"
+			res.json({success: 0, info: info})
+		} else {
+			Fder.findOne({_id: fderId}, function(err, fder) {
+				if(err) {
+					console.log(err);
+					info = "bsMachinRelFderAjax, Fder.findOne, Error!"
+					res.json({success: 0, info: info})
+				} else if(!fder) {
+					info = "没有找到选择的客户， 请刷新重试!"
+					res.json({success: 0, info: info})
+				} else {
+					machin.fder = fder._id;
+					machin.save(function(err, machinSv){
+						if(err) {
+							console.log(err);
+							info = "bsMachinRelFderAjax, machin.save, Error!"
+							res.json({success: 0, info: info})
+						} else {
+							res.json({success: 1})
+						}
+					})
+				}
+			})
+		}
+	})
+}
+
+
 
 
 

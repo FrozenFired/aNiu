@@ -2,18 +2,23 @@ extends ../../aalayout/layout
 
 block content
 	.container.mt-5
+		input#machinId(type="hidden", value=machin._id)
 		.row.bmachin-bottom.mb-4.py-3#optBtn.noprint
 			.col-2: h3 #{machin.code}
-			.col-2: h3 #{machin.macfirs[0].pdfir.code}
+			.col-1.text-right: h3 #{machin.macfirs[0].pdfir.code}
 			.col-2: h3 #{machin.macfirs[0].pdfir.nome}
-			.col-2: h3 #{machin.fder.nome}
-			.col-4.text-right
+			.col-3.text-right: h3#fderBtn #{machin.fder.nome}
+			.col-2
+				#formFders
+					input#ajaxFders.form-control(type="text", placeholder='工厂名称或编号', autocomplete="off")
+			.col-2.text-right
 				if machin.status == 5
 					-a;
 					span [状态：正在处理 (#{machin.status})]
 				else
 					span [状态：历史记录 (#{machin.status})]
 		.info.infoQuot
+			.fdersAjax.row.my-3
 			.row
 				.col-2
 					h2 生产单
@@ -28,5 +33,6 @@ block content
 		div.noprint(style="height:100px")
 		a.noprint.btn.btn-danger(href="/bsMachinDel/"+machin._id) 删除
 
+	script(src="/js/bser/machin/update/fder.js")
 	script(src="/js/bser/machin/update/upthd.js")
 	script(src="/js/bser/machin/update/addsec.js")
