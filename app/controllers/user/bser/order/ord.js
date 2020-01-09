@@ -62,9 +62,9 @@ exports.bsOrdHis = function(req, res) {
 	let crUser = req.session.crUser;
 
 	let symAtFm = "$gte";
-	let condAtFm = new Date(new Date().setHours(0, 0, 0, 0))
 	let symAtTo = "$lte";
-	let condAtTo = new Date(new Date().setHours(23, 59, 59, 0)) 
+	let condAtTo = new Date(new Date().setHours(23, 59, 59, 0))
+	let condAtFm = (condAtTo - Conf.hisDays*24*60*60*1000)
 	if(req.query.atFm && req.query.atFm.length == 10){
 		symAtFm = "$gte";   // $ ne eq gte gt lte lt
 		condAtFm = new Date(req.query.atFm).setHours(0,0,0,0);
@@ -88,7 +88,7 @@ exports.bsOrdHis = function(req, res) {
 		'firm': crUser.firm,
 		'cter': {[symCter]: condCter},
 		'status': 10,
-		// 'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
+		'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
 	})
 	.populate('cter', 'nome')
 	.populate({path: 'ordfirs', populate: [
@@ -101,10 +101,13 @@ exports.bsOrdHis = function(req, res) {
 			info = "bsOrders, User.find, Error";
 			Err.usError(req, res, info);
 		} else {
+			// console.log(orders.length)
 			res.render('./user/bser/order/order10', {
 				title : '订单记录',
 				crUser: crUser,
-				orders : orders,
+				orders: orders,
+				atFm  : condAtFm,
+				atTo  : condAtTo,
 			});
 		}
 	})

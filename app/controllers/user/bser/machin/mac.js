@@ -183,9 +183,9 @@ exports.bsMacHis = function(req, res) {
 	let crUser = req.session.crUser;
 
 	let symAtFm = "$gte";
-	let condAtFm = new Date(new Date().setHours(0, 0, 0, 0))
 	let symAtTo = "$lte";
-	let condAtTo = new Date(new Date().setHours(23, 59, 59, 0)) 
+	let condAtTo = new Date(new Date().setHours(23, 59, 59, 0))
+	let condAtFm = (condAtTo - Conf.hisDays*24*60*60*1000)
 	if(req.query.atFm && req.query.atFm.length == 10){
 		symAtFm = "$gte";   // $ ne eq gte gt lte lt
 		condAtFm = new Date(req.query.atFm).setHours(0,0,0,0);
@@ -209,7 +209,7 @@ exports.bsMacHis = function(req, res) {
 		'firm': crUser.firm,
 		'fder': {[symFder]: condFder},
 		'status': 10,
-		// 'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
+		'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
 	})
 	.populate('fder', 'nome')
 	.populate({path: 'macfirs', populate: [
@@ -230,6 +230,8 @@ exports.bsMacHis = function(req, res) {
 				title : '生产单记录',
 				crUser: crUser,
 				machins : machins,
+				atFm  : condAtFm,
+				atTo  : condAtTo,
 			});
 		}
 	})

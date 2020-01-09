@@ -20,6 +20,8 @@ let Conf = {
 
 	usLang: {0: '中文', 1: 'English', 2: 'Italiano'},
 
+	hisDays: 8,
+
 	sizes: {
 		5: '4XS', 6: 'XXXS', 7: 'XXS', 8: 'XS', 9: 'S', 
 		10: 'M', 

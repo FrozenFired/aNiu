@@ -1,6 +1,6 @@
 tr
 	th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
-	th #{machin.fder.nome}
+	th: a(href="/bsFder/"+machin.fder._id) #{machin.fder.nome}
 	th.bg-light 半成品
 	each size in machin.sizes
 		-let quot = '';

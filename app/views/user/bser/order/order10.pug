@@ -1,6 +1,8 @@
 extends ../aalayout/layout
 
 block content
+	div(style="height:50px")
+
 	input#order(type="hidden", value=order)
 	input#sizes(type="hidden", value=Conf.sizes)
 	.m-5
@@ -8,6 +10,23 @@ block content
 	div(style="height: 80px")
 	.text-center.pt-2#bsOrds(style="position: fixed;bottom: 0px;right: 0px;width:100%; height:50px; background: #C0C0C0") <span class="oi oi-chevron-bottom"></span>
 
+	.topNav-second.p-1
+		.row
+			.col-md-7
+			.col-md-2.text-center.cncCter.pt-2 <span class="oi oi-person"></span>
+			.col-md-1
+				input#atFm.datepicker.form-control(type="text",readonly="readonly", value=moment(atFm).format('MM/DD/YYYY'))
+			.col-md-1
+				input#atTo.datepicker.form-control(type="text", readonly="readonly", value=moment(atTo).format('MM/DD/YYYY'))
+			.col-md-1.text-right
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	//- <link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	//- timepicker
+	link(rel="stylesheet", href="/libs/jt.timepicker/jquery.timepicker.css")
+	script(src="/libs/jt.timepicker/jquery.timepicker.min.js")
+
 	script(src="/const/const.js")
 	script(src="/js/bser/pagejump.js")
-	script(src="/js/bser/order/send.js")
+	script(src="/js/bser/order/list/list10.js")

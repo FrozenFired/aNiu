@@ -160,9 +160,9 @@ exports.bsTinHis = function(req, res) {
 	let crUser = req.session.crUser;
 
 	let symAtFm = "$gte";
-	let condAtFm = new Date(new Date().setHours(0, 0, 0, 0))
 	let symAtTo = "$lte";
-	let condAtTo = new Date(new Date().setHours(23, 59, 59, 0)) 
+	let condAtTo = new Date(new Date().setHours(23, 59, 59, 0))
+	let condAtFm = (condAtTo - Conf.hisDays*24*60*60*1000)
 	if(req.query.atFm && req.query.atFm.length == 10){
 		symAtFm = "$gte";   // $ ne eq gte gt lte lt
 		condAtFm = new Date(req.query.atFm).setHours(0,0,0,0);
@@ -186,7 +186,7 @@ exports.bsTinHis = function(req, res) {
 		'firm': crUser.firm,
 		'tner': {[symTner]: condTner},
 		'status': 10,
-		// 'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
+		'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
 	})
 	.populate('tner', 'nome')
 	.populate({path: 'tinfirs', populate: [
@@ -206,6 +206,8 @@ exports.bsTinHis = function(req, res) {
 				title : '染洗单记录',
 				crUser: crUser,
 				tints : tints,
+				atFm  : condAtFm,
+				atTo  : condAtTo,
 			});
 		}
 	})
