@@ -1,4 +1,4 @@
-extends ../aalayout/layout
+extends ../../aalayout/layout
 
 block content
 	div(style="height:50px")
@@ -6,12 +6,9 @@ block content
 		input#pdfir(type="hidden", value=pdfir)
 	.mx-5
 		.row
-			.col-sm-2.mt-5.text-right
-				h2: a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
-				button.btn.btn-warning#editStockBtn(type="button") <span class="oi oi-pencil"></span> 
-				button.btn.btn-info#fnStockBtn(type="button", style="display:none") <span class="oi oi-browser"></span>
-				//- h3 Name:#{pdfir.nome} | Mat:#{pdfir.material} 
-				//- img(src=pdfir.photo, width="80%", style="display:none")
+			.col-sm-2.mt-5
+				include ./basic0Info
+				
 			.col-sm-6.mt-5.tblDial(style="display:block")
 				table.table
 					tr
@@ -39,11 +36,11 @@ block content
 								- let needMac=quotOthd - pdthd.stock - quotMthd;
 								- let showThdStock = parseInt(pdthd.stock) + shipMthd - shipOthd;
 								td
-									include ./detail/tdCont0
+									include ./tdCont0
 				.option.mt-5(style="display:none")
-					include ./detail/option
+					include ./option
 			.col-md-4.text-center
-				include ./detail/pdimg
+				include ./pdimg
 		.row.mt-5
 			//- h2 hordthd
 			each hordfir in pdfir.hordfirs
@@ -67,10 +64,14 @@ block content
 				button.pdNav#machin.btn.btn-default(type="button") 在产
 				span &nbsp; &nbsp;
 				button#option.btn.btn-warning(type="button") <span class="oi oi-cog"></span>
+				span &nbsp; &nbsp;
+				button.btn.btn-warning#editStockBtn(type="button") <span class="oi oi-pencil"></span> 
+				button.btn.btn-info#fnStockBtn(type="button", style="display:none") <span class="oi oi-browser"></span>
 			.col-4
 				form.ajaxForm
 					input.ajaxKey.productcode.form-control(type="text", autocomplete="off")
 	script(src="/const/const.js")
+	script(src="/js/bser/product/detail/update.js")
 	script(src="/js/bser/product/detail/detail.js")
 	script(src="/js/bser/product/detail/option.js")
 	script(src="/js/bser/product/detail/pdImg.js")

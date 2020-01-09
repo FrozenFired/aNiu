@@ -62,6 +62,8 @@ module.exports = function(app){
 	app.post('/bsProductNew', MdRole.bserIsLogin, postForm,
 		MdPicture.addNewPhoto, Product.bsProductNew)
 
+	app.post('/bsProductUpd', MdRole.bserIsLogin, postForm, Product.bsProductUpd)
+		
 	app.get('/bsProduct/:id', MdRole.bserIsLogin, Product.bsProdFilter, Product.bsProduct)
 	/* ------------------------------ product ------------------------------ */
 

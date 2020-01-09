@@ -241,9 +241,34 @@ let bsProductSave = function(res, pdfir, dbs, n) {
 
 
 
-
-
-
+exports.bsProductUpd = function(req, res, next) {
+	let crUser = req.session.crUser;
+	let obj = req.body.obj;
+	if(obj.price) obj.price = parseFloat(obj.price);
+	if(obj.macCost) obj.macCost = parseFloat(obj.macCost);
+	if(obj.tinCost) obj.tinCost = parseFloat(obj.tinCost);
+	Pdfir.findOne({_id: obj._id}, function(err, pdfir) {
+		if(err) {
+			console.log(err);
+			info = "bsProductUpd, Pdfir.findOne, Error！";
+			Err.usError(req, res, info);
+		} else if(!pdfir) {
+			info = "数据库中没有此模特, 刷新查看";
+			Err.usError(req, res, info);
+		} else {
+			let _pdfir = _.extend(pdfir, obj)
+			_pdfir.save(function(err, pdfirSave) {
+				if(err) {
+					console.log(err);
+					info = "bsProductUpd, _pdfir.save, Error！";
+					Err.usError(req, res, info);
+				} else {
+					res.redirect('/bsProduct/'+pdfirSave._id)
+				}
+			})
+		}
+	})
+}
 
 
 
@@ -316,7 +341,7 @@ exports.bsProduct = function(req, res) {
 		objBody.thisAct = "/bsProd";
 		objBody.title = '模特信息';
 		let detail = 'detail'+pdfir.semi;
-		res.render('./user/bser/product/'+detail, objBody);
+		res.render('./user/bser/product/detail/'+detail, objBody);
 	})
 }
 
