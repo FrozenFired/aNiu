@@ -3,8 +3,38 @@ extends ../aalayout/layout
 block content
 	.m-5
 		.row
-			.col-12
-				h3 #{tner.code} &nbsp; #{tner.nome} &nbsp; #{tner.tel}
+			.col-10
+				.row#info
+					.col-12: h4 编号: #{tner.code}
+					.col-12: h4 名字: #{tner.nome}
+					.col-12: h4 电话: #{tner.tel}
+				form#editForm(method="post", action="/bsTnerUpd", enctype="multipart/form-data", style="display:none")
+					input(type="hidden", name="obj[_id]", value=tner._id)
+					.form-group.row
+						label.col-sm-2.col-form-label(for="iptCode") 编号
+						.col-sm-6
+							input#iptCode.form-control(type="text", name="obj[code]", value=tner.code, autocomplete="off")
+					.form-group.row
+						label.col-sm-2.col-form-label(for="iptNome").text-info 名字
+						.col-sm-6
+							input#iptNome.form-control(type="text", name="obj[nome]", autocomplete="off", value=tner.nome)
+						.col-sm-4
+							span#optName(style="display:none").text-danger 已经存在！换个名称
+					.form-group.row
+						label.col-sm-2.col-form-label(for="iptTel").text-info 电话
+						.col-sm-6
+							input#iptTel.form-control(type="text", name="obj[tel]", autocomplete="off", value=tner.tel)
+					.form-group.row
+						.col-sm-2
+							if tner.tints.length == 0
+								-a;
+								a.btn.btn-danger(href="/bsTnerDel/"+tner._id) 删除
+						.col-sm-6
+							input.btn.btn-info.btn-block(type="submit" value='提交')
+			.col-2
+				button.btn.btn-warning#editBtn(type="button") <span class="oi oi-pencil"></span>	
+				button.btn.btn-secondary#infoBtn(type="button", style="display:none") <span class="oi oi-x"></span>
+		hr
 		.row
 			each tint in tner.tints
 				-a;
@@ -74,3 +104,4 @@ block content
 										if tinthdId
 
 											span.text-info #{ship}
+	script(src="/js/bser/tner/update.js")

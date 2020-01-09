@@ -106,12 +106,12 @@ exports.bsFder = function(req, res) {
 
 
 exports.bsFderDel = function(req, res) {
-	let tner = req.body.tner;
-	if(tner.bills && tner.bills.length > 0) {
-		info = "此工厂还有未付清的账款,不可以删除";
+	let fder = req.body.fder;
+	if(fder.machins && fder.machins.length > 0) {
+		info = "此工厂还有生产单,不可以删除";
 		Err.usError(req, res, info);
 	} else {
-		Fder.deleteOne({_id: tner._id}, function(err, objRm) { if(err) {
+		Fder.deleteOne({_id: fder._id}, function(err, objRm) { if(err) {
 			info = "bs删除工厂时, 工厂数据库删除错误, 请联系管理员";
 			Err.usError(req, res, info);
 		} else {
@@ -131,8 +131,8 @@ exports.bsFderDelAjax = function(req, res) {
 	} else if(object.firm != crUser.firm){
 		res.json({success: 0, info: "操作错误,请联系管理员! bsFderDelAjax, object.firm != crUser.firm"})
 	} else {
-		if(object.bills && object.bills.length > 0) {
-			res.json({success: 0, info: "此工厂还有未付清的账款,不可以删除"})
+		if(object.machins && object.machins.length > 0) {
+			res.json({success: 0, info: "此工厂还有生产单,不可以删除"})
 		} else {
 			Fder.deleteOne({_id: object._id}, function(err, objRm) { if(err) {
 				res.json({success: 0, info: "bsFderDelAjax, Fder.deleteOne,Error!"})

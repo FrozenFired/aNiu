@@ -106,8 +106,8 @@ exports.bsCter = function(req, res) {
 
 exports.bsCterDel = function(req, res) {
 	let cter = req.body.cter;
-	if(cter.bills && cter.bills.length > 0) {
-		info = "此客户还有未付清的账款,不可以删除";
+	if(cter.orders && cter.orders.length > 0) {
+		info = "此客户还有订单,不可以删除";
 		Err.usError(req, res, info);
 	} else {
 		Cter.deleteOne({_id: cter._id}, function(err, objRm) { if(err) {
@@ -130,8 +130,8 @@ exports.bsCterDelAjax = function(req, res) {
 	} else if(object.firm != crUser.firm){
 		res.json({success: 0, info: "操作错误,请联系管理员! bsCterDelAjax, object.firm != crUser.firm"})
 	} else {
-		if(object.bills && object.bills.length > 0) {
-			res.json({success: 0, info: "此客户还有未付清的账款,不可以删除"})
+		if(object.orders && object.orders.length > 0) {
+			res.json({success: 0, info: "此客户还有订单,不可以删除"})
 		} else {
 			Cter.deleteOne({_id: object._id}, function(err, objRm) { if(err) {
 				res.json({success: 0, info: "bsCterDelAjax, Cter.deleteOne,Error!"})

@@ -3,8 +3,38 @@ extends ../aalayout/layout
 block content
 	.m-5
 		.row
-			.col-12
-				h3 #{cter.code} &nbsp; #{cter.nome} &nbsp; #{cter.tel}
+			.col-10
+				.row#info
+					.col-12: h4 编号: #{cter.code}
+					.col-12: h4 名字: #{cter.nome}
+					.col-12: h4 电话: #{cter.tel}
+				form#editForm(method="post", action="/bsCterUpd", enctype="multipart/form-data", style="display:none")
+					input(type="hidden", name="obj[_id]", value=cter._id)
+					.form-group.row
+						label.col-sm-2.col-form-label(for="iptCode") 编号
+						.col-sm-6
+							input#iptCode.form-control(type="text", name="obj[code]", value=cter.code, autocomplete="off")
+					.form-group.row
+						label.col-sm-2.col-form-label(for="iptNome").text-info 名字
+						.col-sm-6
+							input#iptNome.form-control(type="text", name="obj[nome]", autocomplete="off", value=cter.nome)
+						.col-sm-4
+							span#optName(style="display:none").text-danger 已经存在！换个名称
+					.form-group.row
+						label.col-sm-2.col-form-label(for="iptTel").text-info 电话
+						.col-sm-6
+							input#iptTel.form-control(type="text", name="obj[tel]", autocomplete="off", value=cter.tel)
+					.form-group.row
+						.col-sm-2
+							if cter.orders.length == 0
+								-a;
+								a.btn.btn-danger(href="/bsCterDel/"+cter._id) 删除
+						.col-sm-6
+							input.btn.btn-info.btn-block(type="submit" value='提交')
+			.col-2
+				button.btn.btn-warning#editBtn(type="button") <span class="oi oi-pencil"></span>	
+				button.btn.btn-secondary#infoBtn(type="button", style="display:none") <span class="oi oi-x"></span>
+		hr
 		.row
 			each order in cter.orders
 				-a;
@@ -74,3 +104,4 @@ block content
 										if ordthdId
 
 											span.text-info #{ship}
+	script(src="/js/bser/cter/update.js")

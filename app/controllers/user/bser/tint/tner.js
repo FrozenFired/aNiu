@@ -107,8 +107,8 @@ exports.bsTner = function(req, res) {
 
 exports.bsTnerDel = function(req, res) {
 	let tner = req.body.tner;
-	if(tner.bills && tner.bills.length > 0) {
-		info = "此染洗厂还有未付清的账款,不可以删除";
+	if(tner.tints && tner.tints.length > 0) {
+		info = "此染洗厂还有染洗单,不可以删除";
 		Err.usError(req, res, info);
 	} else {
 		Tner.deleteOne({_id: tner._id}, function(err, objRm) { if(err) {
@@ -131,8 +131,8 @@ exports.bsTnerDelAjax = function(req, res) {
 	} else if(object.firm != crUser.firm){
 		res.json({success: 0, info: "操作错误,请联系管理员! bsTnerDelAjax, object.firm != crUser.firm"})
 	} else {
-		if(object.bills && object.bills.length > 0) {
-			res.json({success: 0, info: "此染洗厂还有未付清的账款,不可以删除"})
+		if(object.tints && object.tints.length > 0) {
+			res.json({success: 0, info: "此染洗厂还有染洗单,不可以删除"})
 		} else {
 			Tner.deleteOne({_id: object._id}, function(err, objRm) { if(err) {
 				res.json({success: 0, info: "bsTnerDelAjax, Tner.deleteOne,Error!"})

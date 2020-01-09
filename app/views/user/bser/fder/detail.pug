@@ -3,8 +3,38 @@ extends ../aalayout/layout
 block content
 	.m-5
 		.row
-			.col-12
-				h3 #{fder.code} &nbsp; #{fder.nome} &nbsp; #{fder.tel}
+			.col-10
+				.row#info
+					.col-12: h4 编号: #{fder.code}
+					.col-12: h4 名字: #{fder.nome}
+					.col-12: h4 电话: #{fder.tel}
+				form#editForm(method="post", action="/bsFderUpd", enctype="multipart/form-data", style="display:none")
+					input(type="hidden", name="obj[_id]", value=fder._id)
+					.form-group.row
+						label.col-sm-2.col-form-label(for="iptCode") 编号
+						.col-sm-6
+							input#iptCode.form-control(type="text", name="obj[code]", value=fder.code, autocomplete="off")
+					.form-group.row
+						label.col-sm-2.col-form-label(for="iptNome").text-info 名字
+						.col-sm-6
+							input#iptNome.form-control(type="text", name="obj[nome]", autocomplete="off", value=fder.nome)
+						.col-sm-4
+							span#optName(style="display:none").text-danger 已经存在！换个名称
+					.form-group.row
+						label.col-sm-2.col-form-label(for="iptTel").text-info 电话
+						.col-sm-6
+							input#iptTel.form-control(type="text", name="obj[tel]", autocomplete="off", value=fder.tel)
+					.form-group.row
+						.col-sm-2
+							if fder.machins.length == 0
+								-a;
+								a.btn.btn-danger(href="/bsFderDel/"+fder._id) 删除
+						.col-sm-6
+							input.btn.btn-info.btn-block(type="submit" value='提交')
+			.col-2
+				button.btn.btn-warning#editBtn(type="button") <span class="oi oi-pencil"></span>	
+				button.btn.btn-secondary#infoBtn(type="button", style="display:none") <span class="oi oi-x"></span>
+		hr
 		.row
 			each machin in fder.machins
 				-a;
@@ -109,3 +139,4 @@ block content
 												span.text-info #{ship}
 													//- span &nbsp; /  
 													//- span.text-warning #{stock}
+	script(src="/js/bser/fder/update.js")
