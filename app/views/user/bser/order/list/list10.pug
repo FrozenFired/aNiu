@@ -43,28 +43,31 @@ each order in orders
 						th
 					th.bg-light #{ordsec.color}
 					each size in order.sizes
+						-let less = '';
 						-let quot = '';
 						each ordthd in ordsec.ordthds
 							if ordthd.size == size
-								- quot = ordthd.quot;
+								- quot = parseInt(ordthd.quot);
+								- less = parseInt(ordthd.quot) - parseInt(ordthd.ship);
 								- break;
-						td #{quot}
+						td
+							if less == 0
+								-a;
+								span #{quot}
+							else
+								span.text-info #{quot}
 					td.bg-secondary
 					each size in order.sizes
 						-let less = '';
-						-let stock = '';
 						-let ship = '';
-						-let ordthdId = '';
 						each ordthd in ordsec.ordthds
 							if ordthd.size == size
-								- ordthdId = ordthd._id;
-								- stock = parseInt(ordthd.pdthd.stock);
 								- ship = parseInt(ordthd.ship);
 								- less = parseInt(ordthd.quot) - ship;
 								- break;
 						td 
-							if ordthdId
-
+							if less == 0
+								-a;
+								span #{ship}
+							else
 								span.text-info #{ship}
-									//- span &nbsp; /  
-									//- span.text-warning #{stock}

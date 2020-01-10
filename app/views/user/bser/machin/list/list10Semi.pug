@@ -3,28 +3,31 @@ tr
 	th: a(href="/bsFder/"+machin.fder._id) #{machin.fder.nome}
 	th.bg-light 半成品
 	each size in machin.sizes
+		-let less = '';
 		-let quot = '';
 		each macsez in macfir.macsezs
 			if macsez.size == size
-				- quot = macsez.quot;
+				- quot = parseInt(macsez.quot);
+				- less = parseInt(macsez.quot) - parseInt(macsez.ship);
 				- break;
-		td #{quot}
+		td
+			if less == 0
+				-a;
+				span #{quot}
+			else
+				span.text-info #{quot}
 	td.bg-secondary
 	each size in machin.sizes
 		-let less = '';
-		-let stock = '';
 		-let ship = '';
-		-let macsezId = '';
 		each macsez in macfir.macsezs
 			if macsez.size == size
-				- macsezId = macsez._id;
-				- stock = parseInt(macsez.pdsez.stock);
 				- ship = parseInt(macsez.ship);
 				- less = parseInt(macsez.quot) - ship;
 				- break;
 		td 
-			if macsezId
-
+			if less == 0
+				-a;
+				span #{ship}
+			else
 				span.text-info #{ship}
-					//- span &nbsp; /  
-					//- span.text-warning #{stock}

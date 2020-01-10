@@ -11,28 +11,31 @@ each macsec in macfir.macsecs
 			th
 		th.bg-light #{macsec.pdsec.color}
 		each size in machin.sizes
+			-let less = '';
 			-let quot = '';
 			each macthd in macsec.macthds
 				if macthd.size == size
-					- quot = macthd.quot;
+					- quot = parseInt(macthd.quot);
+					- less = parseInt(macthd.quot) - parseInt(macthd.ship);
 					- break;
-			td #{quot}
+			td
+				if less == 0
+					-a;
+					span #{quot}
+				else
+					span.text-info #{quot}
 		td.bg-secondary
 		each size in machin.sizes
 			-let less = '';
-			-let stock = '';
 			-let ship = '';
-			-let macthdId = '';
 			each macthd in macsec.macthds
 				if macthd.size == size
-					- macthdId = macthd._id;
-					- stock = parseInt(macthd.pdthd.stock);
 					- ship = parseInt(macthd.ship);
 					- less = parseInt(macthd.quot) - ship;
 					- break;
 			td 
-				if macthdId
-
+				if less == 0
+					-a;
+					span #{ship}
+				else
 					span.text-info #{ship}
-						//- span &nbsp; /  
-						//- span.text-warning #{stock}

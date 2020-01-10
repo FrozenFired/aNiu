@@ -43,28 +43,31 @@ each tint in tints
 						th
 					th.bg-light #{tinsec.pdsec.color}
 					each size in tint.sizes
+						-let less = '';
 						-let quot = '';
 						each tinthd in tinsec.tinthds
 							if tinthd.size == size
-								- quot = tinthd.quot;
+								- quot = parseInt(tinthd.quot);
+								- less = parseInt(tinthd.quot) - parseInt(tinthd.ship);
 								- break;
-						td #{quot}
+						td 
+							if less == 0
+								-a;
+								span #{quot}
+							else
+								span.text-info #{quot}
 					td.bg-secondary
 					each size in tint.sizes
 						-let less = '';
-						-let stock = '';
 						-let ship = '';
-						-let tinthdId = '';
 						each tinthd in tinsec.tinthds
 							if tinthd.size == size
-								- tinthdId = tinthd._id;
-								- stock = parseInt(tinthd.pdthd.stock);
 								- ship = parseInt(tinthd.ship);
 								- less = parseInt(tinthd.quot) - ship;
 								- break;
 						td 
-							if tinthdId
-
+							if less == 0
+								-a;
+								span #{ship}
+							else
 								span.text-info #{ship}
-									//- span &nbsp; /  
-									//- span.text-warning #{stock}
