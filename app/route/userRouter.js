@@ -131,6 +131,7 @@ module.exports = function(app){
 	app.post('/bsOrdthdDelPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrdthdDelPdAjax);
 	/* -------------------------------------- ordthd -------------------------------------- */
 	app.get('/bsOrdsecNewPdAjax', MdRole.bserIsLogin, Ordthd.bsOrdsecNewPdAjax);
+	app.get('/bsOrdsecNewPdAjax', MdRole.bserIsLogin, Ordthd.bsOrdsecNewPdAjax);
 	/* ======================================== order ======================================== */
 
 
@@ -234,6 +235,7 @@ module.exports = function(app){
 	// order删除prod
 	app.post('/bsTinthdDelPdAjax', MdRole.bserIsLogin, postForm, Tinthd.bsTinthdDelPdAjax);
 	/* -------------------------------------- tinthd -------------------------------------- */
+	app.get('/bsTinsecNewPdAjax', MdRole.bserIsLogin, Tinthd.bsTinsecNewPdAjax);
 	/* ======================================== Tint ======================================== */
 
 };
