@@ -43,6 +43,7 @@ $(function() {
 	/* ======= 提交添加新颜色表格时, 判断颜色是否重复 ======= */
 	$("#newColorForm").submit(function(e) {
 		let color = $("#plusColor").val();
+		$("#plusColor").val(color.replace(/\s+/g,""));
 		if(!color || color.length < 0) {
 			alert("请添加颜色，再提交");
 			e.preventDefault();

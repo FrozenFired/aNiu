@@ -30,16 +30,20 @@ $(function(){
 		let icon = strs[1];
 		let tintId = strs[2];
 		let pdsecId = $("#pdsec-"+icon+"-"+color).val();
-		$.ajax({
-			type: "GET",
-			url: '/bsTinsecNewPdAjax?tint='+tintId+'&pdsec='+pdsecId,
-			success: function(results) {
-				if(results.success == 1) {
-				} else {
-					alert(results.info);
+		if(tintId && pdsecId) {
+			$.ajax({
+				type: "GET",
+				url: '/bsTinsecNewPdAjax?tint='+tintId+'&pdsec='+pdsecId,
+				success: function(results) {
+					if(results.success == 1) {
+					} else {
+						alert(results.info);
+					}
+					window.location.reload();
 				}
-				window.location.reload();
-			}
-		});
+			});
+		} else {
+			alert('染洗单添加颜色错误, 请联系管理员!');
+		}
 	})
 })

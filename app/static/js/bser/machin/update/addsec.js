@@ -30,16 +30,20 @@ $(function(){
 		let icon = strs[1];
 		let machinId = strs[2];
 		let pdsecId = $("#pdsec-"+icon+"-"+color).val();
-		$.ajax({
-			type: "GET",
-			url: '/bsMacsecNewPdAjax?machin='+machinId+'&pdsec='+pdsecId,
-			success: function(results) {
-				if(results.success == 1) {
-				} else {
-					alert(results.info);
+		if(machinId && pdsecId) {
+			$.ajax({
+				type: "GET",
+				url: '/bsMacsecNewPdAjax?machin='+machinId+'&pdsec='+pdsecId,
+				success: function(results) {
+					if(results.success == 1) {
+					} else {
+						alert(results.info);
+					}
+					window.location.reload();
 				}
-				window.location.reload();
-			}
-		});
+			});
+		} else {
+			alert('生产单添加颜色错误, 请联系管理员!');
+		}
 	})
 })
