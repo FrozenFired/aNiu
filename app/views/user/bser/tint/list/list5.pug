@@ -5,19 +5,18 @@ each tint in tints
 
 	each tinfir in tint.tinfirs
 		-a;
-		table.table.table-btinted.text-center
+		table.table.table-bordered.text-center
 			tr(class=textTime)
-				th(width="10%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
+				th(width="7%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
 				th(width="8%") 收货日期
 				th(width="5%") 生产
-				th(colspan=tint.sizes.length, width="25%")
-					a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
-				th.bg-secondary(width="2%")
-				th(colspan=tint.sizes.length)
+				th(colspan=tint.sizes.length*2+1)
 					.row
-						.col-6
+						.col-4
+							a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
+						.col-4.text-right
 							button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+tint._id) 收货
-						.col-6
+						.col-4.text-right
 							form(method="post", action="/bsTinChangeSts", enctype="multipart/form-data")
 								input(type="hidden", name="tintId", value=tint._id)
 								input(type="hidden", name="target", value="bsTintFinish")
@@ -29,7 +28,7 @@ each tint in tints
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}
-				th.bg-secondary
+				th.bg-secondary(width="2%")
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}

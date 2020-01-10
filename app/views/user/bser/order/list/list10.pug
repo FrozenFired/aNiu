@@ -3,18 +3,16 @@ each order in orders
 
 	each ordfir in order.ordfirs
 		-a;
-		table.table.table-bordered.text-center
+		table.table.text-center
 			tr(class=txtSatus)
-				th(width="10%") #{moment(order.ctAt).format('MM/DD/YYYY')}
+				th(width="7%") #{moment(order.ctAt).format('MM/DD/YYYY')}
 				th(width="8%") #{moment(order.fnAt).format('MM/DD/YYYY')}
 				th(width="5%") 生产
-				th(colspan=order.sizes.length, width="25%")
-					a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
-				th.bg-secondary(width="2%")
-				th(colspan=order.sizes.length)
+				th(colspan=order.sizes.length*2+1)
 					.row
 						.col-6
-						.col-6
+							a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
+						.col-6.text-right
 							form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
 								input(type="hidden", name="orderId", value=order._id)
 								input(type="hidden", name="target", value="bsOrderBack")
@@ -26,7 +24,7 @@ each order in orders
 				each size in order.sizes
 					-a;
 					th #{Conf.sizes[size]}
-				th.bg-secondary
+				th.bg-secondary(width="2%")
 				each size in order.sizes
 					-a;
 					th #{Conf.sizes[size]}
