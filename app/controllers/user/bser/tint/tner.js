@@ -57,7 +57,7 @@ exports.bsTners = function(req, res) {
 				info = "bsTners, Tner.find, Error！";
 				Err.usError(req, res, info);
 			} else {
-				res.render('./user/bser/tner/list', {
+				res.render('./user/bser/tint/tner/list', {
 					title: '染洗厂',
 					crUser : crUser,
 					tners: tners,
@@ -101,7 +101,7 @@ exports.bsTner = function(req, res) {
 	objBody.crUser = crUser;
 	objBody.thisAct = "/bsTner";
 
-	res.render('./user/bser/tner/detail', objBody);
+	res.render('./user/bser/tint/tner/detail', objBody);
 }
 
 
@@ -198,7 +198,7 @@ exports.bsTnerAdd =function(req, res) {
 		}
 		let code = count;
 		let tintId = req.query.tint;
-		res.render('./user/bser/tner/add', {
+		res.render('./user/bser/tint/tner/add', {
 			title: '新染洗厂',
 			crUser : req.session.crUser,
 			code: code,

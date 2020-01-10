@@ -1,4 +1,4 @@
-extends ../aalayout/layout
+extends ../../aalayout/layout
 
 block content
 	.m-5
@@ -34,23 +34,22 @@ block content
 			.col-2
 				button.btn.btn-warning#editBtn(type="button") <span class="oi oi-pencil"></span>	
 				button.btn.btn-secondary#infoBtn(type="button", style="display:none") <span class="oi oi-x"></span>
-		hr
-		.row
+		.row.mt-5
 			each tint in tner.tints
-				-a;
+				- let txtSatus = "text-info";
+				if tint.status == 10
+					- txtSatus = "text-secondary";
 				each tinfir in tint.tinfirs
 					-a;
-					table.table.table-border.text-center.mt-4
-						tr(class=txtSatus)
-							th(width="10%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
+					table.table.text-center.mt-4(class=txtSatus)
+						tr
+							th(width="8%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
 							th(width="8%") #{moment(tint.fnAt).format('MM/DD/YYYY')}
-							th(width="5%") 生产
-							th(colspan=tint.sizes.length, width="25%")
-								a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
-							th.bg-secondary(width="2%")
-							th(colspan=tint.sizes.length)
+							th(width="9%") 生产
+							th(colspan=tint.sizes.length*2+1)
 								.row
 									.col-6
+										a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
 									.col-6
 										if tint.status == 5
 											-a;
@@ -64,7 +63,7 @@ block content
 							each size in tint.sizes
 								-a;
 								th #{Conf.sizes[size]}
-							th.bg-secondary
+							th.bg-secondary(width="2%")
 							each size in tint.sizes
 								-a;
 								th #{Conf.sizes[size]}
@@ -79,7 +78,7 @@ block content
 								else
 									th
 									th
-								th.bg-light #{tinsec.color}
+								th.bg-light #{tinsec.pdsec.color}
 								each size in tint.sizes
 									-let quot = '';
 									each tinthd in tinsec.tinthds
@@ -89,19 +88,12 @@ block content
 									td #{quot}
 								td.bg-secondary
 								each size in tint.sizes
-									-let less = '';
-									-let stock = '';
 									-let ship = '';
-									-let tinthdId = '';
 									each tinthd in tinsec.tinthds
 										if tinthd.size == size
-											- tinthdId = tinthd._id;
-											- stock = parseInt(tinthd.pdthd.stock);
 											- ship = parseInt(tinthd.ship);
-											- less = parseInt(tinthd.quot) - ship;
 											- break;
 									td 
-										if tinthdId
+										span #{ship}
 
-											span.text-info #{ship}
 	script(src="/js/bser/tner/update.js")

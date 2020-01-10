@@ -57,7 +57,7 @@ exports.bsCters = function(req, res) {
 				info = "bsCters, Cter.find, Error！";
 				Err.usError(req, res, info);
 			} else {
-				res.render('./user/bser/cter/list', {
+				res.render('./user/bser/order/cter/list', {
 					title: '客戶',
 					crUser : crUser,
 					cters: cters,
@@ -100,7 +100,7 @@ exports.bsCter = function(req, res) {
 	objBody.crUser = crUser;
 	objBody.thisAct = "/bsCter";
 
-	res.render('./user/bser/cter/detail', objBody);
+	res.render('./user/bser/order/cter/detail', objBody);
 }
 
 
@@ -197,7 +197,7 @@ exports.bsCterAdd =function(req, res) {
 		}
 		let code = count;
 		let orderId = req.query.order;
-		res.render('./user/bser/cter/add', {
+		res.render('./user/bser/order/cter/add', {
 			title: '新客户',
 			crUser : req.session.crUser,
 			code: code,

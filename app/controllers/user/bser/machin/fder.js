@@ -57,7 +57,7 @@ exports.bsFders = function(req, res) {
 				info = "bsFders, Fder.find, Error！";
 				Err.usError(req, res, info);
 			} else {
-				res.render('./user/bser/fder/list', {
+				res.render('./user/bser/machin/fder/list', {
 					title: '工厂',
 					crUser : crUser,
 					fders: fders,
@@ -101,7 +101,7 @@ exports.bsFder = function(req, res) {
 	objBody.crUser = crUser;
 	objBody.thisAct = "/bsFder";
 
-	res.render('./user/bser/fder/detail', objBody);
+	res.render('./user/bser/machin/fder/detail', objBody);
 }
 
 
@@ -198,7 +198,7 @@ exports.bsFderAdd =function(req, res) {
 		}
 		let code = count;
 		let machinId = req.query.machin;
-		res.render('./user/bser/fder/add', {
+		res.render('./user/bser/machin/fder/add', {
 			title: '新工厂',
 			crUser : req.session.crUser,
 			code: code,

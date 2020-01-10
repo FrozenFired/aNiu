@@ -1,26 +1,26 @@
-extends ../aalayout/layout
+extends ../../aalayout/layout
 
 block content
 	div(style="height:50px")
 
 	.container.mt-3
 		.row
-			each tner in tners
+			each cter in cters
 				-a;
 				.col-sm-6.col-md-4.col-lg-3.mt-3
-					a(href='/bsTner/'+tner._id)
+					a(href='/bsCter/'+cter._id)
 						.card.bg-light.text-center.py-2
-							h5 #{tner.code}
-							h5 #{tner.nome}
+							h5 #{cter.code}
+							h5 #{cter.nome}
 	.topNav-second.p-1
 		.row.text-center
 			.col-1
 				button.btn.btn-info.shield(type="button") <span class="oi oi-shield"></span>
 			.col-2
-				a.btn.btn-block.btn-warning(href="/bsTnerAdd") <span class="oi oi-plus"></span> <span class="oi oi-person"></span>
+				a.btn.btn-block.btn-warning(href="/bsCterAdd") <span class="oi oi-plus"></span> <span class="oi oi-person"></span>
 			.col-5
 			.col-4
 				form.ajaxForm
 					input.ajaxKey.form-control(type="text", autocomplete="off")
 
-	script(src="/js/bser/tner/list.js")
+	script(src="/js/bser/cter/list.js")

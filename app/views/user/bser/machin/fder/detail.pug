@@ -1,4 +1,4 @@
-extends ../aalayout/layout
+extends ../../aalayout/layout
 
 block content
 	.m-5
@@ -34,23 +34,22 @@ block content
 			.col-2
 				button.btn.btn-warning#editBtn(type="button") <span class="oi oi-pencil"></span>	
 				button.btn.btn-secondary#infoBtn(type="button", style="display:none") <span class="oi oi-x"></span>
-		hr
-		.row
+		.row.mt-5
 			each machin in fder.machins
-				-a;
+				- let txtSatus = "text-info";
+				if machin.status == 10
+					- txtSatus = "text-secondary";
 				each macfir in machin.macfirs
 					-a;
-					table.table.table-border.text-center.mt-5
-						tr(class=txtSatus)
-							th(width="10%") #{moment(machin.ctAt).format('MM/DD/YYYY')}
+					table.table.text-center.mt-5(class=txtSatus)
+						tr
+							th(width="8%") #{moment(machin.ctAt).format('MM/DD/YYYY')}
 							th(width="8%") #{moment(machin.fnAt).format('MM/DD/YYYY')}
-							th(width="5%") 生产
-							th(colspan=machin.sizes.length, width="25%")
-								a.btn.btn-link(href="/bsMachin/"+machin._id) #{machin.code}
-							th.bg-secondary(width="2%")
-							th(colspan=machin.sizes.length)
+							th(width="9%") 生产
+							th(colspan=machin.sizes.length*2+1)
 								.row
 									.col-6
+										a.btn.btn-link(href="/bsMachin/"+machin._id) #{machin.code}
 									.col-6
 										if machin.status == 5
 											-a;
@@ -64,7 +63,7 @@ block content
 							each size in machin.sizes
 								-a;
 								th #{Conf.sizes[size]}
-							th.bg-secondary
+							th.bg-secondary(width="2%")
 							each size in machin.sizes
 								-a;
 								th #{Conf.sizes[size]}
@@ -83,23 +82,13 @@ block content
 									td #{quot}
 								td.bg-secondary
 								each size in machin.sizes
-									-let less = '';
-									-let stock = '';
 									-let ship = '';
-									-let macsezId = '';
 									each macsez in macfir.macsezs
 										if macsez.size == size
-											- macsezId = macsez._id;
-											- stock = parseInt(macsez.pdsez.stock);
 											- ship = parseInt(macsez.ship);
-											- less = parseInt(macsez.quot) - ship;
 											- break;
 									td 
-										if macsezId
-
-											span.text-info #{ship}
-												//- span &nbsp; /  
-												//- span.text-warning #{stock}
+										span #{ship}
 						else
 							- let i = 0, k = 0;
 							each macsec in macfir.macsecs
@@ -122,21 +111,11 @@ block content
 										td #{quot}
 									td.bg-secondary
 									each size in machin.sizes
-										-let less = '';
-										-let stock = '';
 										-let ship = '';
-										-let macthdId = '';
 										each macthd in macsec.macthds
 											if macthd.size == size
-												- macthdId = macthd._id;
-												- stock = parseInt(macthd.pdthd.stock);
 												- ship = parseInt(macthd.ship);
-												- less = parseInt(macthd.quot) - ship;
 												- break;
 										td 
-											if macthdId
-
-												span.text-info #{ship}
-													//- span &nbsp; /  
-													//- span.text-warning #{stock}
+											span #{ship}
 	script(src="/js/bser/fder/update.js")

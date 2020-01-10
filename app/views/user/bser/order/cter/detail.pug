@@ -1,4 +1,4 @@
-extends ../aalayout/layout
+extends ../../aalayout/layout
 
 block content
 	.m-5
@@ -34,23 +34,22 @@ block content
 			.col-2
 				button.btn.btn-warning#editBtn(type="button") <span class="oi oi-pencil"></span>	
 				button.btn.btn-secondary#infoBtn(type="button", style="display:none") <span class="oi oi-x"></span>
-		hr
-		.row
+		.row.mt-5
 			each order in cter.orders
-				-a;
+				- let txtSatus = "text-info";
+				if order.status == 10
+					- txtSatus = "text-secondary";
 				each ordfir in order.ordfirs
 					-a;
-					table.table.table-bordered.text-center.mt-4
-						tr(class=txtSatus)
-							th(width="10%") #{moment(order.ctAt).format('MM/DD/YYYY')}
+					table.table.text-center.mt-4(class=txtSatus)
+						tr
+							th(width="8%") #{moment(order.ctAt).format('MM/DD/YYYY')}
 							th(width="8%") #{moment(order.fnAt).format('MM/DD/YYYY')}
-							th(width="5%") 生产
-							th(colspan=order.sizes.length, width="25%")
-								a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
-							th.bg-secondary(width="2%")
-							th(colspan=order.sizes.length)
+							th(width="9%") 生产
+							th(colspan=order.sizes.length*2+1)
 								.row
 									.col-6
+										a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
 									.col-6
 										if order.status == 5
 											-a;
@@ -64,7 +63,7 @@ block content
 							each size in order.sizes
 								-a;
 								th #{Conf.sizes[size]}
-							th.bg-secondary
+							th.bg-secondary(width="2%")
 							each size in order.sizes
 								-a;
 								th #{Conf.sizes[size]}
@@ -89,19 +88,11 @@ block content
 									td #{quot}
 								td.bg-secondary
 								each size in order.sizes
-									-let less = '';
-									-let stock = '';
 									-let ship = '';
-									-let ordthdId = '';
 									each ordthd in ordsec.ordthds
 										if ordthd.size == size
-											- ordthdId = ordthd._id;
-											- stock = parseInt(ordthd.pdthd.stock);
 											- ship = parseInt(ordthd.ship);
-											- less = parseInt(ordthd.quot) - ship;
 											- break;
 									td 
-										if ordthdId
-
-											span.text-info #{ship}
+										span #{ship}
 	script(src="/js/bser/cter/update.js")
