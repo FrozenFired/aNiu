@@ -81,15 +81,10 @@ $( function() {
 		if(valAtTo) {
 			atTo = 'atTo='+valAtTo
 		}
-		window.location.href="/bsOrders?"+status+'&cter='+valCter+'&'+atFm+'&'+atTo;
+		window.location.href="/bsOrdHis?"+status+'&cter='+valCter+'&'+atFm+'&'+atTo;
 	})
+	
 	$(".cncCter").click(function(e) {
-		// 状态值
-		let valStatus = getUrlParam('status')
-		let status = '';
-		if(valStatus) {
-			status = 'status='+valStatus
-		}
 		// 开始时间值
 		let valAtFm = getUrlParam('atFm')
 		let atFm = '';
@@ -102,7 +97,7 @@ $( function() {
 		if(valAtTo) {
 			atTo = 'atTo='+valAtTo
 		}
-		window.location.href="/bsOrders?"+status+'&'+atFm+'&'+atTo;
+		window.location.href="/bsOrdHis?"+atFm+'&'+atTo;
 	})
 	/* ------------------------- Cter 选择 -------------------------- */
 

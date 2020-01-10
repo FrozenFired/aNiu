@@ -81,7 +81,7 @@ $( function() {
 		if(valAtTo) {
 			atTo = 'atTo='+valAtTo
 		}
-		window.location.href="/bsOrders?"+status+'&cter='+valCter+'&'+atFm+'&'+atTo;
+		window.location.href="/bsTinHis?"+status+'&cter='+valCter+'&'+atFm+'&'+atTo;
 	})
 	$(".cncCter").click(function(e) {
 		// 状态值
@@ -102,7 +102,7 @@ $( function() {
 		if(valAtTo) {
 			atTo = 'atTo='+valAtTo
 		}
-		window.location.href="/bsOrders?"+status+'&'+atFm+'&'+atTo;
+		window.location.href="/bsTinHis?"+status+'&'+atFm+'&'+atTo;
 	})
 	/* ------------------------- Cter 选择 -------------------------- */
 

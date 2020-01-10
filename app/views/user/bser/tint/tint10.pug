@@ -8,12 +8,13 @@ block content
 	.m-5
 		include ./list/list10
 	div(style="height: 80px")
-	.text-center.pt-2#bsTins(style="position: fixed;bottom: 0px;right: 0px;width:100%; height:50px; background: #C0C0C0") <span class="oi oi-chevron-bottom"></span>
+	.text-center.text-info.pt-2#bsTins(style="position: fixed;bottom: 0px;right: 0px;width:100%; height:50px; background: #C0C0C0") 染洗单 &nbsp; <span class="oi oi-chevron-bottom"></span> &nbsp; 在处理...
 
 	.topNav-second.p-1
 		.row
 			.col-md-7
-			.col-md-2.text-center.cncCter.pt-2 <span class="oi oi-person"></span>
+			.col-md-2.text-center.cncCter.pt-2
+				//- <span class="oi oi-person"></span>
 			.col-md-1
 				input#atFm.datepicker.form-control(type="text",readonly="readonly", value=moment(atFm).format('MM/DD/YYYY'))
 			.col-md-1
