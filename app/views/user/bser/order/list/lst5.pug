@@ -15,8 +15,12 @@ each order in orders
 				th(width="7%") #{moment(order.ctAt).format('MM/DD/YYYY')}
 				th.text-dark(width="8%") 发货日期
 				th(width="5%") 生产
-				th(colspan=order.sizes.length+1, width="30%")
+				th(colspan=order.sizes.length, width="25%")
 					a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
+				th(style="border-bottom-style:none")
+				th(width="7%") #{moment(order.ctAt).format('MM/DD/YYYY')}
+				th.text-dark(width="8%") 发货日期
+				th(width="5%") 生产
 				th(colspan=order.sizes.length)
 					.row
 						.col-4.text-right
@@ -34,6 +38,9 @@ each order in orders
 					-a;
 					th #{Conf.sizes[size]}
 				th.bg-secondary(width="2%")
+				th 样品型号
+				th 客户名称
+				th 颜色
 				each size in order.sizes
 					-a;
 					th #{Conf.sizes[size]}
@@ -47,12 +54,20 @@ each order in orders
 					tr
 						if i==1
 							-a;
-							th: a(href="/bsProduct/"+ordfir.pdfir._id) #{ordfir.pdfir.code}
-							th: a(href="/bsCter/"+order.cter._id) #{order.cter.nome}
+							th: a.text-dark(href="/bsProduct/"+ordfir.pdfir._id) #{ordfir.pdfir.code}
+							th: a.text-dark(href="/bsCter/"+order.cter._id) #{order.cter.nome}
 						else
 							th
 							th
 						th.bg-light #{ordsec.color}
 						include ./input/tdBody
 						td.bg-secondary
+						if i==1
+							-a;
+							th: a(href="/bsProduct/"+ordfir.pdfir._id) #{ordfir.pdfir.code}
+							th: a(href="/bsCter/"+order.cter._id) #{order.cter.nome}
+						else
+							th
+							th
+						th.bg-light #{ordsec.color}
 						include ./output/tdBody
