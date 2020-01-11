@@ -16,4 +16,19 @@ $(function(){
 	}
 	init();
 	/* --------- 根据URL参数 操作页面 ---------- */
+
+
+	/* --------- 显示没有工厂的生产单 ---------- */
+	$("#nofderBtn").click(function(e) {
+		$(".exitFder").hide();
+		$(".noFder").show();
+		$("#nofderBtn").hide();
+		$("#exitfderBtn").show();
+	})
+	$("#exitfderBtn").click(function(e) {
+		$(".noFder").hide();
+		$(".exitFder").show();
+		$("#exitfderBtn").hide();
+		$("#nofderBtn").show();
+	})
 })

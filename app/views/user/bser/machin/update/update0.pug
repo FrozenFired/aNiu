@@ -7,7 +7,11 @@ block content
 			.col-2: h3 #{machin.code}
 			.col-1.text-right: h3 #{machin.macfirs[0].pdfir.code}
 			.col-2: h3 #{machin.macfirs[0].pdfir.nome}
-			.col-3.text-right: h3#fderBtn #{machin.fder.nome}
+			.col-3.text-right
+				h3#fderBtn
+					if machin.fder
+						-fder = machin.fder;
+						span #{fder.nome}
 			.col-2
 				#formFders
 					input#ajaxFders.form-control(type="text", placeholder='工厂名称或编号', autocomplete="off")

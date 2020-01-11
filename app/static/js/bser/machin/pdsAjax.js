@@ -481,9 +481,11 @@ $(function() {
 		if(ordpds && ordpds.length == 0) {
 			alert("请选择模特")
 			e.preventDefault();
-		} else if(isFder.length < 1){
-			alert("请选择工厂")
-			e.preventDefault();
-		}
+		} 
+
+		// else if(isFder.length < 1){
+		// 	alert("请选择工厂")
+		// 	e.preventDefault();
+		// }
 	})
 } );

@@ -15,6 +15,11 @@ each order in orders
 				th(width="7%") 订货日期:
 				th.text-dark(width="8%") #{moment(order.ctAt).format('MM/DD/YYYY')}
 				th(width="8%")
+					if order.upAt
+						-a;
+						span yes
+					else
+						span no
 				th(colspan=order.sizes.length+1, width="30%")
 					.row
 						.col-6

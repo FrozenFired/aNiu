@@ -22,12 +22,15 @@ let dbSchema = new Schema({
 
 	ctAt: Date,		// 创建时间
 	fnAt: Date, 	// 收货时间
+	upAt: Date, 	// 收货时间
 });
 
 dbSchema.pre('save', function(next) {	
 	if(this.isNew) {
 		if(!this.status) this.status = 0;
-		this.ctAt = Date.now();
+		this.ctAt = this.upAt = Date.now();
+	} else {
+		this.upAt = Date.now();
 	}
 	next();
 })

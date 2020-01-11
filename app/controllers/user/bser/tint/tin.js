@@ -37,7 +37,7 @@ exports.bsTins = function(req, res) {
 			{path: 'tinthds', populate: {path: 'pdthd'}},
 		]}
 	]})
-	.sort({"status": 1, "ctAt": -1})
+	.sort({"status": 1, "upAt": -1, "ctAt": -1})
 	.exec(function(err, tints) {
 		if(err) {
 			info = "bsTints, User.find, Error";

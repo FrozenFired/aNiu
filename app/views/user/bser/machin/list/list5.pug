@@ -1,11 +1,22 @@
+.row.my-4
+	.col-12.text-right
+		button.btn.btn-danger#nofderBtn(type="button") <span class="oi oi-loop-circular"></span>
+		button.btn.btn-info#exitfderBtn(type="button", style="display:none") <span class="oi oi-loop-circular"></span>
 each machin in machins
 	- let textTime="";
 	if Date.now() - machin.ctAt > 3*24*60*60*1000
 		-textTime="text-danger";
+	- let fder = new Object(), fderTb="noFder", fderTr="bg-danger";
+	- let fderDidplay="display:none";
+	if machin.fder
+		- fder = machin.fder;
+		- fderTb = "exitFder";
+		- fderTr = "";
+		- fderDidplay = "";
 
 	each macfir in machin.macfirs
 		-a;
-		table.table.table-bordered.text-center
+		table.table.table-bordered.text-center(class=fderTb, style=fderDidplay)
 			tr(class=textTime)
 				th(width="7%") 生产日期:
 				th(width="8%") #{moment(machin.ctAt).format('MM/DD/YYYY')}

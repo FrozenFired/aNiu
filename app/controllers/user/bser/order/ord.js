@@ -43,7 +43,7 @@ exports.bsOrds = function(req, res) {
 			}
 		]}
 	]})
-	.sort({"status": 1, "ctAt": -1})
+	.sort({"status": 1, "upAt": -1, "ctAt": -1})
 	.exec(function(err, orders) {
 		if(err) {
 			info = "bsOrders, User.find, Error";

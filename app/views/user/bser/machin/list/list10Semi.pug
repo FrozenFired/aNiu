@@ -1,6 +1,9 @@
 tr
 	th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
-	th: a(href="/bsFder/"+machin.fder._id) #{machin.fder.nome}
+	th
+		if machin.fder
+			- fder = machin.fder;
+			a(href="/bsFder/"+fder._id) #{fder.nome}
 	th.bg-light 半成品
 	each size in machin.sizes
 		-let less = '';
@@ -18,7 +21,10 @@ tr
 				span.text-info #{quot}
 	td.bg-secondary
 	th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
-	th: a(href="/bsFder/"+machin.fder._id) #{machin.fder.nome}
+	th
+		if machin.fder
+			- fder = machin.fder;
+			a(href="/bsFder/"+fder._id) #{fder.nome}
 	th.bg-light 半成品
 	each size in machin.sizes
 		-let less = '';

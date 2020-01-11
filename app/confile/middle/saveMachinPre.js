@@ -37,8 +37,10 @@ exports.pdRelMachinNew = function(machin, checkCode) {
 		}
 	}
 	let fder = machin.fder;
-	fder.machins.push(machin._id);
-	dbs.push(fder);
+	if(fder) {
+		fder.machins.push(machin._id);
+		dbs.push(fder);
+	}
 	bsProductsSave(dbs, 0);
 }
 /* ======================= 创建订单 ======================= */
