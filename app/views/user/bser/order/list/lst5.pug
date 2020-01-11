@@ -12,15 +12,15 @@ each order in orders
 		-a;
 		table.table.table-bordered.text-center.mt-4
 			tr(class=textTime)
-				th(width="7%") #{moment(order.ctAt).format('MM/DD/YYYY')}
-				th.text-dark(width="8%") 发货日期
-				th(width="5%") 生产
-				th(colspan=order.sizes.length, width="25%")
+				th(width="7%") 订货日期:
+				th.text-dark(width="8%") #{moment(order.ctAt).format('MM/DD/YYYY')}
+				th(width="5%")
+				th(colspan=order.sizes.length, width="23%")
 					a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
-				th(style="border-bottom-style:none")
-				th(width="7%") #{moment(order.ctAt).format('MM/DD/YYYY')}
-				th.text-dark(width="8%") 发货日期
-				th(width="5%") 生产
+				th
+				th(width="7%")
+				th.text-dark(width="7%")
+				th(width="4%")
 				th(colspan=order.sizes.length)
 					.row
 						.col-4.text-right
