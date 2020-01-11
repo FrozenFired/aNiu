@@ -7,16 +7,17 @@ each tint in tints
 		-a;
 		table.table.table-bordered.text-center
 			tr(class=textTime)
-				th(width="7%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
-				th(width="8%") 收货日期
-				th(width="5%") 生产
-				th(colspan=tint.sizes.length*2+1)
+				th(width="7%") 染洗日期:
+				th(width="8%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
+				th(width="10%")
+				th(colspan=tint.sizes.length+1, width="25%")
+					a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
+				th
+				th(colspan=tint.sizes.length)
 					.row
-						.col-4
-							a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
-						.col-4.text-right
+						.col-6.text-right
 							button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+tint._id) 收货
-						.col-4.text-right
+						.col-6.text-right
 							form(method="post", action="/bsTinChangeSts", enctype="multipart/form-data")
 								input(type="hidden", name="tintId", value=tint._id)
 								input(type="hidden", name="target", value="bsTintFinish")
@@ -28,6 +29,7 @@ each tint in tints
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}
+				th 合计
 				th.bg-secondary(width="2%")
 				each size in tint.sizes
 					-a;
@@ -35,7 +37,8 @@ each tint in tints
 			form(id="sendForm-"+tint._id, method="post", action="/bsTintSend", enctype="multipart/form-data")
 				input(type="hidden", name="obj[tintId]", value=tint._id)
 				input(type="hidden", name="obj[tinfirId]", value=tinfir._id)
-				- let i = 0, k = 0;
+				- let i = 0, k=0, tot = 0;
+				- let ztots = new Array();
 				each tinsec in tinfir.tinsecs
 					- i++;
 					tr
@@ -47,13 +50,21 @@ each tint in tints
 							th
 							th
 						th.bg-light #{tinsec.pdsec.color}
+						- let ctot = 0;
 						each size in tint.sizes
 							-let quot = '';
 							each tinthd in tinsec.tinthds
 								if tinthd.size == size
 									- quot = tinthd.quot;
+									if isNaN(ztots[size])
+										-ztots[size] = quot;
+									else
+										-ztots[size] += quot;
+									- ctot += quot;
+									- tot += quot;
 									- break;
 							td #{quot}
+						td.text-success #{ctot}
 						td.bg-secondary
 						each size in tint.sizes
 							-let ship = '';
@@ -77,5 +88,9 @@ each tint in tints
 										input(type="hidden", name="obj[thds]["+k+"][tinthdId]", value=tinthdId)
 									else
 										span.text-info #{ship}
-										//- span &nbsp; /  
-										//- span.text-warning #{stock}
+				tr.text-success
+					td(colspan=3)
+					each size in tint.sizes
+						-a;
+						td #{ztots[size]}
+					td: h4 #{tot}

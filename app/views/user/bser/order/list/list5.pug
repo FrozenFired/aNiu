@@ -12,16 +12,22 @@ each order in orders
 		-a;
 		table.table.table-bordered.text-center.mt-4
 			tr(class=textTime)
-				th(width="7%") #{moment(order.ctAt).format('MM/DD/YYYY')}
-				th.text-dark(width="8%") 发货日期
-				th(width="5%") 生产
+				th(width="7%") 订货日期:
+				th.text-dark(width="8%") #{moment(order.ctAt).format('MM/DD/YYYY')}
+				th(width="8%")
 				th(colspan=order.sizes.length+1, width="30%")
-					a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
+					.row
+						.col-6
+							a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
+						.col-6.text-right
+							button.btn.btn-secondary(type="button", id='sendBtn-'+order._id) 生产
+				th
+				th(width="8%")
 				th(colspan=order.sizes.length)
 					.row
-						.col-4.text-right
+						.col-6
 							button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+order._id) 发货
-						.col-4.text-right
+						.col-6
 							form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
 								input(type="hidden", name="orderId", value=order._id)
 								input(type="hidden", name="target", value="bsOrderFinish")
@@ -33,26 +39,32 @@ each order in orders
 				each size in order.sizes
 					-a;
 					th #{Conf.sizes[size]}
+				th 合计
 				th.bg-secondary(width="2%")
+				th 颜色
 				each size in order.sizes
 					-a;
 					th #{Conf.sizes[size]}
 			form(id="sendForm-"+order._id, method="post", action="/bsOrderSend", enctype="multipart/form-data")
 				input(type="hidden", name="obj[orderId]", value=order._id)
 				input(type="hidden", name="obj[ordfirId]", value=ordfir._id)
-				- let i = 0, k = 0;
+				- let i = 0, k = 0, tot = 0;
 				each ordsec in ordfir.ordsecs
 					- let pdsec = ordsec.pdsec;
 					- i++;
 					tr
 						if i==1
 							-a;
-							th: a(href="/bsProduct/"+ordfir.pdfir._id) #{ordfir.pdfir.code}
-							th: a(href="/bsCter/"+order.cter._id) #{order.cter.nome}
+							th: a.text-dark(href="/bsProduct/"+ordfir.pdfir._id) #{ordfir.pdfir.code}
+							th: a.text-dark(href="/bsCter/"+order.cter._id) #{order.cter.nome}
 						else
 							th
 							th
 						th.bg-light #{ordsec.color}
 						include ./input/tdBody
 						td.bg-secondary
+						th.bg-light #{ordsec.color}
 						include ./output/tdBody
+				tr
+					td(colspan=order.sizes.length+3)
+					td.text-success: h4 #{tot}
