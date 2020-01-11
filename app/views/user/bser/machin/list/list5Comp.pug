@@ -1,6 +1,6 @@
 input(type="hidden", name="obj[machinId]", value=machin._id)
 input(type="hidden", name="obj[macfirId]", value=macfir._id)
-- let i = 0, k = 0;
+- let i = 0, k = 0, tot=0, ztots=new Array();
 each macsec in macfir.macsecs
 	- i++;
 	tr
@@ -12,13 +12,21 @@ each macsec in macfir.macsecs
 			th
 			th
 		th.bg-light #{macsec.pdsec.color}
+		- let ctot = 0;
 		each size in machin.sizes
 			-let quot = '';
 			each macthd in macsec.macthds
 				if macthd.size == size
 					- quot = macthd.quot;
+					if isNaN(ztots[size])
+						- ztots[size] = quot;
+					else
+						- ztots[size] += quot;
+					- ctot += quot;
+					- tot += quot;
 					- break;
 			td #{quot}
+		td.text-success #{ctot}
 		td.bg-secondary
 		each size in machin.sizes
 			-let ship = '';
@@ -42,5 +50,9 @@ each macsec in macfir.macsecs
 						input(type="hidden", name="obj[thds]["+k+"][macthdId]", value=macthdId)
 					else
 						span.text-info #{ship}
-						//- span &nbsp; /  
-						//- span.text-warning #{stock}
+tr
+	td(colspan=3)
+	each size in machin.sizes
+		-a;
+		td.text-success #{ztots[size]}
+	td.text-success: h4 #{tot}

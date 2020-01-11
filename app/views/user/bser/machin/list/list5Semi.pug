@@ -4,14 +4,16 @@ tr
 	th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
 	th: a(href="/bsFder/"+machin.fder._id) #{machin.fder.nome}
 	th.bg-light 半成品
-	- let k = 0;
+	- let k = 0, ctot = 0;;
 	each size in machin.sizes
 		-let quot = '';
 		each macsez in macfir.macsezs
 			if macsez.size == size
 				- quot = macsez.quot;
+				- ctot += quot;
 				- break;
 		td #{quot}
+	td.text-success #{ctot}
 	td.bg-secondary
 	each size in machin.sizes
 		-let ship = '';

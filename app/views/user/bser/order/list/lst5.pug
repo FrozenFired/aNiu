@@ -20,7 +20,7 @@ each order in orders
 						.col-6
 							a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
 						.col-6.text-right
-							button.sendBtn.btn.btn-success(type="button", id='sendBtn-'+order._id) 生产
+							button.btn.btn-secondary(type="button", id='sendBtn-'+order._id) 生产
 				th
 				th(width="8%")
 				th(colspan=order.sizes.length)

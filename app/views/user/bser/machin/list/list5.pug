@@ -7,16 +7,17 @@ each machin in machins
 		-a;
 		table.table.table-bordered.text-center
 			tr(class=textTime)
-				th(width="7%") #{moment(machin.ctAt).format('MM/DD/YYYY')}
-				th(width="8%") 收货日期
-				th(width="5%") 生产
-				th(colspan=machin.sizes.length*2+1)
+				th(width="7%") 生产日期:
+				th(width="8%") #{moment(machin.ctAt).format('MM/DD/YYYY')}
+				th(width="10%")
+				th(colspan=machin.sizes.length+1, width="30%")
+					a.btn.btn-link(href="/bsMachin/"+machin._id) #{machin.code}
+				th(width="2%")
+				th(colspan=machin.sizes.length)
 					.row
-						.col-4
-							a.btn.btn-link(href="/bsMachin/"+machin._id) #{machin.code}
-						.col-4.text-right
+						.col-6
 							button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+machin._id) 收货
-						.col-4.text-right
+						.col-6
 							form(method="post", action="/bsMacChangeSts", enctype="multipart/form-data")
 								input(type="hidden", name="machinId", value=machin._id)
 								input(type="hidden", name="target", value="bsMachinFinish")
@@ -28,7 +29,8 @@ each machin in machins
 				each size in machin.sizes
 					-a;
 					th #{Conf.sizes[size]}
-				th.bg-secondary(width="2%")
+				th 合计
+				th.bg-secondary
 				each size in machin.sizes
 					-a;
 					th #{Conf.sizes[size]}
