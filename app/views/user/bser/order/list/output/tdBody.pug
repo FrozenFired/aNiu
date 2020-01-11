@@ -34,14 +34,14 @@ each size in order.sizes
 			if less > 0
 				-a;
 				.row
-					.col-3
+					.col-3.pt-1
 						span.text-info #{ship}
-						br  
-						span.text-warning #{showThdStock}
 					.col-8
 						input.iptsty2.shiping(id="shiping-"+taskOrdthd._id, type="number", name="obj[thds]["+k+"][shiping]", value=shiping)
 						input(id="stock-"+taskOrdthd._id, type="hidden", value=showThdStock)
 						input(type="hidden", name="obj[thds]["+k+"][ordthdId]", value=taskOrdthd._id)
+					.col-12.text-left
+						span.text-warning #{showThdStock}
 			else
 				span.text-info #{ship}
 				//- span &nbsp; /  

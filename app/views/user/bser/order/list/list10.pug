@@ -14,7 +14,7 @@ each order in orders
 				th(width="7%") 发货日期:
 				th(width="8%") #{moment(order.fnAt).format('MM/DD/YYYY')}
 				th(width="5%") 
-				th(colspan=order.sizes.length).text-right
+				th(colspan=order.sizes.length+1).text-right
 					form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
 						input(type="hidden", name="orderId", value=order._id)
 						input(type="hidden", name="target", value="bsOrderBack")
@@ -33,7 +33,8 @@ each order in orders
 				each size in order.sizes
 					-a;
 					th #{Conf.sizes[size]}
-			- let i = 0, k = 0;
+				th 合计
+			- let i = 0, tot = 0;
 			each ordsec in ordfir.ordsecs
 				- i++;
 				tr
@@ -68,6 +69,7 @@ each order in orders
 						th
 						th
 					th.bg-light #{ordsec.color}
+					-let ctot = 0;
 					each size in order.sizes
 						-let less = '';
 						-let ship = '';
@@ -75,6 +77,8 @@ each order in orders
 							if ordthd.size == size
 								- ship = parseInt(ordthd.ship);
 								- less = parseInt(ordthd.quot) - ship;
+								- ctot += ship;
+								- tot += ship;
 								- break;
 						td 
 							if less == 0
@@ -82,3 +86,7 @@ each order in orders
 								span #{ship}
 							else
 								span.text-info #{ship}
+					td #{ctot}
+			tr
+				td(colspan=order.sizes.length*2 + 7)
+				td #{tot}
