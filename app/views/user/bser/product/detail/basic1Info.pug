@@ -6,6 +6,7 @@
 	.col-12 价格: #{pdfir.price} €
 	.col-12 生产: #{pdfir.macCost} €
 	.col-12 染洗: #{pdfir.tinCost} €
+	.col-12 备注: #{pdfir.note}
 form#editBasicForm(method="post", action="/bsProductUpd", enctype="multipart/form-data", style="display:none")
 	input(type="hidden", name="obj[_id]", value=pdfir._id)
 	.form-group.row
@@ -24,6 +25,11 @@ form#editBasicForm(method="post", action="/bsProductUpd", enctype="multipart/for
 		label.col-sm-4.col-form-label(for="iptTin") 染洗
 		.col-sm-8
 			input#iptTin.form-control(type="text", name="obj[tinCost]", autocomplete="off", value=pdfir.tinCost)
+	.form-group.row
+		label.col-sm-4.col-form-label(for="iptNote") 备注
+		input#iptnote(type="hidden", value=pdfir.note)
+		.col-sm-8
+			textarea#iptNote.form-control(rows="3", name="obj[note]", autocomplete="off")
 	.form-group.row
 		.col-sm-4
 			button.btn.btn-secondary#basicInfoBtn(type="button") 取消

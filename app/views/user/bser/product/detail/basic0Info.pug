@@ -5,6 +5,7 @@
 	.col-12: h5 材料:#{pdfir.material}
 	.col-12 价格: #{pdfir.price} €
 	.col-12 生产: #{pdfir.macCost} €
+	.col-12 备注: #{pdfir.note}
 form#editBasicForm(method="post", action="/bsProductUpd", enctype="multipart/form-data", style="display:none")
 	input(type="hidden", name="obj[_id]", value=pdfir._id)
 	.form-group.row
@@ -19,6 +20,11 @@ form#editBasicForm(method="post", action="/bsProductUpd", enctype="multipart/for
 		label.col-sm-4.col-form-label(for="iptMac") 生产
 		.col-sm-8
 			input#iptMac.form-control(type="text", name="obj[macCost]", autocomplete="off", value=pdfir.macCost)
+	.form-group.row
+		label.col-sm-4.col-form-label(for="iptNote") 备注
+		input#iptnote(type="hidden", value=pdfir.note)
+		.col-sm-8
+			textarea#iptNote.form-control(rows="3", name="obj[note]", autocomplete="off")
 	.form-group.row
 		.col-sm-4
 			button.btn.btn-secondary#basicInfoBtn(type="button") 取消
