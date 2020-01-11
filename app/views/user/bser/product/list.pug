@@ -6,11 +6,12 @@ block content
 	.row.mx-5
 		each pdfir in products
 			-a;
-			.col-sm-2.mt-5
-				h2.text-right: a(href="/bsProduct/"+pdfir._id) #{pdfir.code} 
+			.col-sm-2.text-right.mt-5
+				h2: a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
+				h3 #{pdfir.nome} 
 				//- h3 Name:#{pdfir.nome} | Mat:#{pdfir.material} 
 				//- img(src=pdfir.photo, width="80%", style="display:none")
-			.col-sm-9.mt-5.tblDial(style="display:block")
+			.col-sm-9.mt-5.tblDial(style="display:none")
 				table.table
 					tr
 						td 颜色
