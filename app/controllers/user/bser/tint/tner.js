@@ -51,7 +51,7 @@ exports.bsTners = function(req, res) {
 			})
 			.sort({[sortCond]: sortVal})
 			.skip(skip)
-			.limit(12)
+			// .limit(12)
 			.exec(function(err, tners) { if(err) {
 				console.log(err);
 				info = "bsTners, Tner.find, Error！";

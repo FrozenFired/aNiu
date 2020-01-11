@@ -51,7 +51,7 @@ exports.bsFders = function(req, res) {
 			})
 			.sort({[sortCond]: sortVal})
 			.skip(skip)
-			.limit(12)
+			// .limit(12)
 			.exec(function(err, fders) { if(err) {
 				console.log(err);
 				info = "bsFders, Fder.find, Error！";

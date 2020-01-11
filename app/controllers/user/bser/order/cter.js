@@ -51,7 +51,7 @@ exports.bsCters = function(req, res) {
 			})
 			.sort({[sortCond]: sortVal})
 			.skip(skip)
-			.limit(12)
+			// .limit(12)
 			.exec(function(err, cters) { if(err) {
 				console.log(err);
 				info = "bsCters, Cter.find, Error！";
