@@ -250,14 +250,14 @@ exports.bsMachinSend = function(req, res) {
 		}
 	}
 	if(obj.semi == 1) {
-		bsMacsezSend(res, macs, 0)
+		bsMacsezSend(req, res, obj.machinId, macs, 0)
 	} else {
-		bsMacthdSend(res, macs, 0)
+		bsMacthdSend(req, res, obj.machinId, macs, 0)
 	}
 }
-let bsMacsezSend = function(res, macs, n) {
+let bsMacsezSend = function(req, res, machinId, macs, n) {
 	if(n == macs.length) {
-		return res.redirect('/bsMacs');
+		bsMachinSend(req, res, machinId);
 	} else {
 		let mac = macs[n];
 		let shiping = parseInt(mac.shiping);
@@ -270,14 +270,14 @@ let bsMacsezSend = function(res, macs, n) {
 			macsez.ship = parseInt(macsez.ship) + shiping;
 			macsez.save(function(err, macsezSave) {
 				if(err) console.log(err);
-				bsMacsezSend(res, macs, n+1)
+				bsMacsezSend(req, res, machinId, macs, n+1)
 			})
 		})
 	}
 }
-let bsMacthdSend = function(res, macs, n) {
+let bsMacthdSend = function(req, res, machinId, macs, n) {
 	if(n == macs.length) {
-		return res.redirect('/bsMacs');
+		bsMachinSend(req, res, machinId);
 	} else {
 		let mac = macs[n];
 		let shiping = parseInt(mac.shiping);
@@ -290,10 +290,32 @@ let bsMacthdSend = function(res, macs, n) {
 			macthd.ship = parseInt(macthd.ship) + shiping;
 			macthd.save(function(err, macthdSave) {
 				if(err) console.log(err);
-				bsMacthdSend(res, macs, n+1)
+				bsMacthdSend(req, res, machinId, macs, n+1)
 			})
 		})
 	}
+}
+let bsMachinSend = function(req, res, machinId) {
+	Machin.findOne({_id: machinId}, function(err, machin) {
+		if(err) {
+			console.log(err);
+			info = "bsMachinSend, Machin.findOne, Error";
+			Err.usError(req, res, info);
+		} else if(!machin) {
+			info = "bsMachinSend, !machin, Error";
+			Err.usError(req, res, info);
+		} else {
+			machin.save(function(err, machinSv) {
+				if(err) {
+					console.log(err);
+					info = "bsMachinSend, machin.save, Error";
+					Err.usError(req, res, info);
+				} else {
+					return res.redirect('/bsMacs');
+				}
+			})
+		}
+	})
 }
 
 

@@ -225,11 +225,11 @@ exports.bsTintSend = function(req, res) {
 			tins.push(thds[i])
 		}
 	}
-	bsTinthdSend(res, tins, 0)
+	bsTinthdSend(req, res, obj.tintId, tins, 0)
 }
-let bsTinthdSend = function(res, tins, n) {
+let bsTinthdSend = function(req, res, tintId, tins, n) {
 	if(n == tins.length) {
-		return res.redirect('/bsTins');
+		bsTintSend(req, res, tintId);
 	} else {
 		let tin = tins[n];
 		let shiping = parseInt(tin.shiping);
@@ -242,12 +242,33 @@ let bsTinthdSend = function(res, tins, n) {
 			tinthd.ship = parseInt(tinthd.ship) + shiping;
 			tinthd.save(function(err, tinthdSave) {
 				if(err) console.log(err);
-				bsTinthdSend(res, tins, n+1)
+				bsTinthdSend(req, res, tintId, tins, n+1)
 			})
 		})
 	}
 }
-
+let bsTintSend = function(req, res, tintId) {
+	Tint.findOne({_id: tintId}, function(err, tint) {
+		if(err) {
+			console.log(err);
+			info = "bsTintSend, Tint.findOne, Error";
+			Err.usError(req, res, info);
+		} else if(!tint) {
+			info = "bsTintSend, !tint, Error";
+			Err.usError(req, res, info);
+		} else {
+			tint.save(function(err, tintSv) {
+				if(err) {
+					console.log(err);
+					info = "bsTintSend, tint.save, Error";
+					Err.usError(req, res, info);
+				} else {
+					return res.redirect('/bsTins');
+				}
+			})
+		}
+	})
+}
 
 exports.bsTinNew = function(req, res) {
 	let crUser = req.session.crUser;

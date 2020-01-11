@@ -119,7 +119,6 @@ exports.bsOrderSend = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj;
 	let thds = obj.thds;
-	
 	let ords = new Array();
 	for(i in thds) {
 		if(thds[i].shiping > 0) {
@@ -127,11 +126,11 @@ exports.bsOrderSend = function(req, res) {
 		}
 	}
 	
-	bsOrdthdSend(res, ords, 0)
+	bsOrdthdSend(req, res, obj.orderId, ords, 0)
 }
-let bsOrdthdSend = function(res, ords, n) {
+let bsOrdthdSend = function(req, res, orderId, ords, n) {
 	if(n == ords.length) {
-		return res.redirect('/bsOrds');
+		bsOrderSend(req, res, orderId);
 	} else {
 		let ord = ords[n];
 		let shiping = parseInt(ord.shiping);
@@ -146,11 +145,33 @@ let bsOrdthdSend = function(res, ords, n) {
 				if(err) console.log(err);
 				pdthd.save(function(err, pdthdSave) {
 					if(err) console.log(err);
-					bsOrdthdSend(res, ords, n+1);
+					bsOrdthdSend(req, res, orderId, ords, n+1);
 				})
 			})
 		})
 	}
+}
+let bsOrderSend = function(req, res, orderId) {
+	Order.findOne({_id: orderId}, function(err, order) {
+		if(err) {
+			console.log(err);
+			info = "bsOrderSend, Order.findOne, Error";
+			Err.usError(req, res, info);
+		} else if(!order) {
+			info = "bsOrderSend, !order, Error";
+			Err.usError(req, res, info);
+		} else {
+			order.save(function(err, orderSv) {
+				if(err) {
+					console.log(err);
+					info = "bsOrderSend, order.save, Error";
+					Err.usError(req, res, info);
+				} else {
+					return res.redirect('/bsOrds');
+				}
+			})
+		}
+	})
 }
 
 
