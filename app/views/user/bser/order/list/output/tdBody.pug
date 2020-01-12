@@ -8,12 +8,16 @@ each size in order.sizes
 			- break;
 	if taskOrdthd
 		- taskPdthd = taskOrdthd.pdthd;
+		- let ordsquot = macsquot = tinsquot = 0;
 		- showThdStock = parseInt(taskPdthd.stock);
 		each ordthd in taskPdthd.ordthds
+			- ordsquot += parseInt(ordthd.quot) - parseInt(ordthd.ship);
 			- showThdStock -= parseInt(ordthd.ship);
 		each macthd in taskPdthd.macthds
+			- macsquot += parseInt(macthd.quot) - parseInt(macthd.ship);
 			- showThdStock += parseInt(macthd.ship);
 		each tinthd in taskPdthd.tinthds
+			- tinsquot += parseInt(tinthd.quot) - parseInt(tinthd.ship);
 			- showThdStock += parseInt(tinthd.ship);
 	else
 		each pdthd in pdsec.pdthds
@@ -40,12 +44,16 @@ each size in order.sizes
 						input.iptsty2.shiping(id="shiping-"+taskOrdthd._id, type="number", name="obj[thds]["+k+"][shiping]", value=shiping)
 						input(id="stock-"+taskOrdthd._id, type="hidden", value=showThdStock)
 						input(type="hidden", name="obj[thds]["+k+"][ordthdId]", value=taskOrdthd._id)
-					.col-12.text-left
+				.row
+					.col-6.text-left
 						span.text-warning #{showThdStock}
+					.col-6.text-right
+						if macsquot != 0
+							-a;
+							span.text-success #{macsquot} 
+						else 
+							span.text-success #{tinsquot}
 			else
 				span.text-info #{ship}
-				//- span &nbsp; /  
-				//- span.text-warning #{stock}
 	else
-		//- td.text-danger #{showThdStock}
 		td
