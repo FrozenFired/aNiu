@@ -336,7 +336,7 @@ exports.bsMacNew = function(req, res) {
 			machinObj.creater = crUser._id;
 			machinObj.status = 5;
 			machinObj.code = moment(Date.now()).format('YYMMDD');
-			if(machinObj.fder) machinObj.fder = obj.fderId;
+			if(obj.fderId) machinObj.fder = obj.fderId;
 			machinObj.sizes = pdfir.sizes
 			let _machin = new Machin(machinObj);
 			/* ====== 创建生产单数据库 ====== */
