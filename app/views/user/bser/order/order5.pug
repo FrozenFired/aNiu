@@ -1,7 +1,8 @@
 extends ../aalayout/layout
 
 block content
-	div(style="height:60px")
+	div(style="height:50px")
+	div(style="height:50px")
 	input#order(type="hidden", value=order)
 	input#sizes(type="hidden", value=Conf.sizes)
 	
@@ -12,12 +13,35 @@ block content
 
 	.topNav-second
 		.row.text-center
-			.col-2.pt-3#bsTins(style="width:100%; height:58px; background: #5599FF")
+			.col-2.pt-3#bsTins(style="width:100%; height:50px; background: #5599FF")
 				span <span class="oi oi-chevron-left"></span> 染色
-			.col-8.pt-3#bsOrdHis(style="width:100%; height:58px; background: #C0C0C0")
+			.col-8.pt-3#bsOrdHis(style="width:100%; height:50px; background: #C0C0C0")
 				span 订单 &nbsp; <span class="oi oi-chevron-top"></span> &nbsp; 历史
-			.col-2.pt-3#bsMacs(style="width:100%; height:58px; background: #5599FF")
+			.col-2.pt-3#bsMacs(style="width:100%; height:50px; background: #5599FF")
 				span 生产 <span class="oi oi-chevron-right"></span>
+	.topNav-third
+		.row.bg-light.text-center
+			-let ctAtCaret = upAtCaret = '<span class="oi oi-elevator"></span>';
+			if sortCond == 'ctAt'
+				if sortVal == 1
+					-ctAtCaret = '<span class="oi oi-caret-bottom"></span>';
+				else
+					-ctAtCaret = '<span class="oi oi-caret-top"></span>';
+			else if sortCond == 'upAt'
+				if sortVal == 1
+					-upAtCaret = '<span class="oi oi-caret-bottom"></span>';
+				else
+					-upAtCaret = '<span class="oi oi-caret-top"></span>';
+			//- // - sortVal = -parseInt(sortVal);
+			.col-2(style="width:100%; height:58px;")
+			.col-3.pt-2#pdsearch
+				input.form-control#iptProduct(type="text" list="getPdCode")
+				datalist(id="getPdCode")
+			.col-3
+			.col-1.pt-3.sortAt#ctAt 创建 !{ctAtCaret}
+			.col-1.pt-3.sortAt#upAt 更新 !{upAtCaret}
+			.col-2
 	script(src="/const/const.js")
 	script(src="/js/bser/pagejump.js")
+	script(src="/js/bser/order/search.js")
 	script(src="/js/bser/order/send.js")

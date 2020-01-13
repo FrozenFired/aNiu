@@ -379,3 +379,34 @@ exports.bsPdfirDel = function(req, res) {
 		}
 	})
 }
+
+exports.bsProductsToOrderAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let keyword = ' x '
+	if(req.query.keyword) {
+		keyword = String(req.query.keyword);
+		keyword = keyword.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+	}
+	Pdfir.findOne({'firm': crUser.firm, 'code': keyword})
+	.exec(function(err, pdfir) {
+		if(err) {
+			console.log(err);
+			info = "bsProductsToOrderAjax, Pdfir.findOne, Error！";
+			res.json({success: 0, info: info});
+		} else if(!pdfir) {
+			let keywordReg = new RegExp(keyword + '.*');
+			Pdfir.find({'firm': crUser.firm, 'code': {'$in': keywordReg}}, {code: 1})
+			.exec(function(err, pdfirs){
+				if(err) {
+					console.log(err);
+					info = "bsProductsToOrderAjax, Pdfir.find, Error！";
+					res.json({success: 0, info: info});
+				} else {
+					res.json({success: 1, pdfirs: pdfirs});
+				}
+			})
+		} else {
+			res.json({success: 2, pdfir: pdfir});
+		}
+	})
+}
