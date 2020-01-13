@@ -29,13 +29,15 @@ each order in orders
 				th(width="8%")
 				th(colspan=order.sizes.length)
 					.row
-						.col-6
-							button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+order._id) 发货
-						.col-6
-							form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
-								input(type="hidden", name="orderId", value=order._id)
-								input(type="hidden", name="target", value="bsOrderFinish")
-								input.btn.btn-warning(type="submit", value="完成")
+						if order.status == 5
+							-a;
+							.col-6
+								button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+order._id) 发货
+							.col-6
+								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
+									input(type="hidden", name="orderId", value=order._id)
+									input(type="hidden", name="target", value="bsOrderFinish")
+									input.btn.btn-warning(type="submit", value="完成")
 			tr.bg-light
 				th 样品型号
 				th 客户名称

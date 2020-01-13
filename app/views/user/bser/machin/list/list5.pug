@@ -26,13 +26,15 @@ each machin in machins
 				th(width="2%")
 				th(colspan=machin.sizes.length)
 					.row
-						.col-6
-							button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+machin._id) 收货
-						.col-6
-							form(method="post", action="/bsMacChangeSts", enctype="multipart/form-data")
-								input(type="hidden", name="machinId", value=machin._id)
-								input(type="hidden", name="target", value="bsMachinFinish")
-								input.btn.btn-warning(type="submit", value="完成")
+						if machin.fder
+							-a;
+							.col-6
+								button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+machin._id) 收货
+							.col-6
+								form(method="post", action="/bsMacChangeSts", enctype="multipart/form-data")
+									input(type="hidden", name="machinId", value=machin._id)
+									input(type="hidden", name="target", value="bsMachinFinish")
+									input.btn.btn-warning(type="submit", value="完成")
 			tr.bg-light
 				th 样品型号
 				th 工厂名称
