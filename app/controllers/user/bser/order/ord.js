@@ -321,6 +321,10 @@ exports.bsOrdChangeSts = function(req, res) {
 				order.status = 5;
 				// 订单状态从0变为5的时候 链接 pd与ord的联系
 				SaveOrderPre.pdRelOrderConfirm(order, "bsOrderConfirm")
+			} else if(target == "bsOrderCancel") {
+				order.status = 0;
+				// 订单状态从0变为5的时候 链接 pd与ord的联系
+				SaveOrderPre.pdRelOrderCancel(order, "bsOrderCancel")
 			} else {
 				info = "操作错误，请重试"
 			}

@@ -69,7 +69,7 @@ module.exports = function(app){
 
 	/* ------------------------------ pdfir ------------------------------ */
 	app.get('/bsPdfirDel/:id', MdRole.bserIsLogin, Product.bsPdfirDel)
-	app.get('/bsProductsToOrderAjax', MdRole.bserIsLogin, Product.bsProductsToOrderAjax)
+	app.get('/bsProductsObtAjax', MdRole.bserIsLogin, Product.bsProductsObtAjax)
 	/* ------------------------------ pdfir ------------------------------ */
 
 	/* ---------------------------------------- Prod ---------------------------------------- */

@@ -177,7 +177,7 @@ exports.bsOrderDel = function(req, res) {
 			Err.usError(req, res, info);
 		} else {
 			// 删除订单时 pd和ord解除关联
-			SaveOrderPre.pdRelOrderDel(order, 'bsOrderDel');
+			SaveOrderPre.pdRelOrderCancel(order, 'bsOrderDel');
 			// 同时要把订单中的ordfir ordsec ordthd 删除
 			SaveOrderPre.bsOrderDelPre(order._id); 
 			Order.deleteOne({_id: id}, function(err, orderRm) {

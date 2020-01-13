@@ -5,7 +5,7 @@ let Ordthd = require('../../models/client/ordthd');
 
 
 /* =========================== 库存中的pd与ord中的pd相关联 =========================== */
-/* ======================= 创建订单 ======================= */
+/* ======================= 创建关系 ======================= */
 exports.pdRelOrderConfirm = function(order, checkCode) {
 	let dbs = new Array();
 	let ordfirs = order.ordfirs;
@@ -30,10 +30,10 @@ exports.pdRelOrderConfirm = function(order, checkCode) {
 	dbs.push(cter);
 	bsProductsSave(dbs, 0);
 }
-/* ======================= 创建订单 ======================= */
+/* ======================= 创建关系 ======================= */
 
-/* ======================= 删除订单 ======================= */
-exports.pdRelOrderDel = function(order, checkCode) {
+/* ======================= 脱离关系 ======================= */
+exports.pdRelOrderCancel = function(order, checkCode) {
 	let dbs = new Array();
 	let ordfirs = order.ordfirs;
 	for(let i=0; i < ordfirs.length; i++) {
@@ -86,7 +86,8 @@ exports.pdRelOrderDel = function(order, checkCode) {
 	dbs.push(cter);
 	bsProductsSave(dbs, 0);
 }
-/* ======================= 删除订单 ======================= */
+/* ======================= 脱离关系 ======================= */
+
 
 /* ======================= 完成订单 ======================= */
 exports.pdRelOrderFinish = function(order, checkCode) {

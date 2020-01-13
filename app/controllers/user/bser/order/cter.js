@@ -284,23 +284,43 @@ exports.bsCterIsAjax = function(req, res) {
 exports.bsCtersObtAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let keytype = req.query.keytype
-	let keyword = req.query.keyword
-	keyword = String(keyword).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-	Cter.find({
+	let keyword = ' x '
+	if(req.query.keyword) {
+		keyword = String(req.query.keyword);
+		keyword = keyword.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+	}
+	Cter.findOne({
 		'firm': crUser.firm,
-		$or:[
-			{'code': new RegExp(keyword + '.*')},
-			{'nome': new RegExp(keyword + '.*')},
+		$or: [
+			{'code': keyword},
+			{'nome': keyword},
 		]
 	})
-	.limit(20)
-	.exec(function(err, cters){
+	.exec(function(err, cter) {
 		if(err) {
+			console.log(err);
 			res.json({success: 0, info: "bs获取客户列表时，数据库查找错误, 请联系管理员"});
-		} else if(cters){
-			res.json({ success: 1, cters: cters})
+		} else if(!cter) {
+			let keywordReg = new RegExp(keyword + '.*');
+			Cter.find({
+				'firm': crUser.firm,
+				$or:[
+					{'code': {'$in': keywordReg}},
+					{'nome': {'$in': keywordReg}},
+				]
+			})
+			.limit(20)
+			.exec(function(err, cters){
+				if(err) {
+					res.json({success: 0, info: "bs获取客户列表时，数据库查找错误, 请联系管理员"});
+				} else if(cters){
+					res.json({ success: 1, cters: cters})
+				} else {
+					res.json({success: 0})
+				}
+			})
 		} else {
-			res.json({success: 0})
+			res.json({success: 2, cter: cter})
 		}
 	})
 }

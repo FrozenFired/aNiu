@@ -1,3 +1,4 @@
+- let ctotship = 0;
 each size in order.sizes
 	- let taskOrdthd = null;
 	- let taskPdthd = null;
@@ -27,6 +28,8 @@ each size in order.sizes
 
 	if taskOrdthd
 		- let ship = parseInt(taskOrdthd.ship);
+		- ctotship += (taskOrdthd.ship);
+		- totship += (taskOrdthd.ship);
 		- let less = parseInt(taskOrdthd.quot) - ship;
 		- let shiping;
 		if less < showThdStock
@@ -57,3 +60,4 @@ each size in order.sizes
 				span.text-info #{ship}
 	else
 		td
+td.text-success #{ctotship}

@@ -5,33 +5,40 @@ each order in orders
 
 	each ordfir in order.ordfirs
 		-let pdfir = ordfir.pdfir;
-		table.table.table-bordered.text-center.mt-4(class="pdfir pdfir-"+pdfir._id)
+		-let cter = order.cter;
+		table.table.table-bordered.text-center.mt-4(class="ordTab pdfir-"+pdfir._id+" cter-"+cter._id)
 			tr(class=textTime)
 				th(width="8%")
 					a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
 					br
-					a(href="/bsCter/"+order.cter._id) #{order.cter.nome}
+					a(href="/bsCter/"+cter._id) #{cter.nome}
 				th(colspan=order.sizes.length+1, width="30%")
 					.row
 						.col-6
 							a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
-						.col-6.text-right
-							if order.status == 0
-								-a;
+						if order.status == 0
+							-a;
+							.col-6.text-right
 								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
 									input(type="hidden", name="orderId", value=order._id)
 									input(type="hidden", name="target", value="bsOrderConfirm")
 									input.btn.btn-secondary(type="submit", value="生产")
-							else if order.status == 5
-								- txtSatus = "text-success";
-								span.btn.btn-success 在产
+						else if order.status == 5
+							- a;
+							.col-3.text-right
+								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data", style="display:none", id="cancelForm-"+order._id)
+									input(type="hidden", name="orderId", value=order._id)
+									input(type="hidden", name="target", value="bsOrderCancel")
+									input.btn.btn-secondary(type="submit", value="不产")
+							.col-3.text-right
+								span.btn.btn-success.proding(id="proding-"+order._id) 在产
 							
-				th
+				th(width="2%")
 				th(width="8%")
 					span 订单日期:
 					br
 					span #{moment(order.ctAt).format('MM/DD/YYYY')}
-				th(colspan=order.sizes.length)
+				th(colspan=order.sizes.length+1)
 					.row
 						if order.status == 5
 							-a;
@@ -48,15 +55,16 @@ each order in orders
 					-a;
 					th #{Conf.sizes[size]}
 				th 合计
-				th.bg-secondary(width="2%")
+				th.bg-secondary
 				th 颜色
 				each size in order.sizes
 					-a;
 					th #{Conf.sizes[size]}
+				th 合计
 			form(id="sendForm-"+order._id, method="post", action="/bsOrderSend", enctype="multipart/form-data")
 				input(type="hidden", name="obj[orderId]", value=order._id)
 				input(type="hidden", name="obj[ordfirId]", value=ordfir._id)
-				- let i = 0, k = 0, tot = 0;
+				- let i = 0, k = 0, totquot = totship = 0;
 				each ordsec in ordfir.ordsecs
 					- let pdsec = ordsec.pdsec;
 					- i++;
@@ -68,4 +76,9 @@ each order in orders
 						include ./output/tdBody
 				tr
 					td(colspan=order.sizes.length+1)
-					td.text-success: h4 #{tot}
+					td.text-success: h4 #{totquot}
+					th.bg-secondary
+					td(colspan=order.sizes.length+1)
+					td.text-success
+						h4 #{totship}
+						input(id="totship-"+order._id, type="hidden", value=totship)

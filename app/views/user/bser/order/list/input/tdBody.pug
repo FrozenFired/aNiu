@@ -1,4 +1,4 @@
-- let ctot = 0;
+- let ctotquot = 0;
 each size in order.sizes
 	- let taskOrdthd = null;
 	- let taskPdthd = null;
@@ -23,10 +23,9 @@ each size in order.sizes
 				- break;
 
 	if taskOrdthd
-		- ctot += (taskOrdthd.quot);
-		- tot += (taskOrdthd.quot);
+		- ctotquot += (taskOrdthd.quot);
+		- totquot += (taskOrdthd.quot);
 		td #{taskOrdthd.quot}
 	else
-		//- td.text-danger #{taskPdthd.stock}
 		td
-td.text-success #{ctot}
+td.text-success #{ctotquot}

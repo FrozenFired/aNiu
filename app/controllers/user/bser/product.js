@@ -380,7 +380,7 @@ exports.bsPdfirDel = function(req, res) {
 	})
 }
 
-exports.bsProductsToOrderAjax = function(req, res) {
+exports.bsProductsObtAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let keyword = ' x '
 	if(req.query.keyword) {
@@ -391,7 +391,7 @@ exports.bsProductsToOrderAjax = function(req, res) {
 	.exec(function(err, pdfir) {
 		if(err) {
 			console.log(err);
-			info = "bsProductsToOrderAjax, Pdfir.findOne, Error！";
+			info = "bsProductsObtAjax, Pdfir.findOne, Error！";
 			res.json({success: 0, info: info});
 		} else if(!pdfir) {
 			let keywordReg = new RegExp(keyword + '.*');
@@ -399,7 +399,7 @@ exports.bsProductsToOrderAjax = function(req, res) {
 			.exec(function(err, pdfirs){
 				if(err) {
 					console.log(err);
-					info = "bsProductsToOrderAjax, Pdfir.find, Error！";
+					info = "bsProductsObtAjax, Pdfir.find, Error！";
 					res.json({success: 0, info: info});
 				} else {
 					res.json({success: 1, pdfirs: pdfirs});
