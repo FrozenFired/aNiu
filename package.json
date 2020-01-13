@@ -16,7 +16,7 @@
     "express-session": "^1.16.1",
     "html-pdf": "^2.2.0",
     "moment": "^2.24.0",
-    "mongoose": "^5.5.4",
+    "mongoose": "^5.7.5",
     "mongoose-float": "^1.0.4",
     "node-xlsx": "^0.15.0",
     "pug": "^2.0.3",
