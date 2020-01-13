@@ -64,6 +64,7 @@ exports.bsOrds = function(req, res) {
 				title   : '订单',
 				crUser  : crUser,
 				orders  : orders,
+
 				sortCond: sortCond,
 				sortVal : sortVal,
 			});
@@ -97,6 +98,17 @@ exports.bsOrdHis = function(req, res) {
 	}
 	/* ---------- Cter 筛选 ------------- */
 
+	/* ---------- 排序 ------------- */
+	let sortCond = "ctAt";
+	let sortVal = -1;
+	if(req.query.sortCond == "fnAt"){
+		sortCond = "fnAt";
+	}
+	if(req.query.sortVal == 1){
+		sortVal = 1;
+	}
+	/* ---------- 排序 ------------- */
+
 	Order.find({
 		'firm': crUser.firm,
 		'cter': {[symCter]: condCter},
@@ -108,7 +120,7 @@ exports.bsOrdHis = function(req, res) {
 		{path: 'pdfir'},
 		{path: 'ordsecs', populate: {path: 'ordthds', populate: {path: 'pdthd'}}}
 	]})
-	.sort({"status": 1, "ctAt": -1})
+	.sort({"status": 1, [sortCond]: sortVal})
 	.exec(function(err, orders) {
 		if(err) {
 			info = "bsOrders, User.find, Error";
@@ -119,8 +131,11 @@ exports.bsOrdHis = function(req, res) {
 				title : '订单记录',
 				crUser: crUser,
 				orders: orders,
+
 				atFm  : condAtFm,
 				atTo  : condAtTo,
+				sortCond: sortCond,
+				sortVal : sortVal,
 			});
 		}
 	})
