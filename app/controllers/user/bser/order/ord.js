@@ -27,7 +27,7 @@ exports.bsOrds = function(req, res) {
 	Order.find({
 		'firm': crUser.firm,
 		'cter': {[symCter]: condCter},
-		'status': 5,
+		'status': { '$in': [0, 5]},
 	})
 	.populate('cter', 'nome')
 	.populate({path: 'ordfirs', populate: [
@@ -193,7 +193,7 @@ exports.bsOrdNew = function(req, res) {
 			let orderObj = new Object();
 			orderObj.firm = crUser.firm;
 			orderObj.creater = crUser._id;
-			orderObj.status = 5;
+			orderObj.status = 0;
 			orderObj.code = moment(Date.now()).format('YYMMDD');
 			orderObj.cter = obj.cterId;
 			orderObj.sizes = pdfir.sizes
@@ -263,22 +263,6 @@ let bsOrdSave = function(req, res, order, dbs, n) {
 				info = "bsOrderNew, Order.save, Error!";console.log(err);
 				Err.usError(req, res, info);
 			} else {
-				/* =============== 重新找到此订单，做保存前的操作 =============== */
-				Order.findOne({_id: orderSv._id})
-				.populate({path: 'ordfirs', populate: [
-					{path: 'pdfir'},
-					{path: 'ordsecs', populate: {path: 'ordthds', populate: {path: 'pdthd'}}}
-				]})
-				.populate('cter')
-				.exec(function(err, order) {
-					if(err) {
-						console.log(err);
-					} else {
-						// 状态从无到5时， 把pd和ord关联起来
-						SaveOrderPre.pdRelOrderNew(order, "bsOrderNew")
-					}
-				})
-				/* =============== 重新找到此订单，做保存前的操作 =============== */
 				res.redirect('/bsOrds')
 			}
 		})
@@ -291,7 +275,6 @@ let bsOrdSave = function(req, res, order, dbs, n) {
 	}
 }
 
-
 exports.bsOrdChangeSts = function(req, res) {
 	let crUser = req.session.crUser;
 	let orderId = req.body.orderId;
@@ -302,6 +285,7 @@ exports.bsOrdChangeSts = function(req, res) {
 		{path: 'pdfir'},
 		{path: 'ordsecs', populate: {path: 'ordthds', populate: {path: 'pdthd'}}},
 	]})
+	.populate('cter')
 	.exec(function(err, order) {
 		let info = 'T';
 		if(err) {
@@ -320,6 +304,10 @@ exports.bsOrdChangeSts = function(req, res) {
 				order.fnAt = null;
 				// 订单状态从10变为5的时候 链接 pd与ord的联系
 				SaveOrderPre.pdRelOrderBack(order, 'bsOrderBack')
+			} else if(target == "bsOrderConfirm") {
+				order.status = 5;
+				// 订单状态从0变为5的时候 链接 pd与ord的联系
+				SaveOrderPre.pdRelOrderConfirm(order, "bsOrderConfirm")
 			} else {
 				info = "操作错误，请重试"
 			}

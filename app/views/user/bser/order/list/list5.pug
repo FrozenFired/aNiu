@@ -1,9 +1,4 @@
 each order in orders
-	-let txtSatus="";
-	if order.status == 5
-		- txtSatus = "text-info";
-	else if order.status == 10
-		- txtSatus = "text-secondary";
 	- let textTime="";
 	if Date.now() - order.ctAt > 3*24*60*60*1000
 		-textTime="text-danger";
@@ -20,7 +15,16 @@ each order in orders
 						.col-6
 							a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
 						.col-6.text-right
-							button.btn.btn-secondary(type="button", id='sendBtn-'+order._id) 生产
+							if order.status == 0
+								-a;
+								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
+									input(type="hidden", name="orderId", value=order._id)
+									input(type="hidden", name="target", value="bsOrderConfirm")
+									input.btn.btn-secondary(type="submit", value="生产")
+							else if order.status == 5
+								- txtSatus = "text-success";
+								button.btn.btn-success(type="button") 在产
+							
 				th
 				th(width="8%")
 				th(colspan=order.sizes.length)

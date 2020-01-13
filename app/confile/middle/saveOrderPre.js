@@ -6,7 +6,7 @@ let Ordthd = require('../../models/client/ordthd');
 
 /* =========================== 库存中的pd与ord中的pd相关联 =========================== */
 /* ======================= 创建订单 ======================= */
-exports.pdRelOrderNew = function(order, checkCode) {
+exports.pdRelOrderConfirm = function(order, checkCode) {
 	let dbs = new Array();
 	let ordfirs = order.ordfirs;
 	for(let i=0; i < ordfirs.length; i++) {
