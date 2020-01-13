@@ -1,50 +1,59 @@
 each tint in tints
-	- let txtSatus = "text-secondary";
+	- let tner = tint.tner;
 
 	each tinfir in tint.tinfirs
-		-a;
-		table.table.table-btinted.text-center
-			tr(class=txtSatus)
-				th(width="7%") 染色日期:
-				th(width="8%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
-				th(width="10%")
-				th(colspan=tint.sizes.length)
-					a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
+		-let pdfir = tinfir.pdfir;
+		table.table.table-bordered.text-center
+			tr
+				th(colspan=tint.sizes.length+2, width="49%")
+					.row
+						.col-3.pt-2
+							span 样品: 
+							span.text-info #{pdfir.nome}
+						.col-3.pt-2
+							span 染洗厂: 
+							span.text-info #{tner.nome}
+						.col-6.pt-2
+							span 染色日期: 
+							a(href="/bsTint/"+tint._id) #{moment(tint.ctAt).format('MM/DD/YYYY')}
 				th(width="2%")
-				th(width="7%") 收货日期:
-				th(width="8%") #{moment(tint.fnAt).format('MM/DD/YYYY')}
-				th(width="10%")
-				th(colspan=tint.sizes.length)
-					form(method="post", action="/bsTinChangeSts", enctype="multipart/form-data")
-						input(type="hidden", name="tintId", value=tint._id)
-						input(type="hidden", name="target", value="bsTintBack")
-						input.btn.btn-danger(type="submit", value="未完成")
+				th(colspan=tint.sizes.length+2)
+					.row
+						.col-3.pt-2
+								span 样品: 
+								span
+									a(href="/bsProduct/"+pdfir._id) #{pdfir.nome}
+						.col-3.pt-2
+							span 染洗厂: 
+							span
+								a(href="/bsTner/"+tner._id) #{tner.nome}
+						.col-4.pt-2
+							span 完成收货: 
+							span #{moment(tint.fnAt).format('MM/DD/YYYY')}
+						.col-2.text-right
+							form(method="post", action="/bsTinChangeSts", enctype="multipart/form-data")
+								input(type="hidden", name="tintId", value=tint._id)
+								input(type="hidden", name="target", value="bsTintBack")
+								input.btn.btn-danger(type="submit", value="未完成")
 			tr.bg-light
-				th 样品型号
-				th 染洗厂
 				th 颜色
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}
+				th 合计
 				th.bg-secondary
-				th 样品型号
-				th 染洗厂
 				th 颜色
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}
+				th 合计
 			- let i = 0, k = 0;
+			- let totquot = totship = 0;
 			each tinsec in tinfir.tinsecs
 				- i++;
 				tr
-					if i==1
-						-a;
-						th: a(href="/bsProduct/"+tinfir.pdfir._id) #{tinfir.pdfir.code}
-						th: a(href="/bsTner/"+tint.tner._id) #{tint.tner.nome}
-					else
-						th
-						th
 					th.bg-light #{tinsec.pdsec.color}
+					-let ctotquot = 0;
 					each size in tint.sizes
 						-let less = '';
 						-let quot = '';
@@ -52,6 +61,8 @@ each tint in tints
 							if tinthd.size == size
 								- quot = parseInt(tinthd.quot);
 								- less = parseInt(tinthd.quot) - parseInt(tinthd.ship);
+								- ctotquot += quot;
+								- totquot += quot;
 								- break;
 						td 
 							if less == 0
@@ -59,15 +70,10 @@ each tint in tints
 								span #{quot}
 							else
 								span.text-info #{quot}
+					td.text-success #{ctotquot}
 					td.bg-secondary
-					if i==1
-						-a;
-						th: a(href="/bsProduct/"+tinfir.pdfir._id) #{tinfir.pdfir.code}
-						th: a(href="/bsTner/"+tint.tner._id) #{tint.tner.nome}
-					else
-						th
-						th
 					th.bg-light #{tinsec.pdsec.color}
+					-let ctotship = 0;
 					each size in tint.sizes
 						-let less = '';
 						-let ship = '';
@@ -75,6 +81,8 @@ each tint in tints
 							if tinthd.size == size
 								- ship = parseInt(tinthd.ship);
 								- less = parseInt(tinthd.quot) - ship;
+								- ctotship += ship;
+								- totship += ship;
 								- break;
 						td 
 							if less == 0
@@ -82,3 +90,10 @@ each tint in tints
 								span #{ship}
 							else
 								span.text-info #{ship}
+					td.text-success #{ctotship}
+			tr
+				td(colspan=tint.sizes.length+1)
+				td.text-success: h4 #{totquot}
+				td.bg-secondary
+				td(colspan=tint.sizes.length+1)
+				td.text-success: h4 #{totship}

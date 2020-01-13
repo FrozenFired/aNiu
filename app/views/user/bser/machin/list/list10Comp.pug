@@ -1,18 +1,11 @@
-- let i = 0, k = 0;
+- let i = 0, k = 0, totquot = 0,  totship = 0;
+- let ztotquots = new Array();
+- let ztotships = new Array();
 each macsec in macfir.macsecs
 	- i++;
 	tr
-		if i==1
-			-a;
-			th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
-			th
-				if machin.fder
-					- fder = machin.fder;
-					a(href="/bsFder/"+fder._id) #{fder.nome}
-		else
-			th
-			th
 		th.bg-light #{macsec.pdsec.color}
+		- let ctotquot = 0;
 		each size in machin.sizes
 			-let less = '';
 			-let quot = '';
@@ -20,6 +13,12 @@ each macsec in macfir.macsecs
 				if macthd.size == size
 					- quot = parseInt(macthd.quot);
 					- less = parseInt(macthd.quot) - parseInt(macthd.ship);
+					if isNaN(ztotquots[size])
+						- ztotquots[size] = quot;
+					else
+						- ztotquots[size] += quot;
+					- ctotquot += quot;
+					- totquot += quot;
 					- break;
 			td
 				if less == 0
@@ -27,18 +26,10 @@ each macsec in macfir.macsecs
 					span #{quot}
 				else
 					span.text-info #{quot}
+		td.text-success #{ctotquot}
 		td.bg-secondary
-		if i==1
-			-a;
-			th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
-			th
-				if machin.fder
-					- fder = machin.fder;
-					a(href="/bsFder/"+fder._id) #{fder.nome}
-		else
-			th
-			th
 		th.bg-light #{macsec.pdsec.color}
+		- let ctotship = 0;
 		each size in machin.sizes
 			-let less = '';
 			-let ship = '';
@@ -46,6 +37,12 @@ each macsec in macfir.macsecs
 				if macthd.size == size
 					- ship = parseInt(macthd.ship);
 					- less = parseInt(macthd.quot) - ship;
+					if isNaN(ztotships[size])
+						- ztotships[size] = ship;
+					else
+						- ztotships[size] += ship;
+					- ctotship += ship;
+					- totship += ship;
 					- break;
 			td 
 				if less == 0
@@ -53,3 +50,16 @@ each macsec in macfir.macsecs
 					span #{ship}
 				else
 					span.text-info #{ship}
+		td.text-success #{ctotship}
+tr
+	td
+	each size in machin.sizes
+		-a;
+		td.text-success #{ztotquots[size]}
+	td.text-success: h4 #{totquot}
+	td.bg-secondary
+	td
+	each size in machin.sizes
+		-a;
+		td.text-success #{ztotships[size]}
+	td.text-success: h4 #{totship}

@@ -1,71 +1,74 @@
 each tint in tints
-	- let textTime="";
+	- let btnTime="btn-secondary";
 	if Date.now() - tint.ctAt > 3*24*60*60*1000
-		-textTime="text-danger";
+		-btnTime="btn-danger";
 
 	each tinfir in tint.tinfirs
-		-a;
+		-let pdfir = tinfir.pdfir;
+		-let tner = tint.tner;
 		table.table.table-bordered.text-center
-			tr(class=textTime)
-				th(width="7%") 染洗日期:
-				th(width="8%") #{moment(tint.ctAt).format('MM/DD/YYYY')}
-				th(width="10%")
-				th(colspan=tint.sizes.length+1, width="25%")
-					a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
-				th
-				th(colspan=tint.sizes.length)
+			tr.bg-light
+				th(colspan=tint.sizes.length+2, width="40%")
 					.row
-						.col-6.text-right
-							button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+tint._id) 收货
-						.col-6.text-right
+						.col-3.pt-2
+							h5 #{pdfir.code}
+						.col-3.pt-2
+							a(href="/bsTner/"+tner._id) #{tner.nome}
+						.col-2.pt-1
+							a.btn.btn-link(href="/bsTint/"+tint._id) #{tint.code}
+				th(width="2%")
+				th(colspan=tint.sizes.length+2)
+					.row.text-right
+						.col-2.pt-2 染洗日期:
+						.col-2.pt-2.text-left #{moment(tint.ctAt).format('MM/DD/YYYY')}
+						.col-4
+							button.sendBtn.btn(class=btnTime, type="button", id='sendBtn-'+tint._id) 收货
+						.col-4
 							form(method="post", action="/bsTinChangeSts", enctype="multipart/form-data")
 								input(type="hidden", name="tintId", value=tint._id)
 								input(type="hidden", name="target", value="bsTintFinish")
 								input.btn.btn-warning(type="submit", value="完成")
 			tr.bg-light
-				th 样品型号
-				th 染洗厂
 				th 颜色
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}
 				th 合计
 				th.bg-secondary(width="2%")
+				th 颜色
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}
+				th 合计
 			form(id="sendForm-"+tint._id, method="post", action="/bsTintSend", enctype="multipart/form-data")
 				input(type="hidden", name="obj[tintId]", value=tint._id)
 				input(type="hidden", name="obj[tinfirId]", value=tinfir._id)
-				- let i = 0, k=0, tot = 0;
-				- let ztots = new Array();
+				- let i = 0, k=0;
+				- let totquot = 0, totship = 0;
+				- let ztotquots = new Array();
+				- let ztotships = new Array();
 				each tinsec in tinfir.tinsecs
 					- i++;
 					tr
-						if i==1
-							-a;
-							th: a(href="/bsProduct/"+tinfir.pdfir._id) #{tinfir.pdfir.code}
-							th: a(href="/bsTner/"+tint.tner._id) #{tint.tner.nome}
-						else
-							th
-							th
 						th.bg-light #{tinsec.pdsec.color}
-						- let ctot = 0;
+						- let ctotquot = 0;
 						each size in tint.sizes
 							-let quot = '';
 							each tinthd in tinsec.tinthds
 								if tinthd.size == size
 									- quot = tinthd.quot;
-									if isNaN(ztots[size])
-										-ztots[size] = quot;
+									if isNaN(ztotquots[size])
+										-ztotquots[size] = quot;
 									else
-										-ztots[size] += quot;
-									- ctot += quot;
-									- tot += quot;
+										-ztotquots[size] += quot;
+									- ctotquot += quot;
+									- totquot += quot;
 									- break;
 							td #{quot}
-						td.text-success #{ctot}
+						td.text-success #{ctotquot}
 						td.bg-secondary
+						th.bg-light #{tinsec.pdsec.color}
+						- let ctotship = 0;
 						each size in tint.sizes
 							-let ship = '';
 							-let quot = '';
@@ -75,6 +78,12 @@ each tint in tints
 									- tinthdId = tinthd._id;
 									- ship = parseInt(tinthd.ship);
 									- quot = parseInt(tinthd.quot);
+									if isNaN(ztotships[size])
+										-ztotships[size] = ship;
+									else
+										-ztotships[size] += ship;
+									- ctotship += ship;
+									- totship += ship;
 									- break;
 							td 
 								if tinthdId
@@ -88,9 +97,17 @@ each tint in tints
 										input(type="hidden", name="obj[thds]["+k+"][tinthdId]", value=tinthdId)
 									else
 										span.text-info #{ship}
+						td.text-success #{ctotship}
 				tr.text-success
-					td(colspan=3)
+					td
 					each size in tint.sizes
 						-a;
-						td #{ztots[size]}
-					td: h4 #{tot}
+						td #{ztotquots[size]}
+					td: h4 #{totquot}
+					th.bg-secondary
+					td
+					each size in tint.sizes
+						-a;
+						td.text-success #{ztotships[size]}
+					td.text-success
+						h4 #{totship}

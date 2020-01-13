@@ -3,91 +3,97 @@ each order in orders
 
 	each ordfir in order.ordfirs
 		- let pdfir = ordfir.pdfir;
-		.row.pt-3.bg-light.mt-5
-			.col-1
-				h5 样品型号: 
-				h4 #{pdfir.nome}
-			.col-1
-				h5 客户名称
-				h4 #{cter.nome}
-			.col-4
-				h5 订货日期:
-				h4 #{moment(order.ctAt).format('MM/DD/YYYY')}
-			.col-1
-				h5 样品型号: 
-				h4.text-danger #{pdfir.nome}
-			.col-1
-				h5 客户名称
-				h4
-					a(href="/bsCter/"+cter._id) #{cter.nome}
-			.col-2
-				h5 完成发货:
-				h4 #{moment(order.fnAt).format('MM/DD/YYYY')}
-			.col-2.text-right
-				form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
-					input(type="hidden", name="orderId", value=order._id)
-					input(type="hidden", name="target", value="bsOrderBack")
-					input.btn.btn-danger(type="submit", value="未完成")
-		.row
-			table.table.table-bordered.text-center(class="ordTab pdfir-"+pdfir._id+" cter-"+cter._id)
-				tr.bg-light
-					th 颜色
-					each size in order.sizes
-						-a;
-						th #{Conf.sizes[size]}
-					th 合计
-					th(width="1%")
-					th 颜色
-					each size in order.sizes
-						-a;
-						th #{Conf.sizes[size]}
-					th 合计
-				- let i = 0, totquot = totship = 0;
-				each ordsec in ordfir.ordsecs
-					- i++;
-					tr
-						th.bg-light #{ordsec.color}
-						-let ctotquot = 0;
-						each size in order.sizes
-							-let less = '';
-							-let quot = '';
-							each ordthd in ordsec.ordthds
-								if ordthd.size == size
-									- quot = parseInt(ordthd.quot);
-									- less = parseInt(ordthd.quot) - parseInt(ordthd.ship);
-									- ctotquot += quot;
-									- totquot += quot;
-									- break;
-							td
-								if less == 0
-									-a;
-									span #{quot}
-								else
-									span.text-info #{quot}
-						td #{ctotquot}
-						td.bg-secondary
-						th.bg-light #{ordsec.color}
-						-let ctotship = 0;
-						each size in order.sizes
-							-let less = '';
-							-let ship = '';
-							each ordthd in ordsec.ordthds
-								if ordthd.size == size
-									- ship = parseInt(ordthd.ship);
-									- less = parseInt(ordthd.quot) - ship;
-									- ctotship += ship;
-									- totship += ship;
-									- break;
-							td 
-								if less == 0
-									-a;
-									span #{ship}
-								else
-									span.text-info #{ship}
-						td.text-success #{ctotship}
+		table.table.table-bordered.text-center(class="ordTab pdfir-"+pdfir._id+" cter-"+cter._id)
+			tr.bg-light
+				th(colspan=order.sizes.length+2, width="49%")
+					.row
+						.col-3.pt-2
+							span 样品: 
+							span.text-info #{pdfir.nome}
+						.col-3.pt-2
+							span 客户: 
+							span.text-info #{cter.nome}
+						.col-6.pt-2
+							span 订货日期: 
+							a(href="/bsOrder/"+order._id) #{moment(order.ctAt).format('MM/DD/YYYY')}
+				th(width="2%")
+				th(colspan=order.sizes.length+2)
+					.row
+						.col-3.pt-2
+							span 样品: 
+							span
+								a(href="/bsProduct/"+pdfir._id) #{pdfir.nome}
+						.col-3.pt-2
+							span 客户: 
+							span
+								a(href="/bsCter/"+cter._id) #{cter.nome}
+						.col-4.pt-2
+							span 完成发货: 
+							span #{moment(order.fnAt).format('MM/DD/YYYY')}
+						.col-2.text-right
+							form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
+								input(type="hidden", name="orderId", value=order._id)
+								input(type="hidden", name="target", value="bsOrderBack")
+								input.btn.btn-danger(type="submit", value="未完成")
+			tr.bg-light
+				th 颜色
+				each size in order.sizes
+					-a;
+					th #{Conf.sizes[size]}
+				th 合计
+				th.bg-secondary
+				th 颜色
+				each size in order.sizes
+					-a;
+					th #{Conf.sizes[size]}
+				th 合计
+			- let i = 0;
+			- let totquot = totship = 0;
+			each ordsec in ordfir.ordsecs
+				- i++;
 				tr
-					td(colspan=order.sizes.length+1)
-					td.text-success: h4 #{totquot}
+					th.bg-light #{ordsec.color}
+					-let ctotquot = 0;
+					each size in order.sizes
+						-let less = '';
+						-let quot = '';
+						each ordthd in ordsec.ordthds
+							if ordthd.size == size
+								- quot = parseInt(ordthd.quot);
+								- less = parseInt(ordthd.quot) - parseInt(ordthd.ship);
+								- ctotquot += quot;
+								- totquot += quot;
+								- break;
+						td
+							if less == 0
+								-a;
+								span #{quot}
+							else
+								span.text-info #{quot}
+					td #{ctotquot}
 					td.bg-secondary
-					td(colspan=order.sizes.length+1)
-					td.text-success: h4 #{totship}
+					th.bg-light #{ordsec.color}
+					-let ctotship = 0;
+					each size in order.sizes
+						-let less = '';
+						-let ship = '';
+						each ordthd in ordsec.ordthds
+							if ordthd.size == size
+								- ship = parseInt(ordthd.ship);
+								- less = parseInt(ordthd.quot) - ship;
+								- ctotship += ship;
+								- totship += ship;
+								- break;
+						td 
+							if less == 0
+								-a;
+								span #{ship}
+							else
+								span.text-info #{ship}
+					td.text-success #{ctotship}
+			tr
+				td(colspan=order.sizes.length+1)
+				td.text-success: h4 #{totquot}
+				td.bg-secondary
+				td(colspan=order.sizes.length+1)
+				td.text-success: h4 #{totship}

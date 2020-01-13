@@ -8,43 +8,41 @@ each order in orders
 		-let cter = order.cter;
 		table.table.table-bordered.text-center.mt-4(class="ordTab pdfir-"+pdfir._id+" cter-"+cter._id)
 			tr.bg-light
-				th(width="8%")
-					a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
-					br
-					a(href="/bsCter/"+cter._id) #{cter.nome}
-				th(colspan=order.sizes.length+1, width="30%")
+				th(colspan=order.sizes.length+2, width="40%")
 					.row
-						.col-6
+						.col-3.pt-2
+							h5 #{pdfir.code}
+						.col-3.pt-2
+							a(href="/bsCter/"+cter._id) #{cter.nome}
+						.col-2.pt-1
 							a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
 						if order.status == 0
 							-a;
-							.col-6.text-right
+							.col-4.text-right
 								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
 									input(type="hidden", name="orderId", value=order._id)
 									input(type="hidden", name="target", value="bsOrderConfirm")
 									input.btn(class=btnTime, type="submit", value="生产")
 						else if order.status == 5
 							- a;
-							.col-3.text-right
+							.col-2.text-right
 								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data", style="display:none", id="cancelForm-"+order._id)
 									input(type="hidden", name="orderId", value=order._id)
 									input(type="hidden", name="target", value="bsOrderCancel")
 									input.btn.btn-secondary(type="submit", value="取消生产")
-							.col-3.text-right
+							.col-2.text-right
 								span.btn.btn-success.proding(id="proding-"+order._id) 在产
 							
 				th(width="2%")
-				th(width="8%")
-					span 订单日期:
-					br
-					span #{moment(order.ctAt).format('MM/DD/YYYY')}
-				th(colspan=order.sizes.length+1)
-					.row
+				th(colspan=order.sizes.length+2)
+					.row.text-right
+						.col-2.pt-2 订单日期:
+						.col-2.pt-2.text-left #{moment(order.ctAt).format('MM/DD/YYYY')}
 						if order.status == 5
 							-a;
-							.col-6
+							.col-4
 								button.sendBtn.btn(class=btnTime, type="button", id='sendBtn-'+order._id) 发货
-							.col-6
+							.col-4
 								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
 									input(type="hidden", name="orderId", value=order._id)
 									input(type="hidden", name="target", value="bsOrderFinish")

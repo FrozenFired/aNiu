@@ -1,21 +1,20 @@
 input(type="hidden", name="obj[machinId]", value=machin._id)
 input(type="hidden", name="obj[macfirId]", value=macfir._id)
 tr
-	th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
-	th(class=fderTr)
-		a(href="/bsFder/"+fder._id) #{fder.nome}
 	th.bg-light 半成品
-	- let k = 0, ctot = 0;;
+	- let k = 0, ctotquot = 0;
 	each size in machin.sizes
 		-let quot = '';
 		each macsez in macfir.macsezs
 			if macsez.size == size
 				- quot = macsez.quot;
-				- ctot += quot;
+				- ctotquot += quot;
 				- break;
 		td #{quot}
-	td.text-success #{ctot}
+	td.text-success #{ctotquot}
 	td.bg-secondary
+	th.bg-light 半成品
+	- let ctotship = 0;
 	each size in machin.sizes
 		-let ship = '';
 		-let quot = '';
@@ -25,6 +24,7 @@ tr
 				- macsezId = macsez._id;
 				- ship = parseInt(macsez.ship);
 				- quot = parseInt(macsez.quot);
+				- ctotship += ship;
 				- break;
 		td 
 			if macsezId
@@ -38,5 +38,4 @@ tr
 					input(type="hidden", name="obj[thds]["+k+"][macsezId]", value=macsezId)
 				else
 					span.text-info #{ship}
-					//- span &nbsp; /  
-					//- span.text-warning #{stock}
+	td.text-success #{ctotship}

@@ -3,9 +3,9 @@
 		button.btn.btn-danger#nofderBtn(type="button") <span class="oi oi-loop-circular"></span>
 		button.btn.btn-info#exitfderBtn(type="button", style="display:none") <span class="oi oi-loop-circular"></span>
 each machin in machins
-	- let textTime="";
+	- let btnTime="btn-secondary";
 	if Date.now() - machin.ctAt > 3*24*60*60*1000
-		-textTime="text-danger";
+		- btnTime="btn-danger";
 	- let fder = new Object(), fderTb="noFder", fderTr="bg-danger";
 	- let fderDidplay="display:none";
 	if machin.fder
@@ -15,41 +15,46 @@ each machin in machins
 		- fderDidplay = "";
 
 	each macfir in machin.macfirs
-		-a;
-		table.table.table-bordered.text-center(class=fderTb, style=fderDidplay)
-			tr(class=textTime)
-				th(width="7%") 生产日期:
-				th(width="8%") #{moment(machin.ctAt).format('MM/DD/YYYY')}
-				th(width="10%")
-				th(colspan=machin.sizes.length+1, width="30%")
-					a.btn.btn-link(href="/bsMachin/"+machin._id) #{machin.code}
+		- let pdfir = macfir.pdfir;
+		table.table.table-bordered.text-center(class=fderTb, style=fderDidplay).mt-4
+			tr.bg-light
+				th(colspan=machin.sizes.length+2, width="40%")
+					.row
+						.col-3.pt-2
+							h5 #{pdfir.code}
+						.col-3.pt-2
+							a(href="/bsFder/"+fder._id) #{fder.nome}
+						.col-2.pt-1
+							a.btn.btn-link(href="/bsMachin/"+machin._id) #{machin.code}
 				th(width="2%")
-				th(colspan=machin.sizes.length)
+				th(colspan=machin.sizes.length+2)
 					.row
 						if machin.fder
 							-a;
-							.col-6
-								button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+machin._id) 收货
-							.col-6
+							.col-2.pt-2 生产日期:
+							.col-2.pt-2.text-left #{moment(machin.ctAt).format('MM/DD/YYYY')}
+							.col-4.text-right
+								button.sendBtn.btn(class=btnTime, type="button", id='sendBtn-'+machin._id) 收货
+							.col-4.text-right
 								form(method="post", action="/bsMacChangeSts", enctype="multipart/form-data")
 									input(type="hidden", name="machinId", value=machin._id)
 									input(type="hidden", name="target", value="bsMachinFinish")
 									input.btn.btn-warning(type="submit", value="完成")
 			tr.bg-light
-				th 样品型号
-				th 工厂名称
 				th 颜色
 				each size in machin.sizes
 					-a;
 					th #{Conf.sizes[size]}
 				th 合计
 				th.bg-secondary
+				th 颜色
 				each size in machin.sizes
 					-a;
 					th #{Conf.sizes[size]}
+				th 合计
 			form(id="sendForm-"+machin._id, method="post", action="/bsMachinSend", enctype="multipart/form-data")
-				input(type="hidden", name="obj[semi]", value=macfir.pdfir.semi)
-				if macfir.pdfir.semi == 1
+				input(type="hidden", name="obj[semi]", value=pdfir.semi)
+				if pdfir.semi == 1
 					-a;
 					include ./list5Semi.pug
 				else

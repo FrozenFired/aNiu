@@ -1,16 +1,13 @@
 tr
-	th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
-	th
-		if machin.fder
-			- fder = machin.fder;
-			a(href="/bsFder/"+fder._id) #{fder.nome}
 	th.bg-light 半成品
+	- let ctotquot = 0;
 	each size in machin.sizes
 		-let less = '';
 		-let quot = '';
 		each macsez in macfir.macsezs
 			if macsez.size == size
 				- quot = parseInt(macsez.quot);
+				- ctotquot += quot;
 				- less = parseInt(macsez.quot) - parseInt(macsez.ship);
 				- break;
 		td
@@ -19,13 +16,10 @@ tr
 				span #{quot}
 			else
 				span.text-info #{quot}
+	td.text-success #{ctotquot}
 	td.bg-secondary
-	th: a(href="/bsProduct/"+macfir.pdfir._id) #{macfir.pdfir.code}
-	th
-		if machin.fder
-			- fder = machin.fder;
-			a(href="/bsFder/"+fder._id) #{fder.nome}
 	th.bg-light 半成品
+	- let ctotship = 0;
 	each size in machin.sizes
 		-let less = '';
 		-let ship = '';
@@ -33,6 +27,7 @@ tr
 			if macsez.size == size
 				- ship = parseInt(macsez.ship);
 				- less = parseInt(macsez.quot) - ship;
+				- ctotship += ship;
 				- break;
 		td 
 			if less == 0
@@ -40,3 +35,4 @@ tr
 				span #{ship}
 			else
 				span.text-info #{ship}
+	td.text-success #{ctotship}
