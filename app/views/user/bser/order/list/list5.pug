@@ -1,13 +1,13 @@
 each order in orders
-	- let textTime="";
+	- let btnTime="btn-secondary";
 	if Date.now() - order.ctAt > 3*24*60*60*1000
-		-textTime="text-danger";
+		-btnTime="btn-danger";
 
 	each ordfir in order.ordfirs
 		-let pdfir = ordfir.pdfir;
 		-let cter = order.cter;
 		table.table.table-bordered.text-center.mt-4(class="ordTab pdfir-"+pdfir._id+" cter-"+cter._id)
-			tr(class=textTime)
+			tr.bg-light
 				th(width="8%")
 					a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
 					br
@@ -22,14 +22,14 @@ each order in orders
 								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
 									input(type="hidden", name="orderId", value=order._id)
 									input(type="hidden", name="target", value="bsOrderConfirm")
-									input.btn.btn-secondary(type="submit", value="生产")
+									input.btn(class=btnTime, type="submit", value="生产")
 						else if order.status == 5
 							- a;
 							.col-3.text-right
 								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data", style="display:none", id="cancelForm-"+order._id)
 									input(type="hidden", name="orderId", value=order._id)
 									input(type="hidden", name="target", value="bsOrderCancel")
-									input.btn.btn-secondary(type="submit", value="不产")
+									input.btn.btn-secondary(type="submit", value="取消生产")
 							.col-3.text-right
 								span.btn.btn-success.proding(id="proding-"+order._id) 在产
 							
@@ -43,7 +43,7 @@ each order in orders
 						if order.status == 5
 							-a;
 							.col-6
-								button.sendBtn.btn.btn-secondary(type="button", id='sendBtn-'+order._id) 发货
+								button.sendBtn.btn(class=btnTime, type="button", id='sendBtn-'+order._id) 发货
 							.col-6
 								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
 									input(type="hidden", name="orderId", value=order._id)

@@ -54,7 +54,7 @@ exports.bsOrds = function(req, res) {
 			}
 		]}
 	]})
-	.sort({"status": 1, [sortCond]: sortVal})
+	.sort({[sortCond]: sortVal})
 	.exec(function(err, orders) {
 		if(err) {
 			info = "bsOrders, User.find, Error";
