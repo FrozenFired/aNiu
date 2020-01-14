@@ -4,7 +4,7 @@ block content
 	.container.mt-5
 		input#tintId(type="hidden", value=tint._id)
 		.row.border-bottom.mb-4.py-3#optBtn.noprint
-			.col-2: h3 #{tint.code}
+			.col-2: h3: a(href="/bsTint/"+tint._id) #{tint.code}
 			.col-1.text-right: h3 #{tint.tinfirs[0].pdfir.code}
 			.col-2: h3 #{tint.tinfirs[0].pdfir.nome}
 			.col-3.text-right: h3#tnerBtn #{tint.tner.nome}
@@ -20,19 +20,23 @@ block content
 		.info.infoQuot
 			.tnersAjax.row.my-3
 			.row
-				.col-2
-					h2 订单
-				.col-10.text-right #{moment(tint.ctAt).format('YYYY/MM/DD HH:mm:ss')}
+				.col-6
+					h4 订单
+				.col-6.text-right #{moment(tint.ctAt).format('YYYY/MM/DD HH:mm:ss')}
 			.row.show-colors-quot
 			include ./quot
 		div.noprint(style="height:100px")
 		.info.infoShip
-			h2 发货
+			h4 发货
 			.row.show-colors-ship
 			include ./ship
 		div.noprint(style="height:100px")
-		a.noprint.btn.btn-danger(href="/bsTintDel/"+tint._id) 删除
-
+		div(style="position: fixed;bottom: 0px;right: 0px;width:100%; height:60px;")
+			.row.m-2
+				.col-6
+					a.noprint.btn.btn-danger(href="/bsTintDel/"+tint._id) 删除
+				.col-6.text-right
+					button.btn.btn-success.btn-lg#changeBtn(type="button") <span class="oi oi-browser"></span>
 	script(src="/js/bser/tint/update/tner.js")
 	script(src="/js/bser/tint/update/upthd.js")
 	script(src="/js/bser/tint/update/addsec.js")

@@ -108,7 +108,7 @@ exports.bsTintUp = function(req, res) {
 	] })
 	.exec(function(err, tint) { 
 		if(err) {
-			info = "bs查看生产单时, 生产单数据库错误, 请联系管理员";
+			info = "bs查看染洗单时, 染洗单数据库错误, 请联系管理员";
 			Err.usError(req, res, info);
 		} else if(!tint) {
 			info = "tint 数据已经被删除，请刷新查看";
@@ -118,7 +118,7 @@ exports.bsTintUp = function(req, res) {
 			Err.usError(req, res, info);
 		} else {
 			res.render('./user/bser/tint/update/update', {
-				title : '生产单更新',
+				title : '染洗单更新',
 				crUser: crUser,
 				tint : tint,
 			});

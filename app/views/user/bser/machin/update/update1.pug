@@ -4,7 +4,7 @@ block content
 	.container.mt-5
 		input#machinId(type="hidden", value=machin._id)
 		.row.bmachin-bottom.mb-4.py-3#optBtn.noprint
-			.col-2: h3 #{machin.code}
+			.col-2: h3: a(href="/bsMachin/"+machin._id) #{machin.code}
 			.col-1.text-right: h3 #{machin.macfirs[0].pdfir.code}
 			.col-2: h3 #{machin.macfirs[0].pdfir.nome}
 			.col-3.text-right
@@ -24,18 +24,23 @@ block content
 		.info.infoQuot
 			.fdersAjax.row.my-3
 			.row
-				.col-2
-					h2 生产单
-				.col-10.text-right #{moment(machin.ctAt).format('YYYY/MM/DD HH:mm:ss')}
+				.col-6
+					h4 生产单
+				.col-6.text-right #{moment(machin.ctAt).format('YYYY/MM/DD HH:mm:ss')}
 			.row.show-colors-quot
 			include ./semi/quot
 		div.noprint(style="height:100px")
 		.info.infoShip
-			h2 发货
+			h4 发货
 			.row.show-colors-ship
 			include ./semi/ship
 		div.noprint(style="height:100px")
-		a.noprint.btn.btn-danger(href="/bsMachinDel/"+machin._id) 删除
+		div(style="position: fixed;bottom: 0px;right: 0px;width:100%; height:60px;")
+			.row.m-2
+				.col-6
+					a.noprint.btn.btn-danger(href="/bsMachinDel/"+machin._id) 删除
+				.col-6.text-right
+					button.btn.btn-success.btn-lg#changeBtn(type="button") <span class="oi oi-browser"></span>
 
 	script(src="/js/bser/machin/update/fder.js")
 	script(src="/js/bser/machin/update/upsez.js")
