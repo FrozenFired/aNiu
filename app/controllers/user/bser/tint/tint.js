@@ -142,6 +142,15 @@ exports.bsTintRelTnerAjax = function(req, res) {
 			info = "没有找到订单， 请刷新重试!"
 			res.json({success: 0, info: info})
 		} else {
+			Tner.findOne({_id: tint.tner}, function(err, orgTner) {
+				if(err) console.log(err);
+				if(orgTner) {
+					orgTner.tints.remove(tintId);
+					orgTner.save(function(err, orgTnerSave) {
+						if(err) console.log(err);
+					} )
+				}
+			})
 			Tner.findOne({_id: tnerId}, function(err, tner) {
 				if(err) {
 					console.log(err);
@@ -151,6 +160,10 @@ exports.bsTintRelTnerAjax = function(req, res) {
 					info = "没有找到选择的客户， 请刷新重试!"
 					res.json({success: 0, info: info})
 				} else {
+					tner.tints.push(tintId);
+					tner.save(function(err, tnerSave) {
+						if(err) console.log(err);
+					})
 					tint.tner = tner._id;
 					tint.save(function(err, tintSv){
 						if(err) {

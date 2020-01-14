@@ -155,6 +155,15 @@ exports.bsMachinRelFderAjax = function(req, res) {
 			info = "没有找到订单， 请刷新重试!"
 			res.json({success: 0, info: info})
 		} else {
+			Fder.findOne({_id: machin.fder}, function(err, orgFder) {
+				if(err) console.log(err);
+				if(orgFder) {
+					orgFder.machins.remove(machinId);
+					orgFder.save(function(err, orgFderSave) {
+						if(err) console.log(err);
+					} )
+				}
+			})
 			Fder.findOne({_id: fderId}, function(err, fder) {
 				if(err) {
 					console.log(err);
@@ -164,6 +173,10 @@ exports.bsMachinRelFderAjax = function(req, res) {
 					info = "没有找到选择的客户， 请刷新重试!"
 					res.json({success: 0, info: info})
 				} else {
+					fder.machins.push(machinId);
+					fder.save(function(err, fderSave) {
+						if(err) console.log(err);
+					})
 					machin.fder = fder._id;
 					machin.save(function(err, machinSv){
 						if(err) {

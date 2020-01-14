@@ -117,7 +117,7 @@ exports.bsOrderRelCterAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let orderId = req.query.orderId
 	let cterId = req.query.cterId
-	
+
 	Order.findOne({_id: orderId}, function(err, order){
 		if(err) {
 			console.log(err);
@@ -127,6 +127,15 @@ exports.bsOrderRelCterAjax = function(req, res) {
 			info = "没有找到订单， 请刷新重试!"
 			res.json({success: 0, info: info})
 		} else {
+			Cter.findOne({_id: order.cter}, function(err, orgCter) {
+				if(err) console.log(err);
+				if(orgCter) {
+					orgCter.orders.remove(orderId);
+					orgCter.save(function(err, orgCterSave) {
+						if(err) console.log(err);
+					} )
+				}
+			})
 			Cter.findOne({_id: cterId}, function(err, cter) {
 				if(err) {
 					console.log(err);
@@ -136,6 +145,10 @@ exports.bsOrderRelCterAjax = function(req, res) {
 					info = "没有找到选择的客户， 请刷新重试!"
 					res.json({success: 0, info: info})
 				} else {
+					cter.orders.push(orderId);
+					cter.save(function(err, cterSave) {
+						if(err) console.log(err);
+					})
 					order.cter = cter._id;
 					order.save(function(err, orderSv){
 						if(err) {
