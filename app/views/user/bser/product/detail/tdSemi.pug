@@ -1,12 +1,14 @@
 .ptCont.pdstock
 	span.textStock(id="stockText-"+pdsez._id) #{showSezStock}
-	form(id="form-"+pdsez._id, method="post", action="/bsProdUpStock", enctype="multipart/form-data")
-		input(type="hidden", name="obj[pdsez]", value=pdsez._id)
-		input.editStock.iptsty(id="stockIpt-"+pdsez._id, type="number", style="display:none" name="obj[stock]", value=showSezStock)
-		input(id="stockOrg-"+pdsez._id, type="hidden", name="obj[stockOrg]", value=showSezStock)
 
 if needMac <= 0
 	-needMac = 0;
 span.ptCont.pdneedM(id="needM-"+pdsez._id style="display:none") #{needMac}
 
 span.ptCont.pdmachin(style="display:none") #{quotMsez-shipMsez}
+
+.ptCont.pdeditStockBtn
+	form(id="form-"+pdsez._id, method="post", action="/bsProdUpStock", enctype="multipart/form-data")
+		input(type="hidden", name="obj[pdsez]", value=pdsez._id)
+		input.editStock.iptsty(id="stockIpt-"+pdsez._id, type="number", style="display:none" name="obj[stock]", value=showSezStock)
+		input(id="stockOrg-"+pdsez._id, type="hidden", name="obj[stockOrg]", value=showSezStock)

@@ -9,7 +9,7 @@ each order in orders
 					.row
 						.col-3.pt-2
 							span 样品: 
-							span.text-info #{pdfir.nome}
+							span.text-info #{pdfir.code}
 						.col-3.pt-2
 							span 客户: 
 							span.text-info #{cter.nome}
@@ -22,7 +22,7 @@ each order in orders
 						.col-3.pt-2
 							span 样品: 
 							span
-								a(href="/bsProduct/"+pdfir._id) #{pdfir.nome}
+								a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
 						.col-3.pt-2
 							span 客户: 
 							span

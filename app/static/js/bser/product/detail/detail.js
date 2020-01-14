@@ -37,6 +37,11 @@ $( function() {
 		$("#editStockBtn").show()
 		$(".textStock").show()
 		$(".editStock").hide()
+		/* ------ 特殊处理 ------ */
+		$(".pdstock").show()
+		$("#stock").removeClass("btn-default")
+		$("#stock").addClass("btn-primary")
+		/* ------ 特殊处理 ------ */
 	})
 	/* ========= 点击完成修改按钮 ========= */
 

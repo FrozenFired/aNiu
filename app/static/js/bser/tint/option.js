@@ -27,7 +27,7 @@ $( function() {
 	/* ======================== 搜索产品号 ======================== */
 	$("#pdsearch").on("input", "#iptProduct", function(e) {
 		$(".dltOptPd").remove();
-		$(".ordTab").show();
+		$(".tinTab").show();
 		let str = $(this).val()
 		let keyword = str.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
 		if(keyword.length > 0) {
@@ -43,7 +43,7 @@ $( function() {
 					}
 				} else if(results.success == 2) {
 					let pdfir = results.pdfir;
-					$(".ordTab").hide();
+					$(".tinTab").hide();
 					$(".pdfir-"+pdfir._id).show();
 				}
 			})
@@ -59,51 +59,39 @@ $( function() {
 	}
 	/* ======================== 搜索产品号 ======================== */
 
-	/* ======================== 搜索客户名 ======================== */
-	$("#ctersearch").on("input", "#iptCter", function(e) {
-		$(".dltOptCter").remove();
-		$(".ordTab").show();
+	/* ======================== 搜索工厂名 ======================== */
+	$("#tnersearch").on("input", "#iptTner", function(e) {
+		$(".dltOptTner").remove();
+		$(".tinTab").show();
 		let str = $(this).val()
 		let keyword = str.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
 		if(keyword.length > 0) {
 			$.ajax({
 				type: 'GET',
-				url: '/bsCtersObtAjax?keyword=' + keyword
+				url: '/bsTnersObtAjax?keyword=' + keyword
 			})
 			.done(function(results) {
 				if(results.success === 1) {
-					let cters = results.cters;
-					for(let i=0; i<cters.length; i++) {
-						addCterToDlt(cters[i])
+					let tners = results.tners;
+					for(let i=0; i<tners.length; i++) {
+						addTnerToDlt(tners[i])
 					}
 				} else if(results.success == 2) {
-					let cter = results.cter;
-					$(".ordTab").hide();
-					$(".cter-"+cter._id).show();
+					let tner = results.tner;
+					$(".tinTab").hide();
+					$(".tner-"+tner._id).show();
 				}
 			})
 		}
 	})
 
-	let addCterToDlt = function(cter) {
+	let addTnerToDlt = function(tner) {
 		let str = '';
-		str += '<option class="dltOptCter" id="dltOptCter-'+cter._id+'">'
-			str += cter.nome
+		str += '<option class="dltOptTner" id="dltOptTner-'+tner._id+'">'
+			str += tner.nome
 		str += '</option>'
-		$("#getCterNome").append(str);
+		$("#getTnerNome").append(str);
 	}
-	/* ======================== 搜索客户名 ======================== */
+	/* ======================== 搜索工厂名 ======================== */
 
-
-	/* =========== 点击生产按钮后 判断是否可以取消订单生产 =========== */
-	$(".proding").click(function(e) {
-		let str = $(this).attr("id");
-		let orderId = str.split('-')[1];
-
-		let totship = parseInt($("#totship-"+orderId).val())
-		if(totship == 0) {
-			$("#cancelForm-"+orderId).toggle();
-		}
-	})
-	/* =========== 点击生产按钮后 判断是否可以取消订单生产 =========== */
 } );

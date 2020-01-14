@@ -22,14 +22,20 @@ let moment = require('moment')
 // 模糊查找出产品
 exports.bsMachinProdsAjax = function(req, res) {
 	let crUser = req.session.crUser;
-	let keywmac = ' x x x ';
-	if(req.query.keywmac) {
-		keywmac = String(req.query.keywmac);
-		keywmac = keywmac.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-		keywmac = new RegExp(keywmac + '.*');
+	let keyword = ' x x x ';
+	if(req.query.keyword) {
+		keyword = String(req.query.keyword);
+		keyword = keyword.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+		keyword = new RegExp(keyword + '.*');
 	}
-	Pdfir.find({'firm': crUser.firm,'code':  keywmac,})
-	.populate({path: 'pdsecs', populate: {path: 'pdthds'}})
+	Pdfir.find({'firm': crUser.firm,'code':  keyword,})
+	.populate({path: 'pdsecs', populate: {path: 'pdthds', populate: [
+		{path: 'macthds'}, {path: 'tinthds'}, {path: 'ordthds'}
+	]}})
+	.populate({path: 'pdsezs', populate: [
+		{path: 'pdthds', populate: [{path: 'macthds'}, {path: 'tinthds'}, {path: 'ordthds'}]},
+		{path: 'macsezs'},
+	]})
 	.limit(10)
 	.exec(function(err, pdfirs) { if(err) {
 		res.json({success: 0, info: "bsProdsAjax, Machin.find, Error"})

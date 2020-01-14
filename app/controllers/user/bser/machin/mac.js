@@ -25,6 +25,17 @@ exports.bsMacs = function(req, res) {
 	}
 	/* ---------- Fder 筛选 ------------- */
 
+	/* ---------- 排序 ------------- */
+	let sortCond = "ctAt";
+	let sortVal = -1;
+	if(req.query.sortCond == "upAt"){
+		sortCond = "upAt";
+	}
+	if(req.query.sortVal == 1){
+		sortVal = 1;
+	}
+	/* ---------- 排序 ------------- */
+
 	Machin.find({
 		'firm': crUser.firm,
 		'fder': {[symFder]: condFder},
@@ -39,7 +50,7 @@ exports.bsMacs = function(req, res) {
 		]},
 		{path: 'macsezs', populate: {path: 'pdthd'}}
 	]})
-	.sort({"status": 1, "upAt": -1, "ctAt": -1})
+	.sort({[sortCond]: sortVal})
 	.exec(function(err, machins) {
 		if(err) {
 			info = "bsMachins, User.find, Error";
@@ -73,6 +84,9 @@ exports.bsMacs = function(req, res) {
 					crUser: crUser,
 					machins : machins,
 					products : products,
+
+					sortCond: sortCond,
+					sortVal : sortVal,
 				});
 			} })
 
@@ -205,6 +219,17 @@ exports.bsMacHis = function(req, res) {
 	}
 	/* ---------- Fder 筛选 ------------- */
 
+	/* ---------- 排序 ------------- */
+	let sortCond = "ctAt";
+	let sortVal = -1;
+	if(req.query.sortCond == "fnAt"){
+		sortCond = "fnAt";
+	}
+	if(req.query.sortVal == 1){
+		sortVal = 1;
+	}
+	/* ---------- 排序 ------------- */
+
 	Machin.find({
 		'firm': crUser.firm,
 		'fder': {[symFder]: condFder},
@@ -220,7 +245,7 @@ exports.bsMacHis = function(req, res) {
 		]},
 		{path: 'macsezs', populate:{path: 'pdsez'}}
 	]})
-	.sort({"status": 1, "ctAt": -1})
+	.sort({"status": 1, [sortCond]: sortVal})
 	.exec(function(err, machins) {
 		if(err) {
 			info = "bsMachins, User.find, Error";
@@ -230,8 +255,11 @@ exports.bsMacHis = function(req, res) {
 				title : '生产单记录',
 				crUser: crUser,
 				machins : machins,
+
 				atFm  : condAtFm,
 				atTo  : condAtTo,
+				sortCond: sortCond,
+				sortVal : sortVal,
 			});
 		}
 	})

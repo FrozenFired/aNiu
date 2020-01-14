@@ -282,26 +282,46 @@ exports.bsFderIsAjax = function(req, res) {
 }
 
 
-exports.bsFdersObjAjax = function(req, res) {
+exports.bsFdersObtAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let keytype = req.query.keytype
-	let keyword = req.query.keyword
-	keyword = String(keyword).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-	Fder.find({
+	let keyword = ' x '
+	if(req.query.keyword) {
+		keyword = String(req.query.keyword);
+		keyword = keyword.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+	}
+	Fder.findOne({
 		'firm': crUser.firm,
-		$or:[
-			{'code': new RegExp(keyword + '.*')},
-			{'nome': new RegExp(keyword + '.*')},
+		$or: [
+			{'code': keyword},
+			{'nome': keyword},
 		]
 	})
-	.limit(20)
-	.exec(function(err, fders){
+	.exec(function(err, fder) {
 		if(err) {
-			res.json({success: 0, info: "bs获取工厂列表时，数据库查找错误, 请联系管理员"});
-		} else if(fders){
-			res.json({ success: 1, fders: fders})
+			console.log(err);
+			res.json({success: 0, info: "bsFdersObtAjax, Fder.findOne, Error！"});
+		} else if(!fder) {
+			let keywordReg = new RegExp(keyword + '.*');
+			Fder.find({
+				'firm': crUser.firm,
+				$or:[
+					{'code': {'$in': keywordReg}},
+					{'nome': {'$in': keywordReg}},
+				]
+			})
+			.limit(20)
+			.exec(function(err, fders){
+				if(err) {
+					res.json({success: 0, info: "bsFdersObtAjax, Fder.find, Error！"});
+				} else if(fders){
+					res.json({ success: 1, fders: fders})
+				} else {
+					res.json({success: 0})
+				}
+			})
 		} else {
-			res.json({success: 0})
+			res.json({success: 2, fder: fder})
 		}
 	})
 }

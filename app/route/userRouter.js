@@ -151,7 +151,7 @@ module.exports = function(app){
 	app.post('/bsFderNew', MdRole.bserIsLogin, postForm, Fder.bsFderNew)
 
 	app.get('/bsFderIsAjax', MdRole.bserIsLogin, Fder.bsFderIsAjax)
-	app.get('/bsFdersObjAjax', MdRole.bserIsLogin, Fder.bsFdersObjAjax)
+	app.get('/bsFdersObtAjax', MdRole.bserIsLogin, Fder.bsFdersObtAjax)
 	/* =================================== Fder =================================== */
 
 	/* =================================== Mac =================================== */
@@ -204,7 +204,7 @@ module.exports = function(app){
 	app.post('/bsTnerNew', MdRole.bserIsLogin, postForm, Tner.bsTnerNew)
 
 	app.get('/bsTnerIsAjax', MdRole.bserIsLogin, Tner.bsTnerIsAjax)
-	app.get('/bsTnersObjAjax', MdRole.bserIsLogin, Tner.bsTnersObjAjax)
+	app.get('/bsTnersObtAjax', MdRole.bserIsLogin, Tner.bsTnersObtAjax)
 	/* =================================== Tner =================================== */
 
 	/* =================================== Tin =================================== */

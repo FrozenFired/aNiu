@@ -40,9 +40,6 @@ exports.bsOrderProdsAjax = function(req, res) {
 
 
 
-
-
-
 exports.bsOrderFilter = function(req, res, next) {
 	let id = req.params.id
 	Order.findOne({_id: id})

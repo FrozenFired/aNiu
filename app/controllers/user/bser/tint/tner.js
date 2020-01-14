@@ -281,26 +281,46 @@ exports.bsTnerIsAjax = function(req, res) {
 	})
 }
 
-exports.bsTnersObjAjax = function(req, res) {
+exports.bsTnersObtAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let keytype = req.query.keytype
-	let keyword = req.query.keyword
-	keyword = String(keyword).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-	Tner.find({
+	let keyword = ' x '
+	if(req.query.keyword) {
+		keyword = String(req.query.keyword);
+		keyword = keyword.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+	}
+	Tner.findOne({
 		'firm': crUser.firm,
-		$or:[
-			{'code': new RegExp(keyword + '.*')},
-			{'nome': new RegExp(keyword + '.*')},
+		$or: [
+			{'code': keyword},
+			{'nome': keyword},
 		]
 	})
-	.limit(20)
-	.exec(function(err, tners){
+	.exec(function(err, tner) {
 		if(err) {
-			res.json({success: 0, info: "bs获取染洗厂列表时，数据库查找错误, 请联系管理员"});
-		} else if(tners){
-			res.json({ success: 1, tners: tners})
+			console.log(err);
+			res.json({success: 0, info: "bsTnersObtAjax, Tner.findOne, Error！"});
+		} else if(!tner) {
+			let keywordReg = new RegExp(keyword + '.*');
+			Tner.find({
+				'firm': crUser.firm,
+				$or:[
+					{'code': {'$in': keywordReg}},
+					{'nome': {'$in': keywordReg}},
+				]
+			})
+			.limit(20)
+			.exec(function(err, tners){
+				if(err) {
+					res.json({success: 0, info: "bsTnersObtAjax, Tner.find, Error！"});
+				} else if(tners){
+					res.json({ success: 1, tners: tners})
+				} else {
+					res.json({success: 0})
+				}
+			})
 		} else {
-			res.json({success: 0})
+			res.json({success: 2, tner: tner})
 		}
 	})
 }

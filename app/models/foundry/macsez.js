@@ -18,7 +18,7 @@ let dbSchema = new Schema({
 
 dbSchema.pre('save', function(next) {
 	if(this.isNew) {
-		this.ship = 0;
+		if(!this.ship) this.ship = 0;
 	}
 	next();
 })

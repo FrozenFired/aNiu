@@ -6,7 +6,7 @@ each tint in tints
 	each tinfir in tint.tinfirs
 		-let pdfir = tinfir.pdfir;
 		-let tner = tint.tner;
-		table.table.table-bordered.text-center
+		table.table.table-bordered.text-center(class="tinTab pdfir-"+pdfir._id+" tner-"+tner._id)
 			tr.bg-light
 				th(colspan=tint.sizes.length+2, width="40%")
 					.row

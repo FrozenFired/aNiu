@@ -31,7 +31,7 @@ exports.bsTintProdsAjax = function(req, res) {
 	}
 	Pdfir.find({'firm': crUser.firm,'code':  keyword, 'semi': 1})
 	.populate({path: 'pdsecs', populate: {path: 'pdthds'}})
-	.populate({path: 'pdsezs', populate: {path: 'pdthds'}})
+	.populate({path: 'pdsezs', populate: {path: 'pdthds', populate: {path: 'tinthds'}}})
 	.limit(10)
 	.exec(function(err, pdfirs) { if(err) {
 		res.json({success: 0, info: "bsProdsAjax, Tint.find, Error"})

@@ -3,13 +3,13 @@ each tint in tints
 
 	each tinfir in tint.tinfirs
 		-let pdfir = tinfir.pdfir;
-		table.table.table-bordered.text-center
+		table.table.table-bordered.text-center(class="tinTab pdfir-"+pdfir._id+" tner-"+tner._id)
 			tr
 				th(colspan=tint.sizes.length+2, width="49%")
 					.row
 						.col-3.pt-2
 							span 样品: 
-							span.text-info #{pdfir.nome}
+							span.text-info #{pdfir.code}
 						.col-3.pt-2
 							span 染洗厂: 
 							span.text-info #{tner.nome}
@@ -22,7 +22,7 @@ each tint in tints
 						.col-3.pt-2
 								span 样品: 
 								span
-									a(href="/bsProduct/"+pdfir._id) #{pdfir.nome}
+									a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
 						.col-3.pt-2
 							span 染洗厂: 
 							span

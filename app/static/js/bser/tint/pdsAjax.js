@@ -1,10 +1,7 @@
 $(function() {
 	let Sizes = JSON.parse($("#sizes").val());
-	let ajaxOrderNewPd = "/bsOrderNewPdAjax";	// tintAdd 操作 tint中的 pd
-	let ajaxOrderUpdPd = "/bsOrderUpdPdAjax";
-	let ajaxOrderDelPd = "/bsOrderDelPdAjax";
 
-	let ordpds = new Array();	// 在订单中的产品
+	let tinpds = new Array();	// 在染洗单中的产品
 	let selPds = JSON.parse($("#products").val());	// 本次模糊查找出的产品
 	let selPd = new Object();	// 本次选中的产品
 
@@ -33,12 +30,12 @@ $(function() {
 				selPds = new Array();
 				for(let i in results.pdfirs) {
 					let j = 0;
-					for(; j<ordpds.length; j++) {
-						if(results.pdfirs[i]._id == ordpds[j]._id) {
+					for(; j<tinpds.length; j++) {
+						if(results.pdfirs[i]._id == tinpds[j]._id) {
 							break;
 						}
 					}
-					if(j==ordpds.length) {
+					if(j==tinpds.length) {
 						selPds.push(results.pdfirs[i])
 					}
 				}
@@ -162,10 +159,10 @@ $(function() {
 
 		let str = "";
 
-		// 先判断 ordpds 中是否有此编号的产品
+		// 先判断 tinpds 中是否有此编号的产品
 		let exist = 0;
-		for(let i=0; i<ordpds.length; i++) {
-			if(String(ordpds[i].code) == String(pdfir.code)) {
+		for(let i=0; i<tinpds.length; i++) {
+			if(String(tinpds[i].code) == String(pdfir.code)) {
 				exist = 1; break;
 			}
 		}
@@ -250,7 +247,7 @@ $(function() {
 			}
 			selPd.pdsecs = pdsecs;
 
-			ordpds.push(selPd)
+			tinpds.push(selPd)
 
 			$(".prodShow").remove()
 			$(".changeTd").remove()
@@ -277,7 +274,7 @@ $(function() {
 	/* ======================= 点击需要生产的模特 ======================= */
 
 
-	/* ======================= 点击加入，显示在右侧订单窗口 ======================= */
+	/* ======================= 点击加入，显示在右侧染洗单窗口 ======================= */
 	// 点击加入键 在tint页面生成表格
 	$("#prodPage").on('click', '.confirm', function(e) {
 		let selSizes = selPd.sizes;
@@ -301,7 +298,7 @@ $(function() {
 		}
 		selPd.pdsecs = pdsecs;
 
-		ordpds.push(selPd)
+		tinpds.push(selPd)
 
 		$(".prodShow").remove()
 		$(".changeTd").remove()
@@ -340,7 +337,9 @@ $(function() {
 				for(let m=0; m<pdsez.macsezs.length; m++) {
 					let macsez = pdsez.macsezs[m];
 					quotMsez+=parseInt(macsez.quot);
-					shipMsez+=parseInt(macsez.ship);
+					if(!isNaN(parseInt(macsez.ship))) {
+						shipMsez+=parseInt(macsez.ship);
+					}
 				}
 				for(let k=0; k<pdsez.pdthds.length; k++) {
 					let pdthd = pdsez.pdthds[k];
@@ -348,22 +347,28 @@ $(function() {
 					let shipOthd = shipTthd = 0;
 					for(let m=0; m<pdthd.ordthds.length; m++){
 						let ordthd = pdthd.ordthds[m];
-						quotOthd += parseInt(ordthd.quot)
-						shipOthd += parseInt(ordthd.ship)
+						if(!isNaN(parseInt(ordthd.quot))) {
+							quotOthd += parseInt(ordthd.quot)
+						}
+						if(!isNaN(parseInt(ordthd.ship))) {
+							shipOthd += parseInt(ordthd.ship)
+						}
 					}
 					for(let m=0; m<pdthd.tinthds.length; m++){
 						let tinthd = pdthd.tinthds[m];
-						quotTthd += parseInt(tinthd.quot)
-						shipTthd += parseInt(tinthd.ship)
+						if(!isNaN(parseInt(tinthd.quot))) {
+							quotTthd += parseInt(tinthd.quot)
+						}
+						if(!isNaN(parseInt(tinthd.ship))) {
+							shipTthd += parseInt(tinthd.ship)
+						}
 					}
 					quotTthds += quotTthd;
 					shipTthds += shipTthd;
 					needTthds += quotOthd - pdthd.stock- quotTthd;
 				}
-
 				let showSezStock = parseInt(pdsez.stock) + shipMsez - quotTthds;
 				let needMac = needTthds - showSezStock - (quotMsez - shipMsez);
-
 				str += '<td>'
 					str += '<span>' + showSezStock + '</span>';
 					str += '<input type="hidden" value='+showSezStock;
@@ -440,7 +445,7 @@ $(function() {
 		return str;
 	}
 	/* ------------------------------- 添加成品 ------------------------------- */
-	/* ======================= 点击加入，显示在右侧订单窗口 ======================= */
+	/* ======================= 点击加入，显示在右侧染洗单窗口 ======================= */
 
 
 
@@ -472,7 +477,7 @@ $(function() {
 
 	$("#tintNew").submit(function(e) {
 		let isTner = $("#objTner").val();
-		if(ordpds && ordpds.length == 0) {
+		if(tinpds && tinpds.length == 0) {
 			alert("请选择模特")
 			e.preventDefault();
 		} else if(isTner.length < 1){

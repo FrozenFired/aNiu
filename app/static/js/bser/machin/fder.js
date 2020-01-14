@@ -31,7 +31,7 @@ $( function() {
 			let keytype = 'nome';
 			$.ajax({
 				type: 'GET',
-				url: '/bsFdersObjAjax?keytype='+keytype+'&keyword=' + keyword
+				url: '/bsFdersObtAjax?keytype='+keytype+'&keyword=' + keyword
 			})
 			.done(function(results) {
 				if(results.success === 1 && results.fders) {

@@ -1,10 +1,7 @@
 $(function() {
 	let Sizes = JSON.parse($("#sizes").val());
-	let ajaxOrderNewPd = "/bsOrderNewPdAjax";	// orderAdd 操作 order中的 pd
-	let ajaxOrderUpdPd = "/bsOrderUpdPdAjax";
-	let ajaxOrderDelPd = "/bsOrderDelPdAjax";
 
-	let ordpds = new Array();	// 在订单中的产品
+	let macdpds = new Array();	// 在订单中的产品
 	let selPds = JSON.parse($("#products").val());	// 本次模糊查找出的产品
 	let selPd = new Object();	// 本次选中的产品
 
@@ -18,7 +15,7 @@ $(function() {
 			$('.prodCard').remove(); // 清除上次的ajaxProds
 			$('.prodShow').remove(); // 清除上次的ajaxProds
 			let keyword = encodeURIComponent(str);	// 转化码
-			let url = '/bsOrderProdsAjax?keyword='+keyword;
+			let url = '/bsMachinProdsAjax?keyword='+keyword;
 			getObjects(url);
 		}
 	});
@@ -33,12 +30,12 @@ $(function() {
 				selPds = new Array();
 				for(let i in results.pdfirs) {
 					let j = 0;
-					for(; j<ordpds.length; j++) {
-						if(results.pdfirs[i]._id == ordpds[j]._id) {
+					for(; j<macdpds.length; j++) {
+						if(results.pdfirs[i]._id == macdpds[j]._id) {
 							break;
 						}
 					}
-					if(j==ordpds.length) {
+					if(j==macdpds.length) {
 						selPds.push(results.pdfirs[i])
 					}
 				}
@@ -162,10 +159,10 @@ $(function() {
 
 		let str = "";
 
-		// 先判断 ordpds 中是否有此编号的产品
+		// 先判断 macdpds 中是否有此编号的产品
 		let exist = 0;
-		for(let i=0; i<ordpds.length; i++) {
-			if(String(ordpds[i].code) == String(pdfir.code)) {
+		for(let i=0; i<macdpds.length; i++) {
+			if(String(macdpds[i].code) == String(pdfir.code)) {
 				exist = 1; break;
 			}
 		}
@@ -249,7 +246,7 @@ $(function() {
 			}
 			selPd.pdsecs = pdsecs;
 
-			ordpds.push(selPd)
+			macdpds.push(selPd)
 
 			$(".prodShow").remove()
 			$(".changeTd").remove()
@@ -303,7 +300,7 @@ $(function() {
 		}
 		selPd.pdsecs = pdsecs;
 
-		ordpds.push(selPd)
+		macdpds.push(selPd)
 
 		$(".prodShow").remove()
 		$(".changeTd").remove()
@@ -383,7 +380,6 @@ $(function() {
 				let showSezStock = parseInt(pdsez.stock) + shipMsez - quotTthds
 				let needMac = needTthds - showSezStock - lessMsez;
 				if(needMac < 0) needMac = 0;
-				// console.log(needMac)
 				str += '<td>'
 					str += '<input class="iptsty ordQt" type="number" value='+needMac;
 					str += ' name="obj[sezs]['+j+'][quot]" >'
@@ -478,7 +474,7 @@ $(function() {
 
 	$("#machinNew").submit(function(e) {
 		let isFder = $("#objFder").val();
-		if(ordpds && ordpds.length == 0) {
+		if(macdpds && macdpds.length == 0) {
 			alert("请选择模特")
 			e.preventDefault();
 		} 

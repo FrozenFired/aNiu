@@ -24,6 +24,17 @@ exports.bsTins = function(req, res) {
 	}
 	/* ---------- Tner 筛选 ------------- */
 
+	/* ---------- 排序 ------------- */
+	let sortCond = "ctAt";
+	let sortVal = -1;
+	if(req.query.sortCond == "upAt"){
+		sortCond = "upAt";
+	}
+	if(req.query.sortVal == 1){
+		sortVal = 1;
+	}
+	/* ---------- 排序 ------------- */
+
 	Tint.find({
 		'firm': crUser.firm,
 		'tner': {[symTner]: condTner},
@@ -37,7 +48,7 @@ exports.bsTins = function(req, res) {
 			{path: 'tinthds', populate: {path: 'pdthd'}},
 		]}
 	]})
-	.sort({"status": 1, "upAt": -1, "ctAt": -1})
+	.sort({[sortCond]: sortVal})
 	.exec(function(err, tints) {
 		if(err) {
 			info = "bsTints, User.find, Error";
@@ -71,6 +82,9 @@ exports.bsTins = function(req, res) {
 					crUser: crUser,
 					tints : tints,
 					products : products,
+
+					sortCond: sortCond,
+					sortVal : sortVal,
 				});
 			} })
 
@@ -182,6 +196,17 @@ exports.bsTinHis = function(req, res) {
 	}
 	/* ---------- Tner 筛选 ------------- */
 
+	/* ---------- 排序 ------------- */
+	let sortCond = "ctAt";
+	let sortVal = -1;
+	if(req.query.sortCond == "fnAt"){
+		sortCond = "fnAt";
+	}
+	if(req.query.sortVal == 1){
+		sortVal = 1;
+	}
+	/* ---------- 排序 ------------- */
+
 	Tint.find({
 		'firm': crUser.firm,
 		'tner': {[symTner]: condTner},
@@ -196,7 +221,7 @@ exports.bsTinHis = function(req, res) {
 			{path: 'tinthds', populate: {path: 'pdthd'}},
 		]}
 	]})
-	.sort({"status": 1, "ctAt": -1})
+	.sort({"status": 1, [sortCond]: sortVal})
 	.exec(function(err, tints) {
 		if(err) {
 			info = "bsTints, User.find, Error";
@@ -206,8 +231,11 @@ exports.bsTinHis = function(req, res) {
 				title : '染洗单记录',
 				crUser: crUser,
 				tints : tints,
+
 				atFm  : condAtFm,
 				atTo  : condAtTo,
+				sortCond: sortCond,
+				sortVal : sortVal,
 			});
 		}
 	})

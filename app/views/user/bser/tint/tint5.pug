@@ -1,7 +1,8 @@
 extends ../aalayout/layout
 
 block content
-	div(style="height:60px")
+	div(style="height:50px")
+	div(style="height:50px")
 	input#tint(type="hidden", value=tint)
 	input#products(type="hidden", value=products)
 	input#sizes(type="hidden", value=Conf.sizes)
@@ -10,7 +11,7 @@ block content
 
 		include ./list/list5		
 
-	.topNav-second
+	.topNav-second.secNav
 		.row.text-center
 			.col-2.pt-3#bsMacs(style="width:100%; height:58px; background: #5599FF")
 				span <span class="oi oi-chevron-left"></span> 生产
@@ -18,10 +19,34 @@ block content
 				span 染洗 &nbsp; <span class="oi oi-chevron-top"></span> &nbsp; 历史
 			.col-2.pt-3#bsOrds(style="width:100%; height:58px; background: #5599FF")
 				span 订单 <span class="oi oi-chevron-right"></span>
-
+	.topNav-third.scrollNav
+		.row.bg-light.text-center
+			-let ctAtCaret = upAtCaret = '<span class="oi oi-elevator"></span>';
+			if sortCond == 'ctAt'
+				if sortVal == 1
+					-ctAtCaret = '<span class="oi oi-caret-bottom"></span>';
+				else
+					-ctAtCaret = '<span class="oi oi-caret-top"></span>';
+			else if sortCond == 'upAt'
+				if sortVal == 1
+					-upAtCaret = '<span class="oi oi-caret-bottom"></span>';
+				else
+					-upAtCaret = '<span class="oi oi-caret-top"></span>';
+			//- // - sortVal = -parseInt(sortVal);
+			.col-2(style="width:100%; height:58px;")
+			.col-3.pt-2#pdsearch
+				input.form-control#iptProduct(type="text" list="getPdCode", placeholder="模特搜索")
+				datalist(id="getPdCode")
+			.col-3.pt-2#tnersearch
+				input.form-control#iptTner(type="text" list="getTnerNome", placeholder="染洗厂搜索")
+				datalist(id="getTnerNome")
+			.col-1.pt-3.sortAt#ctAt 创建 !{ctAtCaret}
+			.col-1.pt-3.sortAt#upAt 更新 !{upAtCaret}
+			.col-2
 	script(src="/const/const.js")
 	script(src="/js/bser/pagejump.js")
 	script(src="/js/bser/tint/tins.js")
 	script(src="/js/bser/tint/tner.js")
 	script(src="/js/bser/tint/pdsAjax.js")
 	script(src="/js/bser/tint/send.js")
+	script(src="/js/bser/tint/option.js")
