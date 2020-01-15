@@ -14,16 +14,6 @@ let Pdfir = require('../../../../models/material/pdfir');
 exports.bsOrds = function(req, res) {
 	let crUser = req.session.crUser;
 
-	/* ---------- Cter 筛选 ------------- */
-	let randId = '1d5e744e6a5a830c1a469cee'
-	let symCter = "$ne";
-	let condCter = randId;
-	if(req.query.cter && req.query.cter.length == 24){
-		symCter = "$eq";
-		condCter = req.query.cter;
-	}
-	/* ---------- Cter 筛选 ------------- */
-
 	/* ---------- 排序 ------------- */
 	let sortCond = "ctAt";
 	let sortVal = -1;
@@ -37,7 +27,6 @@ exports.bsOrds = function(req, res) {
 
 	Order.find({
 		'firm': crUser.firm,
-		'cter': {[symCter]: condCter},
 		'status': { '$in': [0, 5]},
 	})
 	.populate('cter', 'nome')
@@ -88,16 +77,6 @@ exports.bsOrdHis = function(req, res) {
 		condAtTo = new Date(req.query.atTo).setHours(23,59,59,0);
 	}
 
-	/* ---------- Cter 筛选 ------------- */
-	let randId = '1d5e744e6a5a830c1a469cee'
-	let symCter = "$ne";
-	let condCter = randId;
-	if(req.query.cter && req.query.cter.length == 24){
-		symCter = "$eq";
-		condCter = req.query.cter;
-	}
-	/* ---------- Cter 筛选 ------------- */
-
 	/* ---------- 排序 ------------- */
 	let sortCond = "ctAt";
 	let sortVal = -1;
@@ -111,14 +90,16 @@ exports.bsOrdHis = function(req, res) {
 
 	Order.find({
 		'firm': crUser.firm,
-		'cter': {[symCter]: condCter},
 		'status': 10,
 		'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
 	})
 	.populate('cter', 'nome')
 	.populate({path: 'ordfirs', populate: [
 		{path: 'pdfir'},
-		{path: 'ordsecs', populate: {path: 'ordthds', populate: {path: 'pdthd'}}}
+		{path: 'ordsecs', populate: [
+			{path: 'pdsec'},
+			{path: 'ordthds', populate: {path: 'pdthd'}},
+		]}
 	]})
 	.sort({"status": 1, [sortCond]: sortVal})
 	.exec(function(err, orders) {

@@ -14,16 +14,6 @@ let Pdfir = require('../../../../models/material/pdfir');
 exports.bsTins = function(req, res) {
 	let crUser = req.session.crUser;
 
-	/* ---------- Tner 筛选 ------------- */
-	let randId = '1d5e744e6a5a830c1a469cee'
-	let symTner = "$ne";
-	let condTner = randId;
-	if(req.query.tner && req.query.tner.length == 24){
-		symTner = "$eq";
-		condTner = req.query.tner;
-	}
-	/* ---------- Tner 筛选 ------------- */
-
 	/* ---------- 排序 ------------- */
 	let sortCond = "ctAt";
 	let sortVal = -1;
@@ -37,7 +27,6 @@ exports.bsTins = function(req, res) {
 
 	Tint.find({
 		'firm': crUser.firm,
-		'tner': {[symTner]: condTner},
 		'status': 5,
 	})
 	.populate('tner', 'nome')
@@ -186,16 +175,6 @@ exports.bsTinHis = function(req, res) {
 		condAtTo = new Date(req.query.atTo).setHours(23,59,59,0);
 	}
 
-	/* ---------- Tner 筛选 ------------- */
-	let randId = '1d5e744e6a5a830c1a469cee'
-	let symTner = "$ne";
-	let condTner = randId;
-	if(req.query.tner && req.query.tner.length == 24){
-		symTner = "$eq";
-		condTner = req.query.tner;
-	}
-	/* ---------- Tner 筛选 ------------- */
-
 	/* ---------- 排序 ------------- */
 	let sortCond = "ctAt";
 	let sortVal = -1;
@@ -209,7 +188,6 @@ exports.bsTinHis = function(req, res) {
 
 	Tint.find({
 		'firm': crUser.firm,
-		'tner': {[symTner]: condTner},
 		'status': 10,
 		'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
 	})

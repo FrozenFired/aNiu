@@ -15,16 +15,6 @@ let Pdfir = require('../../../../models/material/pdfir');
 exports.bsMacs = function(req, res) {
 	let crUser = req.session.crUser;
 
-	/* ---------- Fder 筛选 ------------- */
-	let randId = '1d5e744e6a5a830c1a469cee'
-	let symFder = "$ne";
-	let condFder = randId;
-	if(req.query.fder && req.query.fder.length == 24){
-		symFder = "$eq";
-		condFder = req.query.fder;
-	}
-	/* ---------- Fder 筛选 ------------- */
-
 	/* ---------- 排序 ------------- */
 	let sortCond = "ctAt";
 	let sortVal = -1;
@@ -38,7 +28,6 @@ exports.bsMacs = function(req, res) {
 
 	Machin.find({
 		'firm': crUser.firm,
-		'fder': {[symFder]: condFder},
 		'status': 5,
 	})
 	.populate('fder', 'nome')
@@ -209,16 +198,6 @@ exports.bsMacHis = function(req, res) {
 		condAtTo = new Date(req.query.atTo).setHours(23,59,59,0);
 	}
 
-	/* ---------- Fder 筛选 ------------- */
-	let randId = '1d5e744e6a5a830c1a469cee'
-	let symFder = "$ne";
-	let condFder = randId;
-	if(req.query.fder && req.query.fder.length == 24){
-		symFder = "$eq";
-		condFder = req.query.fder;
-	}
-	/* ---------- Fder 筛选 ------------- */
-
 	/* ---------- 排序 ------------- */
 	let sortCond = "ctAt";
 	let sortVal = -1;
@@ -232,7 +211,6 @@ exports.bsMacHis = function(req, res) {
 
 	Machin.find({
 		'firm': crUser.firm,
-		'fder': {[symFder]: condFder},
 		'status': 10,
 		'ctAt': {[symAtFm]: condAtFm, [symAtTo]: condAtTo}
 	})

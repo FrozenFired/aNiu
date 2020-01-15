@@ -36,23 +36,25 @@ each order in orders
 								input(type="hidden", name="target", value="bsOrderBack")
 								input.btn.btn-danger(type="submit", value="未完成")
 			tr.bg-light
-				th 颜色
+				th(width="8%") 颜色
 				each size in order.sizes
 					-a;
 					th #{Conf.sizes[size]}
-				th 合计
+				th(width="6%") 合计
 				th.bg-secondary
-				th 颜色
+				th(width="8%") 颜色
 				each size in order.sizes
 					-a;
 					th #{Conf.sizes[size]}
-				th 合计
-			- let i = 0;
+				th(width="6%") 合计
 			- let totquot = totship = 0;
 			each ordsec in ordfir.ordsecs
-				- i++;
+				- let pdsec = ordsec.pdsec;
+				- let color = pdsec.color;
+				if color.length > 10
+					- color = color.substr(0, 8)+' ..';
 				tr
-					th.bg-light #{ordsec.color}
+					th.bg-light #{color}
 					-let ctotquot = 0;
 					each size in order.sizes
 						-let less = '';
@@ -72,7 +74,7 @@ each order in orders
 								span.text-info #{quot}
 					td #{ctotquot}
 					td.bg-secondary
-					th.bg-light #{ordsec.color}
+					th.bg-light #{color}
 					-let ctotship = 0;
 					each size in order.sizes
 						-let less = '';

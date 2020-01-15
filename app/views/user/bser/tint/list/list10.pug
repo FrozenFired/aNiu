@@ -36,23 +36,26 @@ each tint in tints
 								input(type="hidden", name="target", value="bsTintBack")
 								input.btn.btn-danger(type="submit", value="未完成")
 			tr.bg-light
-				th 颜色
+				th(width="8%") 颜色
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}
-				th 合计
+				th(width="6%") 合计
 				th.bg-secondary
-				th 颜色
+				th(width="8%") 颜色
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}
-				th 合计
-			- let i = 0, k = 0;
+				th(width="6%") 合计
+			- let k = 0;
 			- let totquot = totship = 0;
 			each tinsec in tinfir.tinsecs
-				- i++;
+				- let pdsec = tinsec.pdsec;
+				- let color = pdsec.color;
+				if color.length > 10
+					- color = color.substr(0, 8)+' ..';
 				tr
-					th.bg-light #{tinsec.pdsec.color}
+					th.bg-light #{color}
 					-let ctotquot = 0;
 					each size in tint.sizes
 						-let less = '';
@@ -72,7 +75,7 @@ each tint in tints
 								span.text-info #{quot}
 					td.text-success #{ctotquot}
 					td.bg-secondary
-					th.bg-light #{tinsec.pdsec.color}
+					th.bg-light #{color}
 					-let ctotship = 0;
 					each size in tint.sizes
 						-let less = '';

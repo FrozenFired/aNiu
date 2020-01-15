@@ -29,28 +29,31 @@ each tint in tints
 								input(type="hidden", name="target", value="bsTintFinish")
 								input.btn.btn-warning(type="submit", value="完成")
 			tr.bg-light
-				th 颜色
+				th(width="8%") 颜色
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}
-				th 合计
-				th.bg-secondary(width="2%")
-				th 颜色
+				th(width="6%") 合计
+				th.bg-secondary
+				th(width="7%") 颜色
 				each size in tint.sizes
 					-a;
 					th #{Conf.sizes[size]}
-				th 合计
+				th(width="6%") 合计
 			form(id="sendForm-"+tint._id, method="post", action="/bsTintSend", enctype="multipart/form-data")
 				input(type="hidden", name="obj[tintId]", value=tint._id)
 				input(type="hidden", name="obj[tinfirId]", value=tinfir._id)
-				- let i = 0, k=0;
+				- let k=0;
 				- let totquot = 0, totship = 0;
 				- let ztotquots = new Array();
 				- let ztotships = new Array();
 				each tinsec in tinfir.tinsecs
-					- i++;
+					- let pdsec = tinsec.pdsec;
+					- let color = pdsec.color;
+					if color.length > 10
+						- color = color.substr(0, 8)+' ..';
 					tr
-						th.bg-light #{tinsec.pdsec.color}
+						th.bg-light #{color}
 						- let ctotquot = 0;
 						each size in tint.sizes
 							-let quot = '';
@@ -67,7 +70,7 @@ each tint in tints
 							td #{quot}
 						td.text-success #{ctotquot}
 						td.bg-secondary
-						th.bg-light #{tinsec.pdsec.color}
+						th.bg-light #{color}
 						- let ctotship = 0;
 						each size in tint.sizes
 							-let ship = '';

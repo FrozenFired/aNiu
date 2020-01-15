@@ -1,12 +1,15 @@
 input(type="hidden", name="obj[machinId]", value=machin._id)
 input(type="hidden", name="obj[macfirId]", value=macfir._id)
-- let i = 0, k = 0, totquot = 0,  totship = 0;
+- let k = 0, totquot = 0,  totship = 0;
 - let ztotquots = new Array();
 - let ztotships = new Array();
 each macsec in macfir.macsecs
-	- i++;
+	- let pdsec = macsec.pdsec;
+	- let color = pdsec.color;
+	if color.length > 10
+		- color = color.substr(0, 8)+' ..';
 	tr
-		th.bg-light #{macsec.pdsec.color}
+		th.bg-light #{color}
 		- let ctotquot = 0;
 		each size in machin.sizes
 			-let quot = '';
@@ -23,7 +26,7 @@ each macsec in macfir.macsecs
 			td #{quot}
 		td.text-success #{ctotquot}
 		td.bg-secondary
-		th.bg-light #{macsec.pdsec.color}
+		th.bg-light #{color}
 		- let ctotship = 0;
 		each size in machin.sizes
 			-let ship = '';
