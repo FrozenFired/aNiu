@@ -1,9 +1,19 @@
 .row#needMacBtns
 	each pdfir in products
 		-a;
-		.col-2: button.btn.btn-warning.btn-block.pneed(type="button", id="clk-"+pdfir._id)
-			span #{pdfir.code} &nbsp; | &nbsp;  #{pdfir.needMac}
-		input(type="hidden", id="colors-"+pdfir._id, value=pdfir.selColors)
+		.col-2.ml-3
+			input(type="hidden", id="colors-"+pdfir._id, value=pdfir.selColors)
+			.row
+				.col-9.bg-warning
+					button.btn.btn-warning.btn-block.pneed(type="button", id="clk-"+pdfir._id) #{pdfir.code} &nbsp; | &nbsp;  #{pdfir.needMac}
+				.col-3.bg-secondary.text-center.pt-2.ordsAjax(id="ordsAjax-"+pdfir._id)
+					span <span class="oi oi-chevron-bottom"></span>
+				.col-3.bg-secondary.text-center.pt-2.showOrd(id="showOrd-"+pdfir._id, style="display:none")
+					span <span class="oi oi-chevron-bottom"></span>
+				.col-3.bg-secondary.text-center.pt-2.hideOrd(id="hideOrd-"+pdfir._id, style="display:none")
+					span <span class="oi oi-chevron-top"></span>
+			.ords(id="ords-"+pdfir._id)
+
 form.my-5#machinNew(method="post", action="/bsMacNew", enctype="multipart/form-data")
 	input#objFir(type="hidden", name="obj[pdfirId]")
 	input#objFder(type="hidden", name="obj[fderId]")

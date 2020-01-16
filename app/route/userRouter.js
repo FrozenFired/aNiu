@@ -83,6 +83,9 @@ module.exports = function(app){
 	app.post('/bsProdUpStock', MdRole.bserIsLogin, postForm, Prod.bsProdUpStock)
 	/* ------------------------------ pdthd ------------------------------ */
 	app.post('/bsPdthdUpd', MdRole.bserIsLogin, postForm, Pdthd.bsPdthdUpd)
+
+	
+	app.get('/bsPdfirObtOrdersAjax', MdRole.bserIsLogin, Product.bsPdfirObtOrdersAjax)
 	/* ======================================== product ======================================== */
 
 

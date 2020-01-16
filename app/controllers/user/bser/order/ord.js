@@ -321,6 +321,10 @@ exports.bsOrdChangeSts = function(req, res) {
 				order.status = 0;
 				// 订单状态从0变为5的时候 链接 pd与ord的联系
 				SaveOrderPre.pdRelOrderCancel(order, "bsOrderCancel")
+			} else if(target == "bsMacCancelOrd") {
+				order.status = 0;
+				// 订单状态从0变为5的时候 链接 pd与ord的联系
+				SaveOrderPre.pdRelOrderCancel(order, "bsOrderCancel")
 			} else {
 				info = "操作错误，请重试"
 			}
@@ -330,7 +334,9 @@ exports.bsOrdChangeSts = function(req, res) {
 						info = "bsOrderNew, Order.save, Error!";console.log(err);
 						Err.usError(req, res, info);
 					} else {
-						if(target == "bsOrderBack") {
+						if(target == "bsMacCancelOrd") {
+							res.redirect('/bsMacs')
+						} else if(target == "bsOrderBack") {
 							res.redirect('/bsOrdHis')
 						} else {
 							res.redirect('/bsOrds')

@@ -62,6 +62,7 @@ exports.bsMacs = function(req, res) {
 					{path: 'ordthds'}, {path: 'tinthds'}
 				]},
 			]})
+			// .populate({path: 'ordfirs', populate: {path: 'order', populate: {path: 'cter'}}})
 			.exec(function(err, pdfirs) { if(err) {
 				console.log(err);
 				info = "bsProducts, Pdfir.find， Error！";

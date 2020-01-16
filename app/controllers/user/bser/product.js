@@ -410,3 +410,50 @@ exports.bsProductsObtAjax = function(req, res) {
 		}
 	})
 }
+
+exports.bsPdfirObtOrdersAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let pdfirId = req.query.pdfirId;
+	Pdfir.findOne({'firm': crUser.firm, '_id': pdfirId})
+	.populate({path: 'ordfirs', populate: [
+		{path: 'order', populate: {path: 'cter'}},
+		{path: 'ordsecs', populate: {path: 'ordthds'}},
+	]})
+	.exec(function(err, pdfir) { 
+		if(err) {
+			console.log(err);
+			res.json({success: 0, info: 'Pdfir.findOne, Error！'})
+		} else if(!pdfir) {
+			res.json({success: 0, info: '刷新页面重试, 没有找到模特'})
+		} else {
+			let ordfirs = new Array();
+			for(let i=0; i<pdfir.ordfirs.length; i++) {
+				let ordfir = pdfir.ordfirs[i];
+				let j=0;
+				let quot = 0;
+				for(;j<ordfir.ordsecs.length; j++) {
+					let ordsec = ordfir.ordsecs[j];
+					let k=0;
+					for(; k<ordsec.ordthds.length; k++) {
+						let ordthd = ordsec.ordthds[k];
+						if(ordthd.ship != 0) break;
+						if(!isNaN(parseInt(ordthd.quot))) {
+							quot += parseInt(ordthd.quot);
+						}
+					}
+					if(k != ordsec.ordthds.length) break;
+				}
+				let ord = new Object();
+				ord.ordfir = ordfir
+				if(j != ordfir.ordsecs.length) {
+					ord.cancel = 0;
+				} else {
+					ord.cancel = 1;
+					ord.quot = quot;
+				}
+				ordfirs.push(ord);
+			}
+			res.json({success: 1, ordfirs: ordfirs})
+		}
+	})
+}

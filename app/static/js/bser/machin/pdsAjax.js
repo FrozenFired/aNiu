@@ -471,7 +471,7 @@ $(function() {
 	/* ============================= 焦点离开 数量 ============================= */
 
 
-
+	/* =========== 提交新的生产单 ===========*/
 	$("#machinNew").submit(function(e) {
 		let isFder = $("#objFder").val();
 		if(macdpds && macdpds.length == 0) {
@@ -484,4 +484,80 @@ $(function() {
 		// 	e.preventDefault();
 		// }
 	})
+	/* =========== 提交新的生产单 ===========*/
+
+	/* ====================== 取消订单 ======================*/
+	/* -------------- 取消订单按钮的显示与隐藏 --------------*/
+	$(".showOrd").click(function(e) {
+		let id = ($(this).attr("id")).split('-')[1];
+
+		$(this).hide();
+		$("#hideOrd-"+id).show();
+		$("#ords-"+id).show();
+	})
+	$(".hideOrd").click(function(e) {
+		let id = ($(this).attr("id")).split('-')[1];
+
+		$(this).hide();
+		$("#showOrd-"+id).show();
+		$("#ords-"+id).hide();
+	})
+	/* -------------- 取消订单按钮的显示与隐藏 --------------*/
+	/* -------------- 获取可取消的订单 --------------*/
+	$(".ordsAjax").click(function(e) {
+		let id = ($(this).attr("id")).split('-')[1];
+		$.ajax({
+			type: 'GET',
+			url: '/bsPdfirObtOrdersAjax?pdfirId='+id
+		})
+		.done(function(results) {
+			if(results.success == 1) {
+				$("#ordsAjax-"+id).hide();
+				$("#hideOrd-"+id).show();
+				let ordfirs = results.ordfirs;
+				for(let i=0; i<ordfirs.length; i++) {
+					let str = "";
+					let ord = ordfirs[i];
+					let ordfir = ord.ordfir;
+					let order = ordfir.order;
+					str += '<div class="row my-2">'
+						str += '<div class="col-5 py-1 bg-warning">'
+							str += order.cter.nome;
+						str += '</div>'
+						if(ord.cancel == 1) {
+							str += '<div class="col-4 py-1 bg-warning">'
+								str += ord.quot;
+							str += '</div>'
+							str += '<div class="col-3 py-1 text-center bg-danger ordCancel" ';
+							str += 'id="ordCancel-'+order._id+'">'
+								str += '<span class="oi oi-x"></span>'
+							str += '</div>'
+							str += '<form method="post" action="bsOrdChangeSts" ';
+							str += 'enctype="multipart/form-data" style="display:none" ';
+							str += 'id="cancelForm-'+order._id+'" >';
+								str += '<input type="hidden" name="orderId" value='+order._id+' >';
+								str += '<input type="hidden" name="target" value="bsMacCancelOrd" >';
+							str += '</form>'
+						} else {
+							str += '<div class="col-4 py-1 bg-warning">'
+							str += '</div>'
+							str += '<div class="col-3 bg-secondary">'
+							str += '</div>'
+						}
+					str += '</div>'
+					$("#ords-"+id).append(str);
+				}
+			} else {
+				alert(results.info);
+			}
+		})
+	})
+	/* -------------- 获取可取消的订单 --------------*/
+	/* -------------- 点击取消生产 --------------*/
+	$(".ords").on('click', '.ordCancel', function(e) {
+		let orderId = ($(this).attr("id")).split('-')[1];
+		$("#cancelForm-"+orderId).submit();
+	})
+	/* -------------- 点击取消生产 --------------*/
+	/* ====================== 取消订单 ======================*/
 } );
