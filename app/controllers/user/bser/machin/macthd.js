@@ -82,6 +82,8 @@ exports.bsMacthdDelPdAjax = function(req, res) {
 		if(err) {
 			console.log(err);
 			res.json({success: 0, info: "bsMacthdDelPdAjax, Macthd.findOne, Error!"})
+		} else if(!macthd) {
+			res.json({success: 0});
 		} else {
 			let macsec = macthd.macsec;
 			// 如果macsec中有多个macthd 可以直接删除
@@ -277,6 +279,37 @@ exports.bsMacsecNewPdAjax = function(req, res) {
 									res.json({success: 1})
 								}
 							})
+						}
+					})
+				}
+			})
+		}
+	})
+}
+exports.bsMacsecDelPdAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let macfirId = req.query.macfirId;
+	let macsecId = req.query.macsecId;
+	Macfir.findOne({_id: macfirId})
+	.exec(function(err, macfir) {
+		if(err) {
+			console.log(err);
+			res.json({success: 0, info: "bsMacsecDelPdAjax, Macfir.findOne, Error!"});
+		} else if(!macfir) {
+			res.json({success: 0, info: "bsMacsecDelPdAjax, 操作错误, 请刷新重试!"})
+		} else {
+			Macsec.deleteOne({_id: macsecId}, function(err, macsecRm) {
+				if(err) {
+					console.log(err);
+					res.json({success: 0, info: "bsMacsecDelPdAjax, Macsec.deleteOne"})
+				} else {
+					macfir.macsecs.remove(macsecId);
+					macfir.save(function(err, macfir) {
+						if(err) {
+							console.log(err);
+							res.json({success: 0, info: "bsMacsecDelPdAjax, macfir.save"})
+						} else {
+							res.json({success: 1})
 						}
 					})
 				}

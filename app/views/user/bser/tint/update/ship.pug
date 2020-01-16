@@ -18,7 +18,12 @@ table.table.table-borderless.border.border-dark.text-center
 				- colors.remove(tinsec.pdsec.color);
 				- let pdsec = tinsec.pdsec;
 				tr
-					th #{tinsec.pdsec.color}
+					th
+						if tinsec.tinthds.length > 0
+							-a;
+							span #{pdsec.color}
+						else
+							button.btn.btn-danger.delColorBtn(type="button", data-fir=tinfir._id, data-sec=tinsec._id) #{pdsec.color} <span class="oi oi-minus"></span>
 					each size in tint.sizes
 						- let taskThd = null;
 						each tinthd in tinsec.tinthds

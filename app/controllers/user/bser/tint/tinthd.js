@@ -1,6 +1,7 @@
 let Err = require('../../aaIndex/err');
 
 let Tint = require('../../../../models/dryer/tint');
+let Tinfir = require('../../../../models/dryer/tinfir');
 let Tinsec = require('../../../../models/dryer/tinsec');
 let Tinthd = require('../../../../models/dryer/tinthd');
 
@@ -79,7 +80,9 @@ exports.bsTinthdDelPdAjax = function(req, res) {
 	.exec(function(err, tinthd) {
 		if(err) {
 			console.log(err);
-			res.json({success: 0, info: "bsTinthdDelPdAjax, Tinthd.findOne, Error!"})
+			res.json({success: 0, info: "bsTinthdDelPdAjax, Tinthd.findOne, Error!"});
+		} else if(!tinthd) {
+			res.json({success: 0});
 		} else {
 			let tinsec = tinthd.tinsec;
 			// 如果tinsec中有多个tinthd 可以直接删除
@@ -88,12 +91,12 @@ exports.bsTinthdDelPdAjax = function(req, res) {
 				Tinthd.deleteOne({_id: tinthd._id}, function(err, thdRm) {
 					if(err) {
 						console.log(err);
-						res.json({success: 0, info: "bsTinthdDelPdAjax, Tinthd.deleteOne, Error!"})
+						res.json({success: 0, info: "bsTinthdDelPdAjax, Tinthd.deleteOne, Error!"});
 					} else {
 						tinsec.save(function(err, secSv) {
 							if(err) {
 								console.log(err);
-								res.json({success: 0, info: "bsTinthdDelPdAjax, tinsec.save, Error!"})
+								res.json({success: 0, info: "bsTinthdDelPdAjax, tinsec.save, Error!"});
 							} else {
 								res.json({success: 1})
 							}
@@ -175,6 +178,37 @@ exports.bsTinsecNewPdAjax = function(req, res) {
 									res.json({success: 1})
 								}
 							})
+						}
+					})
+				}
+			})
+		}
+	})
+}
+exports.bsTinsecDelPdAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let tinfirId = req.query.tinfirId;
+	let tinsecId = req.query.tinsecId;
+	Tinfir.findOne({_id: tinfirId})
+	.exec(function(err, tinfir) {
+		if(err) {
+			console.log(err);
+			res.json({success: 0, info: "bsTinsecDelPdAjax, Tinfir.findOne, Error!"});
+		} else if(!tinfir) {
+			res.json({success: 0, info: "bsTinsecDelPdAjax, 操作错误, 请刷新重试!"})
+		} else {
+			Tinsec.deleteOne({_id: tinsecId}, function(err, tinsecRm) {
+				if(err) {
+					console.log(err);
+					res.json({success: 0, info: "bsTinsecDelPdAjax, Tinsec.deleteOne"})
+				} else {
+					tinfir.tinsecs.remove(tinsecId);
+					tinfir.save(function(err, tinfir) {
+						if(err) {
+							console.log(err);
+							res.json({success: 0, info: "bsTinsecDelPdAjax, tinfir.save"})
+						} else {
+							res.json({success: 1})
 						}
 					})
 				}

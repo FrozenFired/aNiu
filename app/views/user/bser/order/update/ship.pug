@@ -18,7 +18,12 @@ table.table.table-borderless.border.border-dark.text-center
 				- colors.remove(ordsec.color);
 				- let pdsec = ordsec.pdsec;
 				tr
-					th #{ordsec.color}
+					th
+						if ordsec.ordthds.length > 0
+							-a;
+							span #{pdsec.color}
+						else
+							button.btn.btn-danger.delColorBtn(type="button", data-fir=ordfir._id, data-sec=ordsec._id) #{pdsec.color} <span class="oi oi-minus"></span>
 					each size in order.sizes
 						- let taskThd = null;
 						each ordthd in ordsec.ordthds

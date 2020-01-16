@@ -132,7 +132,7 @@ module.exports = function(app){
 	app.post('/bsOrdthdDelPdAjax', MdRole.bserIsLogin, postForm, Ordthd.bsOrdthdDelPdAjax);
 	/* -------------------------------------- ordthd -------------------------------------- */
 	app.get('/bsOrdsecNewPdAjax', MdRole.bserIsLogin, Ordthd.bsOrdsecNewPdAjax);
-	app.get('/bsOrdsecNewPdAjax', MdRole.bserIsLogin, Ordthd.bsOrdsecNewPdAjax);
+	app.get('/bsOrdsecDelPdAjax', MdRole.bserIsLogin, Ordthd.bsOrdsecDelPdAjax);
 	/* ======================================== order ======================================== */
 
 
@@ -187,6 +187,7 @@ module.exports = function(app){
 	app.post('/bsMacsezDelPdAjax', MdRole.bserIsLogin, postForm, Macthd.bsMacsezDelPdAjax);
 	/* -------------------------------------- macthd -------------------------------------- */
 	app.get('/bsMacsecNewPdAjax', MdRole.bserIsLogin, Macthd.bsMacsecNewPdAjax);
+	app.get('/bsMacsecDelPdAjax', MdRole.bserIsLogin, Macthd.bsMacsecDelPdAjax);
 	/* ======================================== Machin ======================================== */
 
 
@@ -237,6 +238,7 @@ module.exports = function(app){
 	app.post('/bsTinthdDelPdAjax', MdRole.bserIsLogin, postForm, Tinthd.bsTinthdDelPdAjax);
 	/* -------------------------------------- tinthd -------------------------------------- */
 	app.get('/bsTinsecNewPdAjax', MdRole.bserIsLogin, Tinthd.bsTinsecNewPdAjax);
+	app.get('/bsTinsecDelPdAjax', MdRole.bserIsLogin, Tinthd.bsTinsecDelPdAjax);
 	/* ======================================== Tint ======================================== */
 
 };

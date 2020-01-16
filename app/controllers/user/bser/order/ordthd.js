@@ -1,6 +1,7 @@
 let Err = require('../../aaIndex/err');
 
 let Order = require('../../../../models/client/order');
+let Ordfir = require('../../../../models/client/ordfir');
 let Ordsec = require('../../../../models/client/ordsec');
 let Ordthd = require('../../../../models/client/ordthd');
 
@@ -80,6 +81,8 @@ exports.bsOrdthdDelPdAjax = function(req, res) {
 		if(err) {
 			console.log(err);
 			res.json({success: 0, info: "bsOrdthdDelPdAjax, Ordthd.findOne, Error!"})
+		} else if(!ordthd) {
+			res.json({success: 0})
 		} else {
 			let ordsec = ordthd.ordsec;
 			// 如果ordsec中有多个ordthd 可以直接删除
@@ -175,6 +178,38 @@ exports.bsOrdsecNewPdAjax = function(req, res) {
 									res.json({success: 1})
 								}
 							})
+						}
+					})
+				}
+			})
+		}
+	})
+}
+
+exports.bsOrdsecDelPdAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let ordfirId = req.query.ordfirId;
+	let ordsecId = req.query.ordsecId;
+	Ordfir.findOne({_id: ordfirId})
+	.exec(function(err, ordfir) {
+		if(err) {
+			console.log(err);
+			res.json({success: 0, info: "bsOrdsecDelPdAjax, Ordfir.findOne, Error!"});
+		} else if(!ordfir) {
+			res.json({success: 0, info: "bsOrdsecDelPdAjax, 操作错误, 请刷新重试!"})
+		} else {
+			Ordsec.deleteOne({_id: ordsecId}, function(err, ordsecRm) {
+				if(err) {
+					console.log(err);
+					res.json({success: 0, info: "bsOrdsecDelPdAjax, Ordsec.deleteOne"})
+				} else {
+					ordfir.ordsecs.remove(ordsecId);
+					ordfir.save(function(err, ordfir) {
+						if(err) {
+							console.log(err);
+							res.json({success: 0, info: "bsOrdsecDelPdAjax, ordfir.save"})
+						} else {
+							res.json({success: 1})
 						}
 					})
 				}

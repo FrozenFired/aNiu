@@ -96,7 +96,7 @@ exports.bsOrderUp = function(req, res) {
 		if(err) {
 			info = "bs查看订单时, 订单数据库错误, 请联系管理员";
 			Err.usError(req, res, info);
-		} else if(!order) {
+		} else if(!order || !order.ordfirs || order.ordfirs.length == 0) {
 			info = "order 数据已经被删除，请刷新查看";
 			Err.usError(req, res, info);
 		} else {

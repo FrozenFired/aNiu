@@ -18,7 +18,12 @@ table.table.table-borderless.border.border-dark.text-center
 				- colors.remove(macsec.pdsec.color);
 				- let pdsec = macsec.pdsec;
 				tr
-					th #{macsec.pdsec.color}
+					th
+						if macsec.macthds.length > 0
+							-a;
+							span #{pdsec.color}
+						else
+							button.btn.btn-danger.delColorBtn(type="button", data-fir=macfir._id, data-sec=macsec._id) #{pdsec.color} <span class="oi oi-minus"></span>
 					each size in machin.sizes
 						- let taskThd = null;
 						each macthd in macsec.macthds
