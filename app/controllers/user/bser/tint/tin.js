@@ -409,16 +409,22 @@ exports.bsTinChangeSts = function(req, res) {
 		} else if(!tint) {
 			info = "数据错误，请重试";
 		} else {
-			if(target == "bsTintFinish") {
-				tint.status = 10;
-				tint.fnAt = Date.now();
-				// 染洗单状态从5变为10的时候 解除 pd与tin的联系
-				SaveTintpre.pdRelTintFinish(tint, 'bsTintFinish')
-			} else if(target == "bsTintBack") {
-				tint.status = 5;
-				tint.fnAt = null;
-				// 染洗单状态从10变为5的时候 链接 pd与tin的联系
-				SaveTintpre.pdRelTintBack(tint, 'bsTintBack')
+			if(target == "bsTintFinish") { // 染洗单状态从5变为10的时候 解除 pd与tin的联系
+				if(tint.status != 5) {
+					info = "tint 5->10 页面已过期, 不可重复操作, 请刷新页面查看!"
+				} else {
+					tint.status = 10;
+					tint.fnAt = Date.now();
+					SaveTintpre.pdRelTintFinish(tint, 'bsTintFinish')
+				}
+			} else if(target == "bsTintBack") { // 染洗单状态从10变为5的时候 链接 pd与tin的联系
+				if(tint.status != 10) {
+					info = "tint 10->5 页面已过期, 不可重复操作, 请刷新页面查看!"
+				} else {
+					tint.status = 5;
+					tint.fnAt = null;
+					SaveTintpre.pdRelTintBack(tint, 'bsTintBack')
+				}
 			} else {
 				info = "操作错误，请重试"
 			}

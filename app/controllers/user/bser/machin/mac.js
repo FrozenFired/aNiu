@@ -483,16 +483,22 @@ exports.bsMacChangeSts = function(req, res) {
 		} else if(!machin) {
 			info = "数据错误，请重试";
 		} else {
-			if(target == "bsMachinFinish") {
-				machin.status = 10;
-				machin.fnAt = Date.now();
-				// 生产单状态从5变为10的时候 解除 pd与mac的联系
-				SaveMachinpre.pdRelMachinFinish(machin, 'bsMachinFinish')
-			} else if(target == "bsMachinBack") {
-				machin.status = 5;
-				machin.fnAt = null;
-				// 生产单状态从10变为5的时候 链接 pd与mac的联系
-				SaveMachinpre.pdRelMachinBack(machin, 'bsMachinBack')
+			if(target == "bsMachinFinish") { // 生产单状态从5变为10的时候 解除 pd与mac的联系
+				if(machin.status != 5) {
+					info = "machin 5->10 页面已过期, 不可重复操作, 请刷新页面查看!"
+				} else {
+					machin.status = 10;
+					machin.fnAt = Date.now();
+					SaveMachinpre.pdRelMachinFinish(machin, 'bsMachinFinish')
+				}
+			} else if(target == "bsMachinBack") { // 生产单状态从10变为5的时候 链接 pd与mac的联系
+				if(machin.status != 10) {
+					info = "machin 10->5 页面已过期, 不可重复操作, 请刷新页面查看!"
+				} else {
+					machin.status = 5;
+					machin.fnAt = null;
+					SaveMachinpre.pdRelMachinBack(machin, 'bsMachinBack');
+				}
 			} else {
 				info = "操作错误，请重试"
 			}

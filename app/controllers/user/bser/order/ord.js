@@ -303,28 +303,36 @@ exports.bsOrdChangeSts = function(req, res) {
 		} else if(!order) {
 			info = "数据错误，请重试";
 		} else {
-			if(target == "bsOrderFinish") {
-				order.status = 10;
-				order.fnAt = Date.now();
-				// 订单状态从5变为10的时候 解除 pd与ord的联系
-				SaveOrderPre.pdRelOrderFinish(order, 'bsOrderFinish')
-			} else if(target == "bsOrderBack") {
-				order.status = 5;
-				order.fnAt = null;
-				// 订单状态从10变为5的时候 链接 pd与ord的联系
-				SaveOrderPre.pdRelOrderBack(order, 'bsOrderBack')
-			} else if(target == "bsOrderConfirm") {
-				order.status = 5;
-				// 订单状态从0变为5的时候 链接 pd与ord的联系
-				SaveOrderPre.pdRelOrderConfirm(order, "bsOrderConfirm")
-			} else if(target == "bsOrderCancel") {
-				order.status = 0;
-				// 订单状态从0变为5的时候 链接 pd与ord的联系
-				SaveOrderPre.pdRelOrderCancel(order, "bsOrderCancel")
-			} else if(target == "bsMacCancelOrd") {
-				order.status = 0;
-				// 订单状态从0变为5的时候 链接 pd与ord的联系
-				SaveOrderPre.pdRelOrderCancel(order, "bsOrderCancel")
+			if(target == "bsOrderFinish") { // 订单状态从5变为10的时候 解除 pd与ord的联系
+				if(order.status != 5) {
+					info = "order 5->10 页面已过期, 不可重复操作, 请刷新页面查看!"
+				} else {
+					order.status = 10;
+					order.fnAt = Date.now();
+					SaveOrderPre.pdRelOrderFinish(order, 'bsOrderFinish')
+				}
+			} else if(target == "bsOrderBack") { // 订单状态从10变为5的时候 链接 pd与ord的联系
+				if(order.status != 10) {
+					info = "order 10->5 页面已过期, 不可重复操作, 请刷新页面查看!"
+				} else {
+					order.status = 5;
+					order.fnAt = null;
+					SaveOrderPre.pdRelOrderBack(order, 'bsOrderBack');
+				}
+			} else if(target == "bsOrderConfirm") { // 订单状态从0变为5的时候 链接 pd与ord的联系
+				if(order.status != 0) {
+					info = "order 0->5 页面已过期, 不可重复操作, 请刷新页面查看!"
+				} else {
+					order.status = 5;
+					SaveOrderPre.pdRelOrderConfirm(order, "bsOrderConfirm");
+				}
+			} else if(target == "bsOrderCancel" || target == "bsMacCancelOrd") { // 订单状态从5变为0的时候 链接 pd与ord的联系
+				if(order.status != 5) {
+					info = "order 5->0 页面已过期, 不可重复操作, 请刷新页面查看!"
+				} else {
+					order.status = 0;
+					SaveOrderPre.pdRelOrderCancel(order, "bsOrderCancel")
+				}
 			} else {
 				info = "操作错误，请重试"
 			}
