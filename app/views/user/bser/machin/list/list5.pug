@@ -4,7 +4,7 @@
 		button.btn.btn-info#exitfderBtn(type="button", style="display:none") <span class="oi oi-loop-circular"></span>
 each machin in machins
 	- let btnTime="btn-secondary";
-	if Date.now() - machin.ctAt > 3*24*60*60*1000
+	if Date.now() - (machin.ctAt).setHours(0, 0, 0, 0) > 3*24*60*60*1000
 		- btnTime="btn-danger";
 	- let fder = new Object(), fderTb="noFder", fderTr="bg-danger";
 	- let fderDidplay="display:none";

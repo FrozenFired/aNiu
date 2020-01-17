@@ -1,6 +1,6 @@
 each tint in tints
 	- let btnTime="btn-secondary";
-	if Date.now() - tint.ctAt > 3*24*60*60*1000
+	if Date.now() - (tint.ctAt).setHours(0, 0, 0, 0) > 3*24*60*60*1000
 		-btnTime="btn-danger";
 
 	each tinfir in tint.tinfirs
