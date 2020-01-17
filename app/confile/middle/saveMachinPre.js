@@ -113,14 +113,16 @@ exports.pdRelMachinDel = function(machin, checkCode) {
 			}
 		}
 	}
-	let fder = machin.fder;
-	let machins = new Array();
-	for(let i=0; i<fder.machins.length; i++) {
-		if(String(fder.machins[i]) == String(machin._id)) continue;
-		machins.push(fder.machins[i]);
+	if(machin.fder) {
+		let fder = machin.fder;
+		let machins = new Array();
+		for(let i=0; i<fder.machins.length; i++) {
+			if(String(fder.machins[i]) == String(machin._id)) continue;
+			machins.push(fder.machins[i]);
+		}
+		fder.machins = machins;
+		dbs.push(fder);
 	}
-	fder.machins = machins;
-	dbs.push(fder);
 	bsProductsSave(dbs, 0);
 }
 /* =========================== 删除订单 =========================== */
