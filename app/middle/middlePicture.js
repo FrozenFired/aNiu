@@ -12,8 +12,10 @@ let MiddlePicture = {
 	},
 
 	addNewPhoto : function(req, res, next) {
+		let crUser = req.session.crUser;
+		// console.log(crUser)
 		let obj = req.body.obj;
-		let picName = obj.code;
+		let picName = crUser.firm.code+'_'+obj.code;
 		let photoDir = obj.photoDir;
 		// console.log(photoDir)
 		let photoData = req.files.uploadPhoto;

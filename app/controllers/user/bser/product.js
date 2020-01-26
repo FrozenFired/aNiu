@@ -371,9 +371,6 @@ exports.bsProdFilter = function(req, res, next) {
 		} else if(!pdfir) {
 			info = "此产品已经被删除";
 			Err.usError(req, res, info);
-		} else if(pdfir.firm != crUser.firm) {
-			info = "您只能查看自己公司的产品";
-			Err.usError(req, res, info);
 		} else {
 			// console.log(pdfir.pdsezs[0])
 			req.body.pdfir = pdfir;

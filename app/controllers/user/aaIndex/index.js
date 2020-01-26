@@ -48,7 +48,9 @@ exports.loginUser = function(req, res) {
 	loginUserf(req, res, code, pwd);
 }
 loginUserf = function(req, res, code, pwd) {
-	User.findOne({code: code}, function(err, object) {
+	User.findOne({code: code})
+	.populate('firm')
+	.exec(function(err, object) {
 		if(err) console.log(err);
 		if(!object){
 			info = "用户名不正确，请重新登陆";
