@@ -71,6 +71,8 @@ module.exports = function(app){
 	/* ------------------------------ pdfir ------------------------------ */
 	app.get('/bsPdfirDel/:id', MdRole.bserIsLogin, Product.bsPdfirDel)
 	app.get('/bsProductsObtAjax', MdRole.bserIsLogin, Product.bsProductsObtAjax)
+	
+	app.get('/bsProductGetColor', MdRole.bserIsLogin, Product.bsProductGetColor)
 	/* ------------------------------ pdfir ------------------------------ */
 
 	/* ---------------------------------------- Prod ---------------------------------------- */

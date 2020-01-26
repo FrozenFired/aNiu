@@ -3,9 +3,9 @@ form.my-5#orderNew(method="post", action="/bsOrdNew", enctype="multipart/form-da
 	input#objCter(type="hidden", name="obj[cterId]")
 	table.table.table-bordered.text-center#orderProducts
 		tr(class=txtSatus).bg-secondary
-			th(width="20%") 样品型号
+			th(width="15%") 样品型号
 			th(width="10%") 客户名称
-			th
+			th(width="5%")
 			- let isize = Conf.extSize.min;
 			each size in Conf.sizes
 				-a;
@@ -26,7 +26,8 @@ form.my-5#orderNew(method="post", action="/bsOrdNew", enctype="multipart/form-da
 				#formCters
 					input#ajaxCters.form-control(type="text", placeholder='客户名称或编号', autocomplete="off")
 				.ctersAjax
-			th 颜色
+			th.bg-success
+				input.iptsty.addColor(type="text")
 			- let jsize = Conf.extSize.min;
 			each size in Conf.sizes
 				-a;

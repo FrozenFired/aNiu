@@ -275,6 +275,15 @@ let bsorderSend = function(req, res, orderId) {
 exports.bsOrdNew = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj;
+	// // console.log(obj);
+	// for(let i=0; i<obj.secs.length; i++) {
+	// 	let sec = obj.secs[i];
+	// 	for(let j=0; j<sec.thds.length; j++) {
+	// 		console.log(sec.thds[j])
+	// 	}
+	// 	console.log('------------------')
+	// }
+	// return;
 	Pdfir.findOne({_id: obj.pdfirId}, function(err, pdfir) {
 		if(err) {
 			info = "bsOrderNew, Pdfir.findOne, Error!";

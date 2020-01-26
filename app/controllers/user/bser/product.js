@@ -432,6 +432,40 @@ exports.bsPdfirDel = function(req, res) {
 	})
 }
 
+exports.bsProductGetColor = function(req, res) {
+	let crUser = req.session.crUser;
+	let id = req.query.id;
+	let color = req.query.color;
+	// console.log(id)
+	// console.log(color)
+	Pdfir.findOne({'firm': crUser.firm, '_id': id})
+	.populate({path: 'pdsecs', populate: {path: 'pdthds'}})
+	.exec(function(err, pdfir) {
+		if(err) {
+			console.log(err);
+			info = "bser productGetColor, Pdfir.findOne, Error！";
+			res.json({success: -1, info: info});
+		} else if(!pdfir) {
+			info = "没有找到模特";
+			res.json({success: -1, info: info});
+		} else {
+			let pdsec = null;
+			for(iCl=0; iCl<pdfir.pdsecs.length; iCl++) {
+				let sec = pdfir.pdsecs[iCl];
+				if(sec.color == color) {
+					pdsec = sec;
+					break;
+				}
+			}
+			if(pdsec) {
+				res.json({success: 1, pdsec: pdsec});
+			} else {
+				res.json({success: 0});
+			}
+		}
+	})
+}
+
 exports.bsProductsObtAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let keyword = ' x '
