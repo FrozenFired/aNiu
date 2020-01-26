@@ -73,14 +73,11 @@ each tint in tints
 						th.bg-light #{color}
 						- let ctotship = 0;
 						each size in tint.sizes
-							-let ship = '';
-							-let quot = '';
-							-let tinthdId = '';
+							- let taskTinthd = null;
 							each tinthd in tinsec.tinthds
 								if tinthd.size == size
-									- tinthdId = tinthd._id;
-									- ship = parseInt(tinthd.ship);
-									- quot = parseInt(tinthd.quot);
+									- taskTinthd = tinthd;
+									- let ship = parseInt(tinthd.ship);
 									if isNaN(ztotships[size])
 										-ztotships[size] = ship;
 									else
@@ -89,17 +86,22 @@ each tint in tints
 									- totship += ship;
 									- break;
 							td 
-								if tinthdId
+								if taskTinthd
 									- k++;
-									-let shiping = quot - ship;
+									-let shiping = taskTinthd.quot - taskTinthd.ship;
 
 									if shiping > 0
 										-a;
-										input.iptsty2.shiping(id="shiping-"+tinthdId, type="number", name="obj[thds]["+k+"][shiping]", value=shiping)
-										input(id="stock-"+tinthdId, type="hidden", value=stock)
-										input(type="hidden", name="obj[thds]["+k+"][tinthdId]", value=tinthdId)
+										.row
+											.col-3.pt-1
+												span.text-info #{taskTinthd.ship}
+											.col-9
+												input.iptsty2.shiping(id="shiping-"+taskTinthd._id, type="number", name="obj[thds]["+k+"][shiping]", value=shiping)
+												input(id="stock-"+taskTinthd._id, type="hidden", value=stock)
+												input(type="hidden", name="obj[thds]["+k+"][tinthdId]", value=taskTinthd._id)
+												input(type="hidden", name="obj[thds]["+k+"][shiped]", value=taskTinthd.ship)
 									else
-										span.text-info #{ship}
+										span.text-info #{taskTinthd.ship}
 						td.text-success #{ctotship}
 				tr.text-success
 					td

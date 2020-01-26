@@ -36,6 +36,7 @@ tr
 					input.iptsty2.shiping(id="shiping-"+macsezId, type="number", name="obj[thds]["+k+"][shiping]", value=shiping)
 					input(id="stock-"+macsezId, type="hidden", value=stock)
 					input(type="hidden", name="obj[thds]["+k+"][macsezId]", value=macsezId)
+					input(type="hidden", name="obj[thds]["+k+"][shiped]", value=ship)
 				else
 					span.text-info #{ship}
 	td.text-success #{ctotship}

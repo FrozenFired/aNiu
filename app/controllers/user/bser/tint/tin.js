@@ -219,7 +219,46 @@ exports.bsTinHis = function(req, res) {
 	})
 }
 
-
+exports.bsTintIfSendAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let obj = req.body.obj;
+	let thds = obj.thds;
+	let tins = new Array();
+	let tinthdIds = new Array();
+	for(i in thds) {
+		if(thds[i].shiping > 0) {
+			tins.push(thds[i]);
+			tinthdIds.push(thds[i].tinthdId);
+		}
+	}
+	// console.log(tins)
+	Tinthd.find({_id: tinthdIds})
+	.exec(function(err, tinthds) {
+		if(err) {
+			res.json({success: 0, info: "bser bsTintIfSendAjax, Error!"})
+		} else {
+			let info = null;
+			for(let i=0; i<tinthds.length; i++){
+				let shiping = 0, shiped = 0, stock = 0;
+				for(let k=0; k<tins.length; k++) {
+					if(String(tins[k].tinthdId) == String(tinthds[i]._id)) {
+						shiping = tins[k].shiping;
+						shiped = tins[k].shiped;
+					}
+				}
+				if(shiped != tinthds[i].ship) {
+					info = "请求超时， 请刷新页面，重新发货";
+					break;
+				} 
+			}
+			if(info) {
+				res.json({success: 0, info: info})
+			} else {
+				res.json({success: 1})
+			}
+		}
+	})
+}
 
 exports.bsTintSend = function(req, res) {
 	let crUser = req.session.crUser;
@@ -235,7 +274,7 @@ exports.bsTintSend = function(req, res) {
 }
 let bsTinthdSend = function(req, res, tintId, tins, n) {
 	if(n == tins.length) {
-		bsTintSend(req, res, tintId);
+		bstintSend(req, res, tintId);
 	} else {
 		let tin = tins[n];
 		let shiping = parseInt(tin.shiping);
@@ -253,20 +292,20 @@ let bsTinthdSend = function(req, res, tintId, tins, n) {
 		})
 	}
 }
-let bsTintSend = function(req, res, tintId) {
+let bstintSend = function(req, res, tintId) {
 	Tint.findOne({_id: tintId}, function(err, tint) {
 		if(err) {
 			console.log(err);
-			info = "bsTintSend, Tint.findOne, Error";
+			info = "bstintSend, Tint.findOne, Error";
 			Err.usError(req, res, info);
 		} else if(!tint) {
-			info = "bsTintSend, !tint, Error";
+			info = "bstintSend, !tint, Error";
 			Err.usError(req, res, info);
 		} else {
 			tint.save(function(err, tintSv) {
 				if(err) {
 					console.log(err);
-					info = "bsTintSend, tint.save, Error";
+					info = "bstintSend, tint.save, Error";
 					Err.usError(req, res, info);
 				} else {
 					return res.redirect('/bsTins');

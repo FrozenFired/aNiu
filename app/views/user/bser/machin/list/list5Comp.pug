@@ -54,6 +54,7 @@ each macsec in macfir.macsecs
 						input.iptsty2.shiping(id="shiping-"+macthdId, type="number", name="obj[thds]["+k+"][shiping]", value=shiping)
 						input(id="stock-"+macthdId, type="hidden", value=stock)
 						input(type="hidden", name="obj[thds]["+k+"][macthdId]", value=macthdId)
+						input(type="hidden", name="obj[thds]["+k+"][shiped]", value=ship)
 					else
 						span.text-info #{ship}
 		td.text-success #{ctotship}

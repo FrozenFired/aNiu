@@ -112,6 +112,7 @@ module.exports = function(app){
 	app.post('/bsOrdNew', MdRole.bserIsLogin, postForm, Ord.bsOrdNew);
 	app.post('/bsOrdChangeSts', MdRole.bserIsLogin, postForm, Ord.bsOrdChangeSts);
 	app.post('/bsOrderSend', MdRole.bserIsLogin, postForm, Ord.bsOrderSend);
+	app.post('/bsOrderIfSendAjax', MdRole.bserIsLogin, postForm, Ord.bsOrderIfSendAjax);
 
 	/* ======================================== order ======================================== */
 	// orderAdd 模糊查询
@@ -164,6 +165,7 @@ module.exports = function(app){
 	app.post('/bsMacNew', MdRole.bserIsLogin, postForm, Mac.bsMacNew);
 	app.post('/bsMacChangeSts', MdRole.bserIsLogin, postForm, Mac.bsMacChangeSts);
 	app.post('/bsMachinSend', MdRole.bserIsLogin, postForm, Mac.bsMachinSend);
+	app.post('/bsMachinIfSendAjax', MdRole.bserIsLogin, postForm, Mac.bsMachinIfSendAjax);
 
 	/* ======================================== Machin ======================================== */
 	// machinAdd 模糊查询
@@ -218,6 +220,7 @@ module.exports = function(app){
 	app.post('/bsTinNew', MdRole.bserIsLogin, postForm, Tin.bsTinNew);
 	app.post('/bsTinChangeSts', MdRole.bserIsLogin, postForm, Tin.bsTinChangeSts);
 	app.post('/bsTintSend', MdRole.bserIsLogin, postForm, Tin.bsTintSend);
+	app.post('/bsTintIfSendAjax', MdRole.bserIsLogin, postForm, Tin.bsTintIfSendAjax);
 
 	/* ======================================== Tint ======================================== */
 	// orderAdd 模糊查询

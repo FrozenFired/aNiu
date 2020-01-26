@@ -122,7 +122,92 @@ exports.bsOrdHis = function(req, res) {
 	})
 }
 
+exports.bsOrderIfSendAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let obj = req.body.obj;
+	let thds = obj.thds;
+	let ords = new Array();
+	let ordthdIds = new Array();
+	for(let i in thds) {
+		if(thds[i].shiping > 0) {
+			ords.push(thds[i]);
+			ordthdIds.push(thds[i].ordthdId);
+		}
+	}
+	// console.log(ordthdIds)
+	Ordthd.find({_id: ordthdIds})
+	.populate({path: 'pdthd', populate: [
+		{path: 'ordthds'}, {path: 'macthds'}, {path: 'tinthds'},
+	]})
+	.exec(function(err, ordthds) {
+		if(err) {
+			res.json({success: 0, info: "bser bsOrderIfSendAjax, Error!"})
+		} else {
+			let info = null;
+			for(let i=0; i<ordthds.length; i++){
+				/* ======================== 获取库存数量 ========================*/
+				let pdthd = ordthds[i].pdthd;
+				let quotOthd = shipOthd = lessOthd = 0;
+				let quotMthd = shipMthd = lessMthd = 0;
+				let quotTthd = shipTthd = lessTthd = 0;
+				for(let m=0; m<pdthd.ordthds.length; m++) {
+					let ordthd = pdthd.ordthds[m];
+					let quot = parseInt(ordthd.quot);
+					let ship = parseInt(ordthd.ship);
+					quotOthd += quot; shipOthd += ship;
+					if(quot - ship > 0) {
+						lessOthd += (quot - ship)
+					}
+				}
+				for(let m=0; m<pdthd.macthds.length; m++) {
+					let macthd = pdthd.macthds[m];
+					let quot = parseInt(macthd.quot);
+					let ship = parseInt(macthd.ship);
+					quotMthd += quot; shipMthd += ship;
+					if(quot - ship > 0) {
+						lessMthd += (quot - ship)
+					}
+				}
+				for(let m=0; m<pdthd.tinthds.length; m++) {
+					let tinthd = pdthd.tinthds[m];
+					let quot = parseInt(tinthd.quot);
+					let ship = parseInt(tinthd.ship);
+					quotTthd += quot; shipTthd += ship;
+					if(quot - ship > 0) {
+						lessTthd += (quot - ship)
+					}
+				}
+				let showThdStock = parseInt(pdthd.stock) + shipTthd + shipMthd - shipOthd;
+				/* ======================== 获取库存数量 ========================*/
 
+				let shiping = 0, shiped = 0, stock = 0;
+				for(let k=0; k<ords.length; k++) {
+					if(String(ords[k].ordthdId) == String(ordthds[i]._id)) {
+						shiping = ords[k].shiping;
+						shiped = ords[k].shiped;
+						stock = ords[k].stock;
+					}
+				}
+				if(shiped != ordthds[i].ship) {
+					info = "请求超时， 请刷新页面，重新发货";
+					break;
+				} else if(showThdStock != stock) {
+					info = "请求超时， 请刷新页面，重新发货";
+					break;
+				} else if(shiping > showThdStock) {
+					info = "请求超时， 请刷新页面，重新发货";
+					break;
+				}
+			}
+			if(info) {
+				res.json({success: 0, info: info})
+			} else {
+				res.json({success: 1})
+			}
+		}
+	})
+	// bsOrdthdIfSend(req, res, obj.orderId, ords, 0)
+}
 
 exports.bsOrderSend = function(req, res) {
 	let crUser = req.session.crUser;
@@ -139,7 +224,7 @@ exports.bsOrderSend = function(req, res) {
 }
 let bsOrdthdSend = function(req, res, orderId, ords, n) {
 	if(n == ords.length) {
-		bsOrderSend(req, res, orderId);
+		bsorderSend(req, res, orderId);
 	} else {
 		let ord = ords[n];
 		let shiping = parseInt(ord.shiping);
@@ -160,20 +245,20 @@ let bsOrdthdSend = function(req, res, orderId, ords, n) {
 		})
 	}
 }
-let bsOrderSend = function(req, res, orderId) {
+let bsorderSend = function(req, res, orderId) {
 	Order.findOne({_id: orderId}, function(err, order) {
 		if(err) {
 			console.log(err);
-			info = "bsOrderSend, Order.findOne, Error";
+			info = "bser orderSend, Order.findOne, Error";
 			Err.usError(req, res, info);
 		} else if(!order) {
-			info = "bsOrderSend, !order, Error";
+			info = "bser orderSend, !order, Error";
 			Err.usError(req, res, info);
 		} else {
 			order.save(function(err, orderSv) {
 				if(err) {
 					console.log(err);
-					info = "bsOrderSend, order.save, Error";
+					info = "bser orderSend, order.save, Error";
 					Err.usError(req, res, info);
 				} else {
 					return res.redirect('/bsOrds');

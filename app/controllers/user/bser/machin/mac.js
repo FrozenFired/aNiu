@@ -244,6 +244,79 @@ exports.bsMacHis = function(req, res) {
 	})
 }
 
+exports.bsMachinIfSendAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let obj = req.body.obj;
+	let thds = obj.thds;
+	let macs = new Array();
+	let macsezIds = new Array();
+	let macthdIds = new Array();
+	for(i in thds) {
+		if(thds[i].shiping > 0) {
+			macs.push(thds[i]);
+			macsezIds.push(thds[i].macsezId);
+			macthdIds.push(thds[i].macthdId);
+		}
+	}
+	if(obj.semi == 1) {
+		Macsez.find({_id: macsezIds})
+		.exec(function(err, macsezs) {
+			if(err) {
+				res.json({success: 0, info: "bser machinIfSendAjax, Error!"})
+			} else {
+				let info = null;
+				for(let i=0; i<macsezs.length; i++){
+
+					let shiping = 0, shiped = 0, stock = 0;
+					for(let k=0; k<macs.length; k++) {
+						if(String(macs[k].macsezId) == String(macsezs[i]._id)) {
+							shiping = macs[k].shiping;
+							shiped = macs[k].shiped;
+							stock = macs[k].stock;
+						}
+					}
+					if(shiped != macsezs[i].ship) {
+						info = "请求超时， 请刷新页面，重新发货";
+						break;
+					}
+				}
+				if(info) {
+					res.json({success: 0, info: info})
+				} else {
+					res.json({success: 1})
+				}
+			}
+		})
+	} else {
+		Macthd.find({_id: macthdIds})
+		.exec(function(err, macthds) {
+			if(err) {
+				res.json({success: 0, info: "bser machinIfSendAjax, Error!"})
+			} else {
+				let info = null;
+				for(let i=0; i<macthds.length; i++){
+
+					let shiping = 0, shiped = 0, stock = 0;
+					for(let k=0; k<macs.length; k++) {
+						if(String(macs[k].macthdId) == String(macthds[i]._id)) {
+							shiping = macs[k].shiping;
+							shiped = macs[k].shiped;
+							stock = macs[k].stock;
+						}
+					}
+					if(shiped != macthds[i].ship) {
+						info = "请求超时， 请刷新页面，重新发货";
+					}
+				}
+				if(info) {
+					res.json({success: 0, info: info})
+				} else {
+					res.json({success: 1})
+				}
+			}
+		})
+	}
+}
 
 
 exports.bsMachinSend = function(req, res) {
@@ -264,7 +337,7 @@ exports.bsMachinSend = function(req, res) {
 }
 let bsMacsezSend = function(req, res, machinId, macs, n) {
 	if(n == macs.length) {
-		bsMachinSend(req, res, machinId);
+		bsmachinSend(req, res, machinId);
 	} else {
 		let mac = macs[n];
 		let shiping = parseInt(mac.shiping);
@@ -284,7 +357,7 @@ let bsMacsezSend = function(req, res, machinId, macs, n) {
 }
 let bsMacthdSend = function(req, res, machinId, macs, n) {
 	if(n == macs.length) {
-		bsMachinSend(req, res, machinId);
+		bsmachinSend(req, res, machinId);
 	} else {
 		let mac = macs[n];
 		let shiping = parseInt(mac.shiping);
@@ -302,20 +375,20 @@ let bsMacthdSend = function(req, res, machinId, macs, n) {
 		})
 	}
 }
-let bsMachinSend = function(req, res, machinId) {
+let bsmachinSend = function(req, res, machinId) {
 	Machin.findOne({_id: machinId}, function(err, machin) {
 		if(err) {
 			console.log(err);
-			info = "bsMachinSend, Machin.findOne, Error";
+			info = "bser machinSend, Machin.findOne, Error";
 			Err.usError(req, res, info);
 		} else if(!machin) {
-			info = "bsMachinSend, !machin, Error";
+			info = "bser machinSend, !machin, Error";
 			Err.usError(req, res, info);
 		} else {
 			machin.save(function(err, machinSv) {
 				if(err) {
 					console.log(err);
-					info = "bsMachinSend, machin.save, Error";
+					info = "bser machinSend, machin.save, Error";
 					Err.usError(req, res, info);
 				} else {
 					return res.redirect('/bsMacs');

@@ -46,7 +46,9 @@ each size in order.sizes
 					.col-9
 						input.iptsty2.shiping(id="shiping-"+taskOrdthd._id, type="number", name="obj[thds]["+k+"][shiping]", value=shiping)
 						input(id="stock-"+taskOrdthd._id, type="hidden", value=showThdStock)
+						input(type="hidden", name="obj[thds]["+k+"][stock]", value=showThdStock)
 						input(type="hidden", name="obj[thds]["+k+"][ordthdId]", value=taskOrdthd._id)
+						input(type="hidden", name="obj[thds]["+k+"][shiped]", value=taskOrdthd.ship)
 				.row
 					.col-5.text-left
 						span.text-warning #{showThdStock}
