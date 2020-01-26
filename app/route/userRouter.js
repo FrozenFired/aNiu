@@ -58,6 +58,7 @@ module.exports = function(app){
 	/* ======================================== product ======================================== */
 	/* ------------------------------ product ------------------------------ */
 	app.get('/bsProducts', MdRole.bserIsLogin, Product.bsProducts)
+	app.get('/bsProductAll', MdRole.bserIsLogin, Product.bsProductAll)
 	app.get('/bsProductAdd', MdRole.bserIsLogin, Product.bsProductAdd)
 	app.post('/bsProductNew', MdRole.bserIsLogin, postForm,
 		MdPicture.addNewPhoto, Product.bsProductNew)

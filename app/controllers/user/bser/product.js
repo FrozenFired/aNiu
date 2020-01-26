@@ -51,6 +51,62 @@ exports.bsProducts = function(req, res) {
 					{'nome': {[keySymb]: keyword}},
 				],
 			})
+			.sort({[sortCond]: sortVal})
+			.exec(function(err, products) { if(err) {
+				console.log(err);
+				info = "bsProducts, Pdfir.find， Error！";
+				Err.usError(req, res, info);
+			} else {
+				res.render('./user/bser/product/list', {
+					title: '模特库',
+					crUser : crUser,
+					products: products,
+				})
+			} })
+		}
+	})
+}
+
+exports.bsProductAll = function(req, res) {
+	let crUser = req.session.crUser;
+
+	let keySymb = '$ne';
+	let keyword = ' x ';
+	if(req.query.keyword) {
+		keySymb = '$in';
+		keyword = String(req.query.keyword);
+		keyword = keyword.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+		keyword = new RegExp(keyword + '.*');
+	}
+
+	let sortCond = 'sellQuot';
+	if(req.query.sortCond) sortCond = req.query.sortCond;
+
+	let sortVal = 1;
+	if(req.query.sortVal && !isNaN(parseInt(req.query.sortVal))) {
+		sortVal = parseInt(req.query.sortVal);
+	}
+
+	Pdfir.countDocuments({
+		'firm': crUser.firm,
+		$or:[
+			{'code': {[keySymb]: keyword}},
+			{'nome': {[keySymb]: keyword}},
+		],
+	}, function(err, keyCount) {
+		if(err) {
+			console.log(err);
+			info = "bsProducts, Pdfir.countDocuments， Error！";
+			Err.usError(req, res, info);
+		} else {
+			// console.log(keyCount)
+			Pdfir.find({
+				'firm': crUser.firm,
+				$or:[
+					{'code': {[keySymb]: keyword}},
+					{'nome': {[keySymb]: keyword}},
+				],
+			})
 			.populate({path: 'pdsecs', populate: {path: 'pdthds', populate: [
 				{path: 'ordthds'}, {path: 'hordthds'},
 				{path: 'macthds'},
@@ -72,7 +128,7 @@ exports.bsProducts = function(req, res) {
 				info = "bsProducts, Pdfir.find， Error！";
 				Err.usError(req, res, info);
 			} else {
-				res.render('./user/bser/product/list', {
+				res.render('./user/bser/product/listAll', {
 					title: '模特库',
 					crUser : crUser,
 					products: products,
@@ -81,7 +137,6 @@ exports.bsProducts = function(req, res) {
 		}
 	})
 }
-
 
 
 
