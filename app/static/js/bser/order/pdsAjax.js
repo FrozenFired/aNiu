@@ -288,20 +288,21 @@ $(function() {
 			for(let j=0; j<pdsec.pdthds.length; j++) {
 				let pdthd = pdsec.pdthds[j];
 				str += '<td>'
-					str += '<input class="iptsty ordQt" type="number" value='+0;
+					str += '<input class="iptsty ordQt '+pdsec.color+'" type="number" value='+0;
 					str += ' name="obj[secs]['+i+'][thds]['+j+'][quot]" >'
 
 					str += '<input type="hidden" value='+pdthd._id;
 					str += ' name="obj[secs]['+i+'][thds]['+j+'][pdthdId]" >'
 
-					str += '<input type="hidden" value='+pdthd.color;
+					str += '<input type="hidden" value='+pdsec.color;
 					str += ' name="obj[secs]['+i+'][thds]['+j+'][color]" >'
 
 					str += '<input type="hidden" value='+pdthd.size;
 					str += ' name="obj[secs]['+i+'][thds]['+j+'][size]" >'
 				str += '</td>'
 			}
-			str += '</td>'
+			str += '<td class="bg-secondary">'
+				str += '<input class="iptsty ordQtSync" id='+pdsec.color+' type="number" >'
 			str += '</td>'
 			str += '</tr>'
 		}
@@ -312,8 +313,13 @@ $(function() {
 
 
 
-
-
+	$("#orderProducts").on('blur', '.ordQtSync', function(e) {
+		let quot = $(this).val();
+		let colorId = $(this).attr("id");
+		$("."+colorId).each(function(index,elem) {
+			$(this).val(quot);
+		})
+	})
 
 
 	/* ================== 焦点离开 数量 ================== */

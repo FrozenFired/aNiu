@@ -433,20 +433,21 @@ $(function() {
 				needMac = lessOthd - lessMthd - showStock;
 				if(needMac < 0) needMac = 0;
 				str += '<td>'
-					str += '<input class="iptsty ordQt" type="Number" value='+needMac;
+					str += '<input class="iptsty ordQt '+pdsec.color+'" type="Number" value='+needMac;
 					str += ' name="obj[secs]['+i+'][thds]['+j+'][quot]" >'
 
 					str += '<input type="hidden" value='+pdthd._id;
 					str += ' name="obj[secs]['+i+'][thds]['+j+'][pdthdId]" >'
 
-					str += '<input type="hidden" value='+pdthd.color;
+					str += '<input type="hidden" value='+pdsec.color;
 					str += ' name="obj[secs]['+i+'][thds]['+j+'][color]" >'
 
 					str += '<input type="hidden" value='+pdthd.size;
 					str += ' name="obj[secs]['+i+'][thds]['+j+'][size]" >'
 				str += '</td>'
 			}
-			str += '</td>'
+			str += '<td class="bg-secondary">'
+				str += '<input class="iptsty ordQtSync" id='+pdsec.color+' type="number" >'
 			str += '</td>'
 			str += '</tr>'
 		}
@@ -458,14 +459,20 @@ $(function() {
 
 
 
-
+	$("#machinProducts").on('blur', '.ordQtSync', function(e) {
+		let quot = $(this).val();
+		let colorId = $(this).attr("id");
+		$("."+colorId).each(function(index,elem) {
+			$(this).val(quot);
+		})
+	})
 
 
 
 
 
 	/* ============================= 焦点离开 数量 ============================= */
-	// $("#orderProducts").on('blur', '.ordQt', function(e) {
+	// $("#machinProducts").on('blur', '.ordQt', function(e) {
 
 	// })
 	/* ============================= 焦点离开 数量 ============================= */
