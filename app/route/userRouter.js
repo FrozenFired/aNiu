@@ -23,10 +23,10 @@ let Tin = require('../controllers/user/bser/tint/tin');
 let Tint = require('../controllers/user/bser/tint/tint');
 let Tinthd = require('../controllers/user/bser/tint/tinthd');
 
-let MdBcrypt = require('../confile/middle/middleBcrypt');
-let MdRole = require('../confile/middle/middleRole');
-let MdPicture = require('../confile/middle/middlePicture');
-let MdExcel = require('../confile/middle/middleExcel');
+let MdBcrypt = require('../middle/middleBcrypt');
+let MdRole = require('../middle/middleRole');
+let MdPicture = require('../middle/middlePicture');
+let MdExcel = require('../middle/middleExcel');
 
 let multipart = require('connect-multiparty');
 let postForm = multipart();

@@ -59,7 +59,7 @@ form.mt-3#bsProdNew(method="post", action="/bsProductNew", enctype="multipart/fo
 				.col-lg-1
 			.col-lg-1.mt-2
 				-let checkval=false;
-				if key > 7 && key <14
+				if key >= Conf.extSize.min && key <= Conf.extSize.max
 					-checkval=true;
 				input.form-check-input(id="sizes-"+key, type="checkbox", name="obj[sizes]", value=key, checked=checkval)
 				label.form-check-label(for="sizes-"+key) #{Conf.sizes[key]} 

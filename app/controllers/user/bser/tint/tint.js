@@ -1,6 +1,6 @@
 let Err = require('../../aaIndex/err');
-let Conf = require('../../../../confile/conf');
-let SaveTintPre = require('../../../../confile/middle/saveTintPre');
+let Conf = require('../../../../../conf');
+let SaveTintPre = require('../../../../middle/saveTintPre');
 
 let Tint = require('../../../../models/dryer/tint');
 let Tinfir = require('../../../../models/dryer/tinfir');

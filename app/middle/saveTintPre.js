@@ -1,7 +1,7 @@
-let Tint = require('../../models/dryer/tint');
-let Tinfir = require('../../models/dryer/tinfir');
-let Tinsec = require('../../models/dryer/tinsec');
-let Tinthd = require('../../models/dryer/tinthd');
+let Tint = require('../models/dryer/tint');
+let Tinfir = require('../models/dryer/tinfir');
+let Tinsec = require('../models/dryer/tinsec');
+let Tinthd = require('../models/dryer/tinthd');
 
 
 /* ======================= 库存中的pd与tinh中的pd相关联 ======================= */

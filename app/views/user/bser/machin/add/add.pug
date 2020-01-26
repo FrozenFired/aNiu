@@ -17,17 +17,18 @@
 form.my-5#machinNew(method="post", action="/bsMacNew", enctype="multipart/form-data")
 	input#objFir(type="hidden", name="obj[pdfirId]")
 	input#objFder(type="hidden", name="obj[fderId]")
-	table.table.table-border.text-center#machinProducts
+	table.table.table-bordered.text-center#machinProducts
 		tr(class=txtSatus).bg-secondary
 			th(width="20%") 样品型号
 			th(width="10%") 工厂名称
 			th
-			th.changeTd
-			th.changeTd
-			th.changeTd
-			th.changeTd
-			th.changeTd
-			th.changeTd
+			- let isize = Conf.extSize.min;
+			each size in Conf.sizes
+				-a;
+				th.changeTd
+				- isize ++;
+				if isize == Conf.extSize.max
+					- break;
 			th#changeTh
 				button.btn.btn-success#submitBtn(type="button") 确认
 		tr#changeElem
@@ -42,12 +43,13 @@ form.my-5#machinNew(method="post", action="/bsMacNew", enctype="multipart/form-d
 					input#ajaxFders.form-control(type="text", placeholder='工厂名称或编号', autocomplete="off")
 				.fdersAjax
 			th 颜色
-			th.changeTd XS
-			th.changeTd S
-			th.changeTd M
-			th.changeTd L
-			th.changeTd XL
-			th.changeTd XXL
+			- let jsize = Conf.extSize.min;
+			each size in Conf.sizes
+				-a;
+				th.changeTd #{Conf.sizes[jsize]}
+				- jsize ++;
+				if jsize == Conf.extSize.max
+					- break;
 			th#changeSize
 script(src="/js/bser/machin/fder.js")
 script(src="/js/bser/machin/pdsAjax.js")

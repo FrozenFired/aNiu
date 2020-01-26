@@ -1,4 +1,4 @@
-let AdIndex = require('../../controllers/ader/index');
+let AdIndex = require('../controllers/ader/index');
 exports.aderIsLogin = function(req, res, next) {
 	let crAder = req.session.crAder;
 	if(!crAder) {
@@ -10,8 +10,8 @@ exports.aderIsLogin = function(req, res, next) {
 };
 
 
-let User = require('../../models/login/user');
-let UsErr = require('../../controllers/user/aaIndex/err');
+let User = require('../models/login/user');
+let UsErr = require('../controllers/user/aaIndex/err');
 exports.singleUsLogin = function(req, res, next){
 	let crUser = req.session.crUser;
 	User.findById(crUser._id, function(err, user){ 

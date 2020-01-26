@@ -55,7 +55,7 @@ app.use(serveStatic(path.join(__dirname, "./app/static")));
 
 // 前端读取配置数据
 app.locals.moment = require('moment');// 时间格式化
-app.locals.Conf = require('./app/confile/conf');// 
+app.locals.Conf = require('./conf');// 
 app.locals.dns = Ready.dns;// 
 app.locals.cdn = Ready.cdn;// 
 

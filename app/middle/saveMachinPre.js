@@ -1,7 +1,7 @@
-let Machin = require('../../models/foundry/machin');
-let Macfir = require('../../models/foundry/macfir');
-let Macsec = require('../../models/foundry/macsec');
-let Macthd = require('../../models/foundry/macthd');
+let Machin = require('../models/foundry/machin');
+let Macfir = require('../models/foundry/macfir');
+let Macsec = require('../models/foundry/macsec');
+let Macthd = require('../models/foundry/macthd');
 
 
 /* =========================== 库存中的pd与mac中的pd相关联 =========================== */

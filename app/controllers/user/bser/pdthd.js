@@ -1,7 +1,7 @@
 let Err = require('../aaIndex/err')
 
-let MdPicture = require('../../../confile/middle/middlePicture');
-let Conf = require('../../../confile/conf');
+let MdPicture = require('../../../middle/middlePicture');
+let Conf = require('../../../../conf');
 
 let _ = require('underscore');
 

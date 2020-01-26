@@ -1,7 +1,7 @@
-let Order = require('../../models/client/order');
-let Ordfir = require('../../models/client/ordfir');
-let Ordsec = require('../../models/client/ordsec');
-let Ordthd = require('../../models/client/ordthd');
+let Order = require('../models/client/order');
+let Ordfir = require('../models/client/ordfir');
+let Ordsec = require('../models/client/ordsec');
+let Ordthd = require('../models/client/ordthd');
 
 
 /* =========================== 库存中的pd与ord中的pd相关联 =========================== */

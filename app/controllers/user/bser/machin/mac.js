@@ -1,6 +1,6 @@
 let Err = require('../../aaIndex/err');
-let Conf = require('../../../../confile/conf');
-let SaveMachinpre = require('../../../../confile/middle/saveMachinPre');
+let Conf = require('../../../../../conf');
+let SaveMachinpre = require('../../../../middle/saveMachinPre');
 
 let moment = require('moment')
 

@@ -5,7 +5,7 @@ var cmpImg = require('compress-images');
 let MiddlePicture = {
 	deleteOldPhoto : function(orgPhoto, photoDir){
 		if(orgPhoto != '/upload' + photoDir + '1.jpg') {
-			fs.unlink(path.join(__dirname, '../../../public' + orgPhoto), function(err) {
+			fs.unlink(path.join(__dirname, '../../public' + orgPhoto), function(err) {
 				if(err) console.log(err);
 			});
 		}
@@ -26,10 +26,10 @@ let MiddlePicture = {
 				let type = photoData.type.split('/')[1];
 				let timestamp = Date.now();
 				let photoName = picName + '_' + timestamp + '.' + type;
-				let cacheSrc = path.join(__dirname, '../../../public/upload/');
+				let cacheSrc = path.join(__dirname, '../../public/upload/');
 				let orgPhotoCache = cacheSrc + photoName;
 				fs.writeFile(orgPhotoCache, data, function(err){
-					let photoPath = path.join(__dirname, '../../../public/upload'+photoDir);
+					let photoPath = path.join(__dirname, '../../public/upload'+photoDir);
 					cmpImg(
 						cacheSrc+'*.{jpg,JPG,jpeg,JPEG,png,svg,gif}',
 						photoPath,

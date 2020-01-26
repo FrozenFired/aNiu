@@ -1,4 +1,4 @@
-let UsErr = require('../../controllers/user/aaIndex/err');
+let UsErr = require('../controllers/user/aaIndex/err');
 
 let MiddleUpExl = {
 	readExcel : function(req, res, next) {

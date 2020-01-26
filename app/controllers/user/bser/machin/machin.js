@@ -1,6 +1,6 @@
 let Err = require('../../aaIndex/err');
-let Conf = require('../../../../confile/conf');
-let SaveMachinPre = require('../../../../confile/middle/saveMachinPre');
+let Conf = require('../../../../../conf');
+let SaveMachinPre = require('../../../../middle/saveMachinPre');
 
 let Machin = require('../../../../models/foundry/machin');
 let Macfir = require('../../../../models/foundry/macfir');

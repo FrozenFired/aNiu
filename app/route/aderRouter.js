@@ -4,8 +4,8 @@ let Ader = require('../controllers/ader/ader'); // ct control
 let Firm = require('../controllers/ader/firm')
 let User = require('../controllers/ader/user')
 
-let MdBcrypt = require('../confile/middle/middleBcrypt')
-let MdRole = require('../confile/middle/middleRole')
+let MdBcrypt = require('../middle/middleBcrypt')
+let MdRole = require('../middle/middleRole')
 
 let multipart = require('connect-multiparty')
 let postForm = multipart();

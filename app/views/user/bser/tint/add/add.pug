@@ -7,17 +7,18 @@
 form#tintNew(method="post", action="/bsTinNew", enctype="multipart/form-data")
 	input#objFir(type="hidden", name="obj[pdfirId]")
 	input#objTner(type="hidden", name="obj[tnerId]")
-	table.table.table-border.text-center#tintProducts.my-5
+	table.table.table-bordered.text-center#tintProducts.my-5
 		tr(class=txtSatus).bg-secondary
 			th(width="20%") 样品型号
 			th(width="10%") 染洗厂名称
 			th
-			th.changeTd
-			th.changeTd
-			th.changeTd
-			th.changeTd
-			th.changeTd
-			th.changeTd
+			- let isize = Conf.extSize.min;
+			each size in Conf.sizes
+				-a;
+				th.changeTd
+				- isize ++;
+				if isize == Conf.extSize.max
+					- break;
 			th#changeTh
 				button.btn.btn-success#submitBtn(type="button") 确认
 		tr#changeElem
@@ -32,10 +33,11 @@ form#tintNew(method="post", action="/bsTinNew", enctype="multipart/form-data")
 					input#ajaxTners.form-control(type="text", placeholder='染洗厂名称或编号', autocomplete="off")
 				.catersAjax
 			th 颜色
-			th.changeTd XS
-			th.changeTd S
-			th.changeTd M
-			th.changeTd L
-			th.changeTd XL
-			th.changeTd XXL
+			- let jsize = Conf.extSize.min;
+			each size in Conf.sizes
+				-a;
+				th.changeTd #{Conf.sizes[jsize]}
+				- jsize ++;
+				if jsize == Conf.extSize.max
+					- break;
 			th#changeSize
