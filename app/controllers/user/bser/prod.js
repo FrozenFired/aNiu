@@ -40,10 +40,9 @@ exports.bsProdImg = function(req, res) {
 
 exports.bsProdNewColorAjax = function(req, res) {
 	let crUser = req.session.crUser;
-	let obj = req.body.obj;
-	let color = String(obj.color).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-	// console.log('|'+color+'|')
-	Pdfir.findOne({_id: obj.pdfir})
+	let pdfirId = req.query.pdfirId;
+	let color = String(req.query.color).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+	Pdfir.findOne({_id: pdfirId})
 	.populate('pdsezs')
 	.exec(function(err, pdfir) {
 		if(err) {
@@ -98,10 +97,9 @@ exports.bsProdNewColorAjax = function(req, res) {
 
 exports.bsProdNewSizeAjax = function(req, res) {
 	let crUser = req.session.crUser;
-	let obj = req.body.obj;
-	let size = parseInt(obj.size);
-	// console.log('|'+color+'|')
-	Pdfir.findOne({_id: obj.pdfir})
+	let pdfirId = req.query.pdfirId;
+	let size = parseInt(req.query.size);
+	Pdfir.findOne({_id: pdfirId})
 	.populate('pdsecs')
 	.exec(function(err, pdfir) {
 		if(err) {
@@ -167,14 +165,13 @@ exports.bsProdNewSizeAjax = function(req, res) {
 
 exports.bsProdDelColorAjax = function(req, res) {
 	let crUser = req.session.crUser;
-	let obj = req.body.obj;
-	let pdfirId = obj.pdfir;
-	let pdsecId = obj.pdsec;
+	let pdfirId = req.query.pdfirId;
+	let pdsecId = req.query.pdsecId;
 	Pdfir.findOne({_id: pdfirId})
 	.exec(function(err, pdfir) {
 		if(err) {
 			console.log(err);
-			info = "bsProdNewColor, Pdfir.findOne Error！";
+			info = "bser prodDelColorAjax, Pdfir.findOne Error！";
 			res.json({success: 0, info: info});
 		} else if(!pdfir) {
 			info = "错做错误请重试， 没有找到相应产品";
@@ -253,14 +250,13 @@ exports.bsProdDelColorAjax = function(req, res) {
 }
 exports.bsProdDelSizeAjax = function(req, res) {
 	let crUser = req.session.crUser;
-	let obj = req.body.obj;
-	let pdfirId = obj.pdfir;
-	let pdsezId = obj.pdsez;
+	let pdfirId = req.query.pdfirId;
+	let pdsezId =  req.query.pdsezId;
 	Pdfir.findOne({_id: pdfirId})
 	.exec(function(err, pdfir) {
 		if(err) {
 			console.log(err);
-			info = "bsProdNewColor, Pdfir.findOne Error！";
+			info = "bser prodDelSizeAjax, Pdfir.findOne Error！";
 			res.json({success: 0, info: info});
 		} else if(!pdfir) {
 			info = "错做错误请重试， 没有找到相应产品";
