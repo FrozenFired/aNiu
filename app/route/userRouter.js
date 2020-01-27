@@ -78,10 +78,10 @@ module.exports = function(app){
 	/* ---------------------------------------- Prod ---------------------------------------- */
 	app.post('/bsProdImg', MdRole.bserIsLogin, postForm, MdPicture.addNewPhoto, Prod.bsProdImg)
 
-	app.post('/bsProdNewColor', MdRole.bserIsLogin, postForm, Prod.bsProdNewColor)
-	app.post('/bsProdDelColor', MdRole.bserIsLogin, postForm, Prod.bsProdDelColor)
-	app.post('/bsProdNewSize', MdRole.bserIsLogin, postForm, Prod.bsProdNewSize)
-	app.post('/bsProdDelSize', MdRole.bserIsLogin, postForm, Prod.bsProdDelSize)
+	app.post('/bsProdNewColorAjax', MdRole.bserIsLogin, postForm, Prod.bsProdNewColorAjax)
+	app.post('/bsProdDelColorAjax', MdRole.bserIsLogin, postForm, Prod.bsProdDelColorAjax)
+	app.post('/bsProdNewSizeAjax', MdRole.bserIsLogin, postForm, Prod.bsProdNewSizeAjax)
+	app.post('/bsProdDelSizeAjax', MdRole.bserIsLogin, postForm, Prod.bsProdDelSizeAjax)
 	
 	app.post('/bsProdUpStock', MdRole.bserIsLogin, postForm, Prod.bsProdUpStock)
 	/* ------------------------------ pdthd ------------------------------ */

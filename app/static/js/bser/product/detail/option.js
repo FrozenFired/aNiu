@@ -42,11 +42,29 @@ $(function() {
 
 	/* ======= 提交添加新颜色表格时, 判断颜色是否重复 ======= */
 	$("#newColorForm").submit(function(e) {
+		let url = "/bsProdNewColorAjax";
 		let color = $("#plusColor").val();
 		$("#plusColor").val(color.replace(/\s+/g,""));
 		if(!color || color.length < 0) {
 			alert("请添加颜色，再提交");
 			e.preventDefault();
+		} else {
+			let form = $(this);
+			let data = form.serialize();
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: data,
+				success: function(results) {
+					if(results.success == 1) {
+						
+					} else {
+						alert(results.info);
+					}
+					let pdfir = results.pdfir;
+					window.location.href = "/bsProduct/"+pdfir._id+"?add=1";
+				}
+			});
 		}
 	})
 	/* ======= 提交添加新颜色表格时, 判断颜色是否重复 ======= */
@@ -58,6 +76,29 @@ $(function() {
 	})
 	/* ======= 点击删除颜色的按钮 ======= */
 
+	/* ======= 提交删除新颜色表格时 ======= */
+	$("#delColorForm").submit(function(e) {
+		let url = "/bsProdDelColorAjax";
+		let form = $(this);
+		let data = form.serialize();
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: data,
+			success: function(results) {
+				if(results.success == 1) {
+					
+				} else {
+					alert(results.info);
+				}
+				let pdfir = results.pdfir;
+				window.location.href = "/bsProduct/"+pdfir._id;
+			}
+		});
+	})
+	/* ======= 提交删除新颜色表格时 ======= */
+
+
 	/* ======= 点击添加尺寸的按钮 ======= */
 	$(".plusSizeBtn").click(function(e) {
 		$(".optionBtn").hide()
@@ -65,12 +106,56 @@ $(function() {
 	})
 	/* ======= 点击添加尺寸的按钮 ======= */
 
+	/* ======= 提交添加尺寸表格时 ======= */
+	$("#newSizeForm").submit(function(e) {
+		let url = "/bsProdNewSizeAjax";
+		let form = $(this);
+		let data = form.serialize();
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: data,
+			success: function(results) {
+				if(results.success == 1) {
+					
+				} else {
+					alert(results.info);
+				}
+				let pdfir = results.pdfir;
+				window.location.href = "/bsProduct/"+pdfir._id+"?add=1";
+			}
+		});
+	})
+	/* ======= 提交添加尺寸表格时 ======= */
+
 	/* ======= 点击删除尺寸的按钮 ======= */
 	$(".minusSizeBtn").click(function(e) {
 		$(".optionBtn").hide()
 		$(".minusSize").show();
 	})
 	/* ======= 点击删除尺寸的按钮 ======= */
+
+	/* ======= 提交删除尺寸表格时 ======= */
+	$("#delSizeForm").submit(function(e) {
+		let url = "/bsProdDelSizeAjax";
+		let form = $(this);
+		let data = form.serialize();
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: data,
+			success: function(results) {
+				if(results.success == 1) {
+					
+				} else {
+					alert(results.info);
+				}
+				let pdfir = results.pdfir;
+				window.location.href = "/bsProduct/"+pdfir._id;
+			}
+		});
+	})
+	/* ======= 提交删除尺寸表格时 ======= */
 
 	$(".pdfirDelBtn").click(function(e) {
 		let target = $(e.target);

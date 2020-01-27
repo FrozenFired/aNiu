@@ -16,7 +16,7 @@
 	.col-4.text-right
 		button.btn.btn-danger.pdfirDelBtn(type="button", data-id=pdfir._id) 删除
 .iptPage.plusColor(style="display:none")
-	form#newColorForm(method="post", action="/bsProdNewColor", enctype="multipart/form-data")
+	form#newColorForm
 		input.form-control(type="hidden", name="obj[pdfir]", value=pdfir._id)
 		.form-group.row
 			label.col-2.col-form-label(for="plusColor") 颜色
@@ -28,7 +28,7 @@
 			.col-2
 				input.btn.btn-info.btn-block(type="submit" value='添加')
 .iptPage.minusColor(style="display:none")
-	form#delColorForm(method="post", action="/bsProdDelColor", enctype="multipart/form-data")
+	form#delColorForm
 		input.form-control(type="hidden", name="obj[pdfir]", value=pdfir._id)
 		.form-group.row
 			label.col-2.col-form-label(for="plusColor") 颜色
@@ -43,7 +43,7 @@
 			.col-2
 				input.btn.btn-danger.btn-block(type="submit" value='删除')
 .iptPage.plusSize(style="display:none")
-	form#newSizeForm(method="post", action="/bsProdNewSize", enctype="multipart/form-data")
+	form#newSizeForm
 		input.form-control(type="hidden", name="obj[pdfir]", value=pdfir._id)
 		.form-group.row
 			label.col-2.col-form-label(for="plusSize") 尺寸
@@ -63,7 +63,7 @@
 			.col-2
 				input.btn.btn-info.btn-block(type="submit" value='添加')
 .iptPage.minusSize(style="display:none")
-	form#delSizeForm(method="post", action="/bsProdDelSize", enctype="multipart/form-data")
+	form#delSizeForm
 		input.form-control(type="hidden", name="obj[pdfir]", value=pdfir._id)
 		.form-group.row
 			label.col-2.col-form-label(for="minusSize") 尺寸

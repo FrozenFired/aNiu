@@ -38,7 +38,7 @@ exports.bsProdImg = function(req, res) {
 	})
 }
 
-exports.bsProdNewColor = function(req, res) {
+exports.bsProdNewColorAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj;
 	let color = String(obj.color).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
@@ -49,10 +49,10 @@ exports.bsProdNewColor = function(req, res) {
 		if(err) {
 			console.log(err);
 			info = "bsProdNewColor, Pdfir.findOne Error！";
-			Err.usError(req, res, info);
+			res.json({success: 0, info: info});
 		} else if(!pdfir) {
 			info = "错做错误请重试， 没有找到相应产品";
-			Err.usError(req, res, info);
+			res.json({success: 0, info: info});
 		} else {
 			let i=0;
 			for(; i<pdfir.colors.length; i++) {
@@ -90,13 +90,13 @@ exports.bsProdNewColor = function(req, res) {
 				bsProdSave(req, res, pdfir, dbs, 0);
 			} else {
 				info = "颜色添加重复";
-				Err.usError(req, res, info);
+				res.json({success: 0, info: info});
 			}
 		}
 	})
 }
 
-exports.bsProdNewSize = function(req, res) {
+exports.bsProdNewSizeAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj;
 	let size = parseInt(obj.size);
@@ -107,10 +107,10 @@ exports.bsProdNewSize = function(req, res) {
 		if(err) {
 			console.log(err);
 			info = "bsProdNewColor, Pdfir.findOne Error！";
-			Err.usError(req, res, info);
+			res.json({success: 0, info: info});
 		} else if(!pdfir) {
 			info = "错做错误请重试， 没有找到相应产品";
-			Err.usError(req, res, info);
+			res.json({success: 0, info: info});
 		} else {
 			let post = null;
 			if(pdfir.sizes.length == 0) {
@@ -159,13 +159,13 @@ exports.bsProdNewSize = function(req, res) {
 				bsProdSave(req, res, pdfir, dbs, 0);
 			} else {
 				info = "尺寸添加重复";
-				Err.usError(req, res, info);
+				res.json({success: 0, info: info});
 			}
 		}
 	})
 }
 
-exports.bsProdDelColor = function(req, res) {
+exports.bsProdDelColorAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj;
 	let pdfirId = obj.pdfir;
@@ -175,10 +175,10 @@ exports.bsProdDelColor = function(req, res) {
 		if(err) {
 			console.log(err);
 			info = "bsProdNewColor, Pdfir.findOne Error！";
-			Err.usError(req, res, info);
+			res.json({success: 0, info: info});
 		} else if(!pdfir) {
 			info = "错做错误请重试， 没有找到相应产品";
-			Err.usError(req, res, info);
+			res.json({success: 0, info: info});
 		} else {
 			let i = 0;
 			for(; i<pdfir.pdsecs.length; i++) {
@@ -188,7 +188,7 @@ exports.bsProdDelColor = function(req, res) {
 			}
 			if(i == pdfir.pdsecs.length) {
 				info = "产品后台无此颜色, 请重试！";
-				Err.usError(req, res, info);
+				res.json({success: 0, info: info});
 			} else {
 				Pdsec.findOne({'_id': pdsecId})
 				.populate({path: 'pdthds', populate: [
@@ -201,7 +201,7 @@ exports.bsProdDelColor = function(req, res) {
 					if(err) {
 						console.log(err);
 						info = "bsProdNewColor, Pdthd.find Error！";
-						Err.usError(req, res, info);
+						res.json({success: 0, info: info});
 					} else {
 						let dbs = new Array();
 						let k=0;
@@ -226,7 +226,7 @@ exports.bsProdDelColor = function(req, res) {
 						}
 						if(k != pdsec.pdthds.length) {
 							info = "有出售记录, 请先删除出售记录！";
-							Err.usError(req, res, info);
+							res.json({success: 0, info: info});
 						} else {
 							pdfir.pdsecs.remove(pdsec._id);
 							pdfir.colors.remove(pdsec.color);
@@ -251,7 +251,7 @@ exports.bsProdDelColor = function(req, res) {
 		}
 	})
 }
-exports.bsProdDelSize = function(req, res) {
+exports.bsProdDelSizeAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj;
 	let pdfirId = obj.pdfir;
@@ -261,10 +261,10 @@ exports.bsProdDelSize = function(req, res) {
 		if(err) {
 			console.log(err);
 			info = "bsProdNewColor, Pdfir.findOne Error！";
-			Err.usError(req, res, info);
+			res.json({success: 0, info: info});
 		} else if(!pdfir) {
 			info = "错做错误请重试， 没有找到相应产品";
-			Err.usError(req, res, info);
+			res.json({success: 0, info: info});
 		} else {
 			let i = 0;
 			for(; i<pdfir.pdsezs.length; i++) {
@@ -274,7 +274,7 @@ exports.bsProdDelSize = function(req, res) {
 			}
 			if(i == pdfir.pdsezs.length) {
 				info = "产品后台无此颜色, 请重试！";
-				Err.usError(req, res, info);
+				res.json({success: 0, info: info});
 			} else {
 				Pdsez.findOne({'_id': pdsezId})
 				.populate({path: 'pdthds', populate: [
@@ -287,10 +287,10 @@ exports.bsProdDelSize = function(req, res) {
 					if(err) {
 						console.log(err);
 						info = "bsProdNewColor, Pdthd.find Error！";
-						Err.usError(req, res, info);
+						res.json({success: 0, info: info});
 					} else if(!pdsez) {
 						info = "此尺寸已经被删除, 请刷新查看！";
-						Err.usError(req, res, info);
+						res.json({success: 0, info: info});
 					} else {
 						let dbs = new Array();
 						let k=0;
@@ -315,7 +315,7 @@ exports.bsProdDelSize = function(req, res) {
 						}
 						if(k != pdsez.pdthds.length) {
 							info = "有出售记录, 请先删除出售记录！";
-							Err.usError(req, res, info);
+							res.json({success: 0, info: info});
 						} else {
 							pdfir.pdsezs.remove(pdsez._id)
 							pdfir.sizes.remove(pdsez.size)
@@ -346,9 +346,9 @@ let bsProdSave = function(req, res, pdfir, dbs, n) {
 			if(err) {
 				console.log(err);
 				info = "添加新产品时，数据库保存出错, 请联系管理员";
-				Err.usError(req, res, info);
+				res.json({success: 0, info: info});
 			} else {
-				res.redirect('/bsProduct/'+pdfirSave._id)
+				res.json({success: 1, pdfir: pdfir})
 			}
 		})				
 		return;

@@ -87,7 +87,7 @@ exports.bsOrdHis = function(req, res) {
 		sortVal = 1;
 	}
 	/* ---------- 排序 ------------- */
-
+	
 	Order.find({
 		'firm': crUser.firm,
 		'status': 10,
@@ -104,7 +104,7 @@ exports.bsOrdHis = function(req, res) {
 	.sort({"status": 1, [sortCond]: sortVal})
 	.exec(function(err, orders) {
 		if(err) {
-			info = "bsOrders, User.find, Error";
+			info = "bser order his, User.find, Error";
 			Err.usError(req, res, info);
 		} else {
 			// console.log(orders.length)

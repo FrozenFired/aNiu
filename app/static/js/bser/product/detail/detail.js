@@ -1,4 +1,40 @@
 $( function() {
+	let orgUrl = window.location.href;
+	let changeURLArg = function(url,arg,arg_val){
+		var pattern=arg+'=([^&]*)';
+		var replaceText=arg+'='+arg_val;
+		if(url.match(pattern)){
+			var tmp='/('+ arg+'=)([^&]*)/gi';
+			tmp=url.replace(eval(tmp),replaceText);
+			return tmp;
+		}else{
+			if(url.match('[\?]')){
+				return url+'&'+replaceText;
+			}else{
+				return url+'?'+replaceText;
+			}
+		}
+		return url+'\n'+arg+'\n'+arg_val;
+	}
+	function getQueryString(name) {
+		let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		let r = window.location.search.substr(1).match(reg);
+		if (r != null) {
+			return unescape(r[2]);
+		};
+		return null;
+	 }
+	/* == 刷新问题 , 因为异步, 添加颜色尺寸时不能跟上, 后续要优化 == */
+	let init = function() {
+		let valAdd = getQueryString('add');
+		if(valAdd == 1) {
+			let newUrl = changeURLArg(orgUrl, 'add', '')
+			window.location.href=newUrl;
+		}
+	}
+	init();
+	/* == 刷新问题 , 因为异步, 添加颜色尺寸时不能跟上, 后续要优化 == */
+
 	/* ======== 点击导航按钮 ======== */
 	$(".pdNav").click(function(e) {
 		$(".option").hide();
