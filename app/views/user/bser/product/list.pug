@@ -10,7 +10,10 @@ block content
 			-a;
 			.col-md-1.text-right.mt-4.pdfir(class="pdfir-"+pdfir.code)
 				h3: a(href="/bsProduct/"+pdfir._id) #{pdfir.code}
-				h5 #{pdfir.nome} 
+				if pdfir.semi == 1
+					-a;
+					h5.text-warning 半成品
+				h5 #{pdfir.nome}
 				//- p Mat:#{pdfir.material} 
 				p Note:#{pdfir.note} 
 			.col-md-1.mt-4.pdfir(class="pdfir-"+pdfir.code)

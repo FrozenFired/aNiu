@@ -42,7 +42,7 @@ exports.bsProdNewColorAjax = function(req, res) {
 	let crUser = req.session.crUser;
 	let from = req.query.from;
 	let pdfirId = req.query.pdfirId;
-	let color = String(req.query.color).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+	let color = String(req.query.color).replace(/\s+/g,"").toUpperCase();
 	Pdfir.findOne({_id: pdfirId})
 	.populate('pdsezs')
 	.exec(function(err, pdfir) {
@@ -108,7 +108,7 @@ let bsProdColorSave = function(req, res, color, pdfir, dbs, n) {
 				res.json({success: 0, info: info});
 			} else {
 				Pdfir.findOne({_id: pdfir._id})
-				.populate('pdsecs')
+				.populate({path: 'pdsecs', populate: {path: 'pdthds'}})
 				.exec(function(err, pdfirFd) {
 					if(err) {
 						console.log(err);

@@ -24,7 +24,7 @@ $(function() {
 
 	/* ======= 焦点从添加颜色框中出来时, 判断颜色是否重复 ======= */
 	$("#plusColor").blur(function(e) {
-		let color = $(this).val().replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+		let color = $(this).val().replace(/\s+/g,"").toUpperCase();
 		let i=0;
 		for(; i<Colors.length; i++) {
 			if(color == Colors[i]) {

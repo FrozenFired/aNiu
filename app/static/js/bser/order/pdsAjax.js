@@ -330,7 +330,14 @@ $(function() {
 			$(this).val('');
 			return;
 		}
-		let color = $(this).val().replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+		let color = $(this).val().replace(/\s+/g,"").toUpperCase();
+		if(color.length == 0) return;
+		let symble = null;
+		if(color[0] == '+') {
+			symble = color[0];
+			color = color.split('+')[1];
+		}
+		if(color.length == 0) return;
 		let icl=0
 		for(; icl<selPd.pdsecs.length; icl++) {
 			if(selPd.pdsecs[icl].color == color) {
@@ -353,22 +360,27 @@ $(function() {
 					selPd.pdsecs.push(pdsec)
 				} else if(results.success === 0) {
 					// console.log('无, 要自动添加此颜色')
-					let pdfirId = selPd._id
-					$.ajax({
-						type: "GET",
-						url: '/bsProdNewColorAjax?from=1&pdfirId='+pdfirId+'&color='+color,
-						success: function(results) {
-							if(results.success == 1) {
-								let pdsec = results.pdsec;
-								let str = '', i = selPd.pdsecs.length;
-								str += showCompletePd(pdsec, i)
-								$("#changeElem").after(str)
-								selPd.pdsecs.push(pdsec)
-							} else {
-								alert(results.info);
+					if(symble == '+'){
+						let pdfirId = selPd._id
+						$.ajax({
+							type: "GET",
+							url: '/bsProdNewColorAjax?from=1&pdfirId='+pdfirId+'&color='+color,
+							success: function(results) {
+								if(results.success == 1) {
+									let pdsec = results.pdsec;
+									let str = '', i = selPd.pdsecs.length;
+									str += showCompletePd(pdsec, i)
+									$("#changeElem").after(str)
+									$(this).val('')
+									selPd.pdsecs.push(pdsec)
+								} else {
+									alert(results.info);
+								}
 							}
-						}
-					});
+						});
+					} else {
+						alert("模特中没有此颜色, 想要添加颜色, 请在颜色前面加 '+' 符号")
+					}
 				} else {
 					// console.log('错')
 					alert(results.info);

@@ -267,7 +267,7 @@ $(function() {
 			if(selPd.semi == 1) {
 				str = showSemiPd()
 			} else {
-				str = showCompletePd()
+				str = showCompletePds()
 			}
 
 			$("#changeElem").after(str)
@@ -321,7 +321,7 @@ $(function() {
 		if(selPd.semi == 1) {
 			str = showSemiPd()
 		} else {
-			str = showCompletePd()
+			str = showCompletePds()
 		}
 		$("#changeElem").after(str)
 		$('#needMacBtns').remove();
@@ -397,15 +397,22 @@ $(function() {
 	}
 	/* ------------------------------- 添加半成品 ------------------------------- */
 	/* ------------------------------- 添加成品 ------------------------------- */
-	let showCompletePd = function() {
+	let showCompletePds = function() {
 		let str="";
 		for(let i=0; i<selPd.pdsecs.length; i++) {
 			let pdsec = selPd.pdsecs[i];
-			str += '<tr>';
+			str += showCompletePd(pdsec, i)
+		}
+		return str;
+	}
+	let showCompletePd = function(pdsec, i) {
+		let str="";
+
+		str += '<tr>';
 			str += '<td>';
 				str += '<input type="hidden" name="obj[secs]['+i+'][pdsecId]" value='+pdsec._id+'>'
 			str += '<td>';
-			str += '<th>' + pdsec.color + '</th>'
+			str += '<th class="color color-'+pdsec.color+'">' + pdsec.color + '</th>'
 			for(let j=0; j<pdsec.pdthds.length; j++) {
 				let pdthd = pdsec.pdthds[j];
 				let needMac = 0;
@@ -450,15 +457,88 @@ $(function() {
 				str += '<input class="iptsty ordQtSync" id='+pdsec.color+' type="number" >'
 			str += '</td>'
 			str += '</tr>'
-		}
+
 		return str;
 	}
 	/* ------------------------------- 添加成品 ------------------------------- */
 	
 	/* ======================= 点击加入，显示在右侧订单窗口 ======================= */
 
+	/* ============== 焦点落在添加颜色上，则去除被选中颜色 ============== */
+	$("#machinProducts").on('focus', '.addColor', function(e) {
+		let color = $(this).val().replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+		$(".color").each(function(index,elem) {
+			$(this).removeClass('bg-success');
+		})
+	})
+	/* ============== 焦点落在添加颜色上，则去除被选中颜色 ============== */
+	/* ============== 在添加新订单的表格中 添加颜色 ============== */
+	$("#machinProducts").on('blur', '.addColor', function(e) {
+		if(!selPd || !selPd.pdsecs || selPd.semi == 1) {
+			$(this).val('');
+			return;
+		}
+		let color = $(this).val().replace(/\s+/g,"").toUpperCase();
+		if(color.length == 0) return;
+		let symble = null;
+		if(color[0] == '+') {
+			symble = color[0];
+			color = color.split('+')[1];
+		}
+		if(color.length == 0) return;
+		let icl=0
+		for(; icl<selPd.pdsecs.length; icl++) {
+			if(selPd.pdsecs[icl].color == color) {
+				$(".color-"+color).addClass("bg-success")
+				$(this).val('')
+				break;
+			}
+		}
+		if(icl == selPd.pdsecs.length) {
+			$.ajax({
+				type: 'get',
+				url: '/bsProductGetColor?id='+selPd._id+'&color='+color
+			})
+			.done(function(results) {
+				if(results.success === 1){
+					let pdsec = results.pdsec;
+					let str = '', i = selPd.pdsecs.length;
+					str += showCompletePd(pdsec, i)
+					$("#changeElem").after(str)
+					selPd.pdsecs.push(pdsec)
+				} else if(results.success === 0) {
+					// console.log('无, 要自动添加此颜色')
+					if(symble == '+'){
+						let pdfirId = selPd._id
+						$.ajax({
+							type: "GET",
+							url: '/bsProdNewColorAjax?from=1&pdfirId='+pdfirId+'&color='+color,
+							success: function(results) {
+								if(results.success == 1) {
+									let pdsec = results.pdsec;
+									let str = '', i = selPd.pdsecs.length;
+									str += showCompletePd(pdsec, i)
+									$("#changeElem").after(str)
+									$(this).val('')
+									selPd.pdsecs.push(pdsec)
+								} else {
+									alert(results.info);
+								}
+							}
+						});
+					} else {
+						alert("模特中没有此颜色, 想要添加颜色, 请在颜色前面加 '+' 符号")
+					}
+				} else {
+					// console.log('错')
+					alert(results.info);
+				}
+			})
+		}
+	})
+	/* ============== 在添加新订单的表格中 添加颜色 ============== */
 
-
+	/* ================== 同步同颜色的数量 ================== */
 	$("#machinProducts").on('blur', '.ordQtSync', function(e) {
 		let quot = $(this).val();
 		let colorId = $(this).attr("id");
@@ -466,9 +546,7 @@ $(function() {
 			$(this).val(quot);
 		})
 	})
-
-
-
+	/* ================== 同步同颜色的数量 ================== */
 
 
 	/* ============================= 焦点离开 数量 ============================= */

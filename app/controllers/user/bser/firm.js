@@ -56,7 +56,7 @@ exports.bsFirmUpd = function(req, res) {
 exports.bsColorNew = function(req, res) {
 	let crUser = req.session.crUser;
 	let obj = req.body.obj;
-	if(obj.color) obj.color = obj.color.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+	if(obj.color) obj.color = obj.color.replace(/\s+/g,"").toUpperCase();
 
 	if(obj.color && obj.color.length>0) {
 		Firm.findOne({_id: crUser.firm}, function(err, object) {
