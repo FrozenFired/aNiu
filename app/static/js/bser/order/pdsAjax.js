@@ -326,6 +326,10 @@ $(function() {
 	/* ============== 焦点落在添加颜色上，则去除被选中颜色 ============== */
 	/* ============== 在添加新订单的表格中 添加颜色 ============== */
 	$("#orderProducts").on('blur', '.addColor', function(e) {
+		if(!selPd || !selPd.pdsecs) {
+			$(this).val('');
+			return;
+		}
 		let color = $(this).val().replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
 		let icl=0
 		for(; icl<selPd.pdsecs.length; icl++) {
@@ -349,7 +353,22 @@ $(function() {
 					selPd.pdsecs.push(pdsec)
 				} else if(results.success === 0) {
 					// console.log('无, 要自动添加此颜色')
-					
+					let pdfirId = selPd._id
+					$.ajax({
+						type: "GET",
+						url: '/bsProdNewColorAjax?from=1&pdfirId='+pdfirId+'&color='+color,
+						success: function(results) {
+							if(results.success == 1) {
+								let pdsec = results.pdsec;
+								let str = '', i = selPd.pdsecs.length;
+								str += showCompletePd(pdsec, i)
+								$("#changeElem").after(str)
+								selPd.pdsecs.push(pdsec)
+							} else {
+								alert(results.info);
+							}
+						}
+					});
 				} else {
 					// console.log('错')
 					alert(results.info);

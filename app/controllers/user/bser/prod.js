@@ -40,6 +40,7 @@ exports.bsProdImg = function(req, res) {
 
 exports.bsProdNewColorAjax = function(req, res) {
 	let crUser = req.session.crUser;
+	let from = req.query.from;
 	let pdfirId = req.query.pdfirId;
 	let color = String(req.query.color).replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
 	Pdfir.findOne({_id: pdfirId})
@@ -86,13 +87,66 @@ exports.bsProdNewColorAjax = function(req, res) {
 					_pdsec.pdthds.push(_pdthd._id);
 					pdfir.pdthds.push(_pdthd._id);
 				}
-				bsProdSave(req, res, pdfir, dbs, 0);
+				if(from) {
+					bsProdColorSave(req, res, color, pdfir, dbs, 0);
+				} else {
+					bsProdSave(req, res, pdfir, dbs, 0);
+				}
 			} else {
 				info = "颜色添加重复";
 				res.json({success: 0, info: info});
 			}
 		}
 	})
+}
+let bsProdColorSave = function(req, res, color, pdfir, dbs, n) {
+	if(n==dbs.length) {
+		pdfir.save(function(err, pdfirSave) {
+			if(err) {
+				console.log(err);
+				info = "添加新产品时，数据库保存出错, 请联系管理员";
+				res.json({success: 0, info: info});
+			} else {
+				Pdfir.findOne({_id: pdfir._id})
+				.populate('pdsecs')
+				.exec(function(err, pdfirFd) {
+					if(err) {
+						console.log(err);
+						info = "添加新产品时，数据库查找出错, 请联系管理员";
+						res.json({success: 0, info: info});
+					} else if(!pdfirFd) {
+						info = "添加新产品时，数据库查找出错, 请联系管理员, 无pdfirFd";
+						res.json({success: 0, info: info});
+					} else {
+						let pdsec = null;
+						for(let i=0; i<pdfirFd.pdsecs.length; i++) {
+							let sec = pdfirFd.pdsecs[i];
+							if(sec.color == color) {
+								pdsec = sec;
+								break;
+							}
+						}
+						if(pdsec) {
+							res.json({success: 1, pdsec: pdsec})
+						} else {
+							res.json({success: 0})
+						}
+					}
+				})
+			}
+		})				
+		return;
+	} else {
+		let thisdb = dbs[n];
+		// console.log(thisdb)
+		thisdb.save(function(err, dbSave) {
+			if(err) {
+				console.log(err);
+				console.log(n);
+			}
+			bsProdColorSave(req, res, color, pdfir, dbs, n+1);
+		})
+	}
 }
 
 exports.bsProdNewSizeAjax = function(req, res) {
