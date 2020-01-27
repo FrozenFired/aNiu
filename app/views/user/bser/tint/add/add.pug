@@ -11,7 +11,7 @@ form#tintNew(method="post", action="/bsTinNew", enctype="multipart/form-data")
 		tr(class=txtSatus).bg-secondary
 			th(width="20%") 样品型号
 			th(width="10%") 染洗厂名称
-			th
+			th(width="5%")
 			- let isize = Conf.extSize.min;
 			each size in Conf.sizes
 				-a;
@@ -32,7 +32,8 @@ form#tintNew(method="post", action="/bsTinNew", enctype="multipart/form-data")
 				#formTners
 					input#ajaxTners.form-control(type="text", placeholder='染洗厂名称或编号', autocomplete="off")
 				.catersAjax
-			th 颜色
+			th.bg-success
+				input.iptsty.addColor(type="text")
 			- let jsize = Conf.extSize.min;
 			each size in Conf.sizes
 				-a;
@@ -41,3 +42,4 @@ form#tintNew(method="post", action="/bsTinNew", enctype="multipart/form-data")
 				if jsize == Conf.extSize.max
 					- break;
 			th#changeSize
+		tr.changeElem

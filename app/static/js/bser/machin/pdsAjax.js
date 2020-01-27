@@ -401,7 +401,7 @@ $(function() {
 		let str="";
 		for(let i=0; i<selPd.pdsecs.length; i++) {
 			let pdsec = selPd.pdsecs[i];
-			str += showCompletePd(pdsec, i)
+			str += showCompletePd(pdsec, i);
 		}
 		return str;
 	}

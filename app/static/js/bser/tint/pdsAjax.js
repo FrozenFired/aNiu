@@ -265,7 +265,7 @@ $(function() {
 			$("#objFir").val(selPd._id)
 
 			let str = '';
-			str += showCompletePd();
+			str += showCompletePds();
 
 			$("#changeElem").after(str)
 			$('#needTinBtns').remove();
@@ -316,12 +316,12 @@ $(function() {
 		$("#objFir").val(selPd._id)
 
 		let str = '';
-		str += showCompletePd();
+		str += showCompletePds();
 
 		$("#changeElem").after(str)
 		$('#needTinBtns').remove();
 	})
-	let showCompletePd = function() {
+	let showCompletePds = function() {
 		let str="";
 		str += '<tr>';
 			str += '<td></td>';
@@ -379,75 +379,155 @@ $(function() {
 		str += '</tr>';
 		for(let i=0; i<selPd.pdsecs.length; i++) {
 			let pdsec = selPd.pdsecs[i];
-			str += '<tr>';
-			str += '<td>';
-				str += '<input type="hidden" name="obj[secs]['+i+'][pdsecId]" value='+pdsec._id+'>'
-			str += '<td>';
-			str += '<th>' + pdsec.color + '</th>'
-			for(let j=0; j<pdsec.pdthds.length; j++) {
-				let pdthd = pdsec.pdthds[j];
-				let needTin = 0;
-				let quotOthd = shipOthd = lessOthd = 0;
-				let quotTthd = shipTthd = lessTthd= 0;
-				for (let m = 0; m < pdthd.ordthds.length; m++) {
-					let ordthd = pdthd.ordthds[m];
-					let quot = parseInt(ordthd.quot);
-					let ship = parseInt(ordthd.ship);
-					quotOthd += quot; shipOthd += ship;
-					if(quot - ship > 0) {
-						lessOthd += (quot - ship)
-					}
-				}
-				for(let m=0; m<pdthd.tinthds.length; m++) {
-					let tinthd = pdthd.tinthds[m];
-					let quot = parseInt(tinthd.quot);
-					let ship = parseInt(tinthd.ship);
-					quotTthd += quot; shipTthd += ship;
-					if(quot - ship > 0) {
-						lessTthd += (quot - ship)
-					}
-				}
-				let showThdStock = parseInt(pdthd.stock) + shipTthd - shipOthd;
-				needTin = lessOthd - showThdStock - lessTthd;
-				let dye = 0;
-				if(needTin>0) {
-					if(stocks[j] < needTin) {
-						dye = stocks[j];
-					} else {
-						dye = needTin;
-					}
-					stocks[j] -= dye;
-				} else {
-					needTin = 0;
-				}
-
-				str += '<td>'
-					str += '<span class="text-secondary">' + needTin + '</span> ';
-
-					str += '<input class="iptsty2 ordQt thdsez-'+pdthd.pdsez+'" value='+dye;
-					str += ' id="thdsez-'+pdthd.pdsez+'-'+pdthd._id+'" ';
-					str += ' type="number" name="obj[secs]['+i+'][thds]['+j+'][quot]" >'
-
-					str += '<input type="hidden" value='+pdthd._id;
-					str += ' name="obj[secs]['+i+'][thds]['+j+'][pdthdId]" >'
-
-					str += '<input type="hidden" value='+pdthd.color;
-					str += ' name="obj[secs]['+i+'][thds]['+j+'][color]" >'
-
-					str += '<input type="hidden" value='+pdthd.size;
-					str += ' name="obj[secs]['+i+'][thds]['+j+'][size]" >'
-				str += '</td>'
-			}
-			str += '</td>'
-			str += '</td>'
-			str += '</tr>'
+			str += showCompletePd(pdsec, i, stocks);
 		}
 		return str;
 	}
 	/* ------------------------------- 添加成品 ------------------------------- */
+	let showCompletePd = function(pdsec, i, stocks, newColor) {
+		let str = "";
+
+		str += '<tr>';
+		str += '<td>';
+			str += '<input type="hidden" name="obj[secs]['+i+'][pdsecId]" value='+pdsec._id+'>'
+		str += '<td>';
+		str += '<th class="color color-'+pdsec.color+'">' + pdsec.color + '</th>'
+		for(let j=0; j<pdsec.pdthds.length; j++) {
+			let pdthd = pdsec.pdthds[j];
+			let needTin = 0;
+			let quotOthd = shipOthd = lessOthd = 0;
+			let quotTthd = shipTthd = lessTthd= 0;
+			for (let m = 0; m < pdthd.ordthds.length; m++) {
+				let ordthd = pdthd.ordthds[m];
+				let quot = parseInt(ordthd.quot);
+				let ship = parseInt(ordthd.ship);
+				quotOthd += quot; shipOthd += ship;
+				if(quot - ship > 0) {
+					lessOthd += (quot - ship)
+				}
+			}
+			for(let m=0; m<pdthd.tinthds.length; m++) {
+				let tinthd = pdthd.tinthds[m];
+				let quot = parseInt(tinthd.quot);
+				let ship = parseInt(tinthd.ship);
+				quotTthd += quot; shipTthd += ship;
+				if(quot - ship > 0) {
+					lessTthd += (quot - ship)
+				}
+			}
+			let showThdStock = parseInt(pdthd.stock) + shipTthd - shipOthd;
+			needTin = lessOthd - showThdStock - lessTthd;
+			let dye = 0;
+			if(needTin>0) {
+				if(stocks[j] < needTin) {
+					dye = stocks[j];
+				} else {
+					dye = needTin;
+				}
+				stocks[j] -= dye;
+			} else {
+				needTin = 0;
+			}
+
+			if(newColor) dye = 0;
+			str += '<td>'
+				str += '<span class="text-secondary">' + needTin + '</span> ';
+
+				str += '<input class="iptsty2 ordQt thdsez-'+pdthd.pdsez+'" value='+dye;
+				str += ' id="thdsez-'+pdthd.pdsez+'-'+pdthd._id+'" ';
+				str += ' type="number" name="obj[secs]['+i+'][thds]['+j+'][quot]" >'
+
+				str += '<input type="hidden" value='+pdthd._id;
+				str += ' name="obj[secs]['+i+'][thds]['+j+'][pdthdId]" >'
+
+				str += '<input type="hidden" value='+pdthd.color;
+				str += ' name="obj[secs]['+i+'][thds]['+j+'][color]" >'
+
+				str += '<input type="hidden" value='+pdthd.size;
+				str += ' name="obj[secs]['+i+'][thds]['+j+'][size]" >'
+			str += '</td>'
+		}
+		str += '</td>'
+		str += '</td>'
+		str += '</tr>'
+
+		return str;
+	}
 	/* ======================= 点击加入，显示在右侧染洗单窗口 ======================= */
 
-
+	/* ============== 焦点落在添加颜色上，则去除被选中颜色 ============== */
+	$("#tintProducts").on('focus', '.addColor', function(e) {
+		let color = $(this).val().replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+		$(".color").each(function(index,elem) {
+			$(this).removeClass('bg-success');
+		})
+	})
+	/* ============== 焦点落在添加颜色上，则去除被选中颜色 ============== */
+	/* ============== 在添加新订单的表格中 添加颜色 ============== */
+	$("#tintProducts").on('blur', '.addColor', function(e) {
+		if(!selPd || !selPd.pdsecs) {
+			$(this).val('');
+			return;
+		}
+		let color = $(this).val().replace(/\s+/g,"").toUpperCase();
+		if(color.length == 0) return;
+		let symble = null;
+		if(color[0] == '+') {
+			symble = color[0];
+			color = color.split('+')[1];
+		}
+		if(color.length == 0) return;
+		let icl=0
+		for(; icl<selPd.pdsecs.length; icl++) {
+			if(selPd.pdsecs[icl].color == color) {
+				$(".color-"+color).addClass("bg-success")
+				$(this).val('')
+				break;
+			}
+		}
+		if(icl == selPd.pdsecs.length) {
+			$.ajax({
+				type: 'get',
+				url: '/bsProductGetColor?id='+selPd._id+'&color='+color
+			})
+			.done(function(results) {
+				if(results.success === 1){
+					let pdsec = results.pdsec;
+					let str = '', i = selPd.pdsecs.length;
+					str += showCompletePd(pdsec, i)
+					$(".changeElem").after(str)
+					selPd.pdsecs.push(pdsec)
+				} else if(results.success === 0) {
+					// console.log('无, 要自动添加此颜色')
+					if(symble == '+'){
+						let pdfirId = selPd._id
+						$.ajax({
+							type: "GET",
+							url: '/bsProdNewColorAjax?from=1&pdfirId='+pdfirId+'&color='+color,
+							success: function(results) {
+								if(results.success == 1) {
+									let pdsec = results.pdsec;
+									let str = '', i = selPd.pdsecs.length;
+									str += showCompletePd(pdsec, i)
+									$(".changeElem").after(str)
+									$(this).val('')
+									selPd.pdsecs.push(pdsec)
+								} else {
+									alert(results.info);
+								}
+							}
+						});
+					} else {
+						alert("模特中没有此颜色, 想要添加颜色, 请在颜色前面加 '+' 符号")
+					}
+				} else {
+					// console.log('错')
+					alert(results.info);
+				}
+			})
+		}
+	})
+	/* ============== 在添加新订单的表格中 添加颜色 ============== */
 
 
 
