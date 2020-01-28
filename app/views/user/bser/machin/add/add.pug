@@ -27,7 +27,7 @@ form.my-5#machinNew(method="post", action="/bsMacNew", enctype="multipart/form-d
 				-a;
 				th.changeTd
 				- isize ++;
-				if isize == Conf.extSize.max
+				if isize > Conf.extSize.max
 					- break;
 			th#changeTh
 				button.btn.btn-success#submitBtn(type="button") 确认
@@ -49,7 +49,7 @@ form.my-5#machinNew(method="post", action="/bsMacNew", enctype="multipart/form-d
 				-a;
 				th.changeTd #{Conf.sizes[jsize]}
 				- jsize ++;
-				if jsize == Conf.extSize.max
+				if jsize > Conf.extSize.max
 					- break;
 			th#changeSize
 

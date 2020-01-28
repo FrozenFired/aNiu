@@ -165,9 +165,21 @@ exports.bsProductNew = function(req, res) {
 	obj.creater = crUser._id;
 
 	/* ================= 数字转化 =================== */
-	if(obj.price) obj.price = parseFloat(obj.price);
-	if(obj.cost) obj.cost = parseFloat(obj.cost);
-	if(obj.tincost) obj.tincost = parseFloat(obj.tincost);
+	if(obj.price) {
+		obj.price = parseFloat(obj.price);
+	} else {
+		obj.price = 0;
+	}
+	if(obj.macCost) {
+		obj.macCost = parseFloat(obj.macCost);
+	} else {
+		obj.macCost = 0;
+	}
+	if(obj.tinCost) {
+		obj.tinCost = parseFloat(obj.tinCost);
+	} else {
+		obj.tinCost = 0;
+	}
 	/* ================= 数字转化 =================== */
 
 
@@ -197,7 +209,7 @@ exports.bsProductNew = function(req, res) {
 	obj.colors = colors;
 	/* =============== 判断此产品的颜色 ================= */
 
-	if(!obj.code || !obj.nome || isNaN(obj.price) || isNaN(obj.cost)) {
+	if(!obj.code || isNaN(obj.price) || isNaN(obj.cost)) {
 		info = "数据输入有误！";
 		Err.usError(req, res, info);
 	} else {
@@ -292,7 +304,91 @@ let bsProductSave = function(res, pdfir, dbs, n) {
 		})
 	}
 }
+exports.bsProdNewAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let code = req.query.code.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+	let obj = new Object();
+	obj.code = code;
+	obj.nome = code;
+	obj.firm = crUser.firm._id;
+	obj.creater = crUser._id;
+	obj.price = 0;
+	obj.semi = 0;
+	if(req.query.semi == 1) obj.semi = 1;
+	/* ========= 判断此产品的尺寸 =========== */
+	let sizes = new Array();
+	for(let i=Conf.extSize.min; i<Object.keys(Conf.sizes).length; i++) {
+		if(i>Conf.extSize.max) {break;}
+		sizes.push(i);
+	}
+	obj.sizes = sizes;
+	/* ========= 判断此产品的尺寸 =========== */
 
+	/* =========== 公司不能出现同一个型号的模特 ============= */
+	Pdfir.findOne({code: obj.code, 'firm': crUser.firm})
+	.exec(function(err, pdfirSame) {
+		if(err) {
+			console.log(err);
+			info = "bsProductNew, Pdfir.findOne, Error!";
+			res.json({success: 0, info: info});
+		} else if(pdfirSame) {
+			info = "此产品号已经存在，请重新填写";
+			res.json({success: 0, info: info});
+		} else {
+			let _pdfir = new Pdfir(obj);	// 创建pdfir
+			let dbs = new Array();			// 把所有需要创建的数据库放入一个数组可以递归保存
+			/* ========== 先把尺寸创建好========== */
+			let pdsezs = new Array();
+			for(let i in obj.sizes) {
+				let pdsezObj = new Object();
+				pdsezObj.pdfir = _pdfir._id;
+				pdsezObj.size = obj.sizes[i];
+				let _pdsez = new Pdsez(pdsezObj);
+				pdsezs.push(_pdsez);
+				_pdfir.pdsezs.push(_pdsez._id);
+				dbs.push(_pdsez);
+			}
+			/* ========== 先把尺寸创建好========== */
+
+			bsProductSaveAjx(res, _pdfir, dbs, 0);
+		}
+	})
+}
+let bsProductSaveAjx = function(res, pdfir, dbs, n) {
+	if(n==dbs.length) {
+		pdfir.save(function(err, pdfirSave) {
+			if(err) {
+				console.log(err);
+				info = "添加新产品时，数据库保存出错, 请联系管理员";
+				res.json({success: 0, info: info})
+			} else {
+				Pdfir.findOne({_id: pdfir._id})
+				.populate({path: 'pdsecs', populate: {path: 'pdthds'}})
+				.populate({path: 'pdsezs', populate: {path: 'pdthds'}})
+				.exec(function(err, pdfir) {
+					if(err) {
+						console.log(err);
+						info = "添加新产品时，数据库保存出错, 请联系管理员 pdfir.findOne";
+						res.json({success: 0, info: info})
+					} else {
+						res.json({success: 1, pdfir: pdfir})
+					}
+				})
+			}
+		})
+		return;
+	} else {
+		let thisdb = dbs[n];
+		// console.log(thisdb)
+		thisdb.save(function(err, dbSave) {
+			if(err) {
+				console.log(err);
+				console.log(n);
+			}
+			bsProductSaveAjx(res, pdfir, dbs, n+1);
+		})
+	}
+}
 
 
 
@@ -392,7 +488,9 @@ exports.bsProduct = function(req, res) {
 		objBody.pdfir = pdfir;
 		objBody.thisAct = "/bsProd";
 		objBody.title = '模特信息';
-		let detail = 'detail'+pdfir.semi;
+		let semi = 0;
+		if(pdfir.semi == 1) semi = 1;
+		let detail = 'detail'+semi;
 		res.render('./user/bser/product/detail/'+detail, objBody);
 	})
 }

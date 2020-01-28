@@ -62,6 +62,7 @@ module.exports = function(app){
 	app.get('/bsProductAdd', MdRole.bserIsLogin, Product.bsProductAdd)
 	app.post('/bsProductNew', MdRole.bserIsLogin, postForm,
 		MdPicture.addNewPhoto, Product.bsProductNew)
+	app.get('/bsProdNewAjax', MdRole.bserIsLogin, Product.bsProdNewAjax)
 
 	app.post('/bsProductUpd', MdRole.bserIsLogin, postForm, Product.bsProductUpd)
 		

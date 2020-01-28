@@ -20,7 +20,7 @@ form.mt-3#bsProdNew(method="post", action="/bsProductNew", enctype="multipart/fo
 	.form-group.row
 		label.col-lg-1.col-form-label(for="iptPrice") 价格
 		.col-lg-3
-			input#iptPrice.form-control(type="number", name="obj[price]", autocomplete="off")
+			input#iptPrice.form-control(type="number", name="obj[price]", autocomplete="off", value=0)
 		.col-lg-2
 			span#optPrice(style="display:none").text-danger 价格输入错误
 		label.col-lg-1.col-form-label(for="iptCost") 成本价
@@ -67,6 +67,6 @@ form.mt-3#bsProdNew(method="post", action="/bsProductNew", enctype="multipart/fo
 	.form-group.row
 		.col-sm-6
 		.col-sm-6.col-12
-			input#btnSubmit.btn.btn-info.btn-block(type="button" value='提交')
+			button#btnSubmit.btn.btn-info.btn-block(type="button") 提交
 #productImg
 

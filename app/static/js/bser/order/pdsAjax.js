@@ -13,10 +13,13 @@ $(function() {
 	/* ====================== 模特型号输入框，输入型号，模糊获得产品 ====================== */
 	// 输入产品名称，获取pdfirs， 模糊查询，只要有相应的数字全部显示
 	$("#ajaxPdsForm").on('input', '#ajaxPdsCode', function(e) {
+		selPd = new Object();	// 清空选中的产品
+
+		$('.addPdElem').remove(); // 清除上次的ajaxProds
+		$('.prodCard').remove(); // 清除上次的ajaxProds
+		$('.prodShow').remove(); // 清除上次的ajaxProds
 		let code = $(this).val().replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
 		if(code.length > 2){
-			$('.prodCard').remove(); // 清除上次的ajaxProds
-			$('.prodShow').remove(); // 清除上次的ajaxProds
 			let keyword = encodeURIComponent(code);	// 转化码
 			let url = '/bsOrderProdsAjax?keyword='+keyword;
 			getObjects(url, code);
@@ -51,25 +54,40 @@ $(function() {
 					/* ------ 是否有完全匹配的产品 ----- */
 				}
 				let str = "";
+				// 首先显示的是正好匹配的数据
 				if(selPd.code) {
 					str += showObjs(selPd)
+				} else {
+					str += showAddPdBtn();
 				}
+				// 再显示模糊匹配的数据
 				for(let i in selPds) {
 					if(selPds[i].code == code) continue;
 					str += showObjs(selPds[i])
 				}
 				$("#prodPage").append(str);
+			} else {
+				str += showAddPdBtn();
 			}
 		})
+	}
+	let showAddPdBtn = function() {
+		let str = "";
+		str += '<div class="row addPdElem">';
+			str += '<div class="col-6">';
+				str += '<button class="btn btn-warning btn-block mt-2 addPdBtn" id='+0;
+				str += ' type="button">+成品</button>';
+			str += '</div>';
+			str += '<div class="col-6">';
+				str += '<button class="btn btn-warning btn-block mt-2 addPdBtn" id='+1;
+				str += ' type="button">+半成品</button>';
+			str += '</div>';
+		str += '</div>';
+		return str;
 	}
 	// 前端显示获取的 products
 	let showObjs = function(pdfir) {
 		let str = "";
-
-		let price;
-		if(pdfir.price && !isNaN(pdfir.price)){
-			price = (pdfir.price).toFixed(2) + ' €';
-		}
 
 		str += '<div class="p-2 my-3 border bg-light prodCard prodCard-'+pdfir._id+'" ';
 		str += 'id="prodCard-'+pdfir._id+'">'
@@ -84,8 +102,6 @@ $(function() {
 						str += '<h3 class="col-lg-12 text-left">'+pdfir.code+'</h3>';
 
 						str += '<div class="col-lg-12 text-left">'+pdfir.nome+'</div>';
-
-						str += '<div class="col-lg-12 text-left">'+price+'</div>';
 
 					str += '</div>';
 				str += '</div>';
@@ -107,7 +123,28 @@ $(function() {
 
 
 
-
+	/* ================= 添加新模特 ================= */
+	$("#prodPage").on('click', '.addPdBtn', function(e) {
+		let code = $("#ajaxPdsCode").val().replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+		let semi = $(this).attr("id");
+		let keyword = encodeURIComponent(code);	// 转化码
+		$.ajax({
+			type: 'get',
+			url: 'bsProdNewAjax?code='+keyword + '&semi='+semi
+		})
+		.done(function(results) {
+			if(results.success === 1) {
+				selPd = results.pdfir;
+				$('.addPdElem').remove(); // 清除上次的ajaxProds
+				$('.prodCard').remove(); // 清除上次的ajaxProds
+				$('.prodShow').remove(); // 清除上次的ajaxProds
+				prodTable();
+			} else {
+				alert(results.info)
+			}
+		})
+	})
+	/* ================= 添加新模特 ================= */
 
 
 
@@ -162,6 +199,7 @@ $(function() {
 		if(i==selPds.length) {
 			alert('请重新输入')
 		} else {
+			$('.addPdElem').remove(); // 清除上次的ajaxProds
 			$('.prodCard').remove(); // 清除上次的ajaxProds
 			$('.prodShow').remove(); // 清除上次的ajaxProds
 			showProd(selPd)
@@ -170,11 +208,6 @@ $(function() {
 
 	// 前端展示此product的基本信息
 	let showProd = function(pdfir) {
-		let price = "";
-		if(pdfir.price && !isNaN(pdfir.price)){
-			price = (pdfir.price).toFixed(2) + ' €';
-		}
-
 		let str = "";
 
 		// 先判断 ordpds 中是否有此编号的产品
@@ -205,9 +238,6 @@ $(function() {
 					str += '<span>('+pdfir.material+')</span>';
 					str += '</div>';
 
-					str += '<div class="col-lg-12 col-xl-6">';
-					str += '<span>'+price+'</span>';
-					str += '</div>';
 				str += '</div>';
 				str += '<hr/>';
 				str += '<div class="row m-2">'
@@ -247,6 +277,9 @@ $(function() {
 	/* ======================= 点击加入，显示在右侧订单窗口 ======================= */
 	// 点击加入键 在order页面生成表格
 	$("#prodPage").on('click', '.confirm', function(e) {
+		prodTable();
+	})
+	let prodTable = function() {
 		let selSizes = selPd.sizes;
 
 		let selColors = new Array();
@@ -293,7 +326,7 @@ $(function() {
 		}
 
 		$("#changeElem").after(str)
-	})
+	}
 	/* ------------------------------- 添加成品 ------------------------------- */
 	let showCompletePd = function(pdsec, i) {
 		let str="";

@@ -10,10 +10,13 @@ $(function() {
 	/* ====================== 模特型号输入框，输入型号，模糊获得产品 ====================== */
 	// 输入产品名称，获取pdfirs， 模糊查询，只要有相应的数字全部显示
 	$("#ajaxPdsForm").on('input', '#ajaxPdsCode', function(e) {
+		selPd = new Object();	// 清空选中的产品
+
+		$('.addPdBtn').remove(); // 清除上次的ajaxProds
+		$('.prodCard').remove(); // 清除上次的ajaxProds
+		$('.prodShow').remove(); // 清除上次的ajaxProds
 		let code = $(this).val().replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
 		if(code.length > 2){
-			$('.prodCard').remove(); // 清除上次的ajaxProds
-			$('.prodShow').remove(); // 清除上次的ajaxProds
 			let keyword = encodeURIComponent(code);	// 转化码
 			let url = '/bsTintProdsAjax?keyword='+keyword;
 			getObjects(url, code);

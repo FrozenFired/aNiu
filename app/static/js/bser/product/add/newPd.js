@@ -45,9 +45,10 @@ $( function() {
 		var nome = $("#iptNome").val()
 		var price = $("#iptPrice").val()
 		var priceIn = $("#iptCost").val()
-		if(nome.length < 1) {
-			$("#optNome").show()
-		}
+		if( 1== 0) {}
+		// else if(nome.length < 1) {
+		// 	$("#optNome").show()
+		// }
 		else if(!isFloat(price)) {
 			$("#optPrice").show()
 		}else if(!isFloat(priceIn)) {
