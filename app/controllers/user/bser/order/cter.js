@@ -234,29 +234,38 @@ exports.bsCterNew = function(req, res) {
 				info = "bsCterNew, _cter.save, Error!";
 				Err.usError(req, res, info);
 			} else {
-				if(obj.order) {
-					let orderId = obj.order;
-					Order.findOne({_id: orderId}, function(err, order) { if(err) {
-						info = "bsCterNew, Order.findOne, Error!";
-						Err.usError(req, res, info);
-					} else if(!order) {
-						info = "相应订单已被删除，请重新操作";
-						Err.usError(req, res, info);
-					} else {
-						order.cter = cterSave._id;
-						order.save(function(err, orderSave) {
-							if(err) console.log(err);
-							res.redirect('/bsOrder/'+orderId)
-						})
-					} })
-					
-				} else {
-					res.redirect('/bsCters')
-				}
+				res.redirect('/bsCters')
 			} })
 		}
 	})
-		
+}
+
+exports.bsCterNewAjax = function(req, res) {
+	let crUser = req.session.crUser;
+	let nome = req.query.nome.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+
+	let obj = new Object();
+	obj.code = 'NON';
+	obj.nome = nome
+	obj.firm = crUser.firm;
+
+	Cter.findOne({'firm': crUser.firm, nome: obj.nome}, function(err, objSm) {
+		if(err) {
+			info = "bsCterNew, Cter.findOne, Error!";
+			res.json({success: 0, info: info});
+		} else if(objSm) {
+			info = "已经有了此名字, 请换个名字！";
+			res.json({success: 0, info: info});
+		} else {
+			let _cter = new Cter(obj);
+			_cter.save(function(err, cterSave) { if(err) {
+				info = "bsCterNew, _cter.save, Error!";
+				res.json({success: 0, info: info});
+			} else {
+				res.json({success: 1, cter: cterSave});
+			} })
+		}
+	})
 }
 
 
@@ -289,38 +298,40 @@ exports.bsCtersObtAjax = function(req, res) {
 		keyword = String(req.query.keyword);
 		keyword = keyword.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
 	}
-	Cter.findOne({
+
+	let keywordReg = new RegExp(keyword + '.*');
+	Cter.find({
 		'firm': crUser.firm,
-		$or: [
-			{'code': keyword},
-			{'nome': keyword},
+		$or:[
+			{'code': {'$in': keywordReg}},
+			{'nome': {'$in': keywordReg}},
 		]
 	})
-	.exec(function(err, cter) {
+	.limit(5)
+	.exec(function(err, cters){
 		if(err) {
-			console.log(err);
 			res.json({success: 0, info: "bs获取客户列表时，数据库查找错误, 请联系管理员"});
-		} else if(!cter) {
-			let keywordReg = new RegExp(keyword + '.*');
-			Cter.find({
+		} else if(!cters){
+			res.json({success: 0, info: "bs 获取客户列表错误, 请联系管理员"})
+		} else {
+			Cter.findOne({
 				'firm': crUser.firm,
-				$or:[
-					{'code': {'$in': keywordReg}},
-					{'nome': {'$in': keywordReg}},
+				$or: [
+					{'code': keyword},
+					{'nome': keyword},
 				]
 			})
-			.limit(20)
-			.exec(function(err, cters){
+			.exec(function(err, cter) {
 				if(err) {
+					console.log(err);
 					res.json({success: 0, info: "bs获取客户列表时，数据库查找错误, 请联系管理员"});
-				} else if(cters){
+				} else if(!cter) {
 					res.json({ success: 1, cters: cters})
 				} else {
-					res.json({success: 0})
+					// console.log(cter)
+					res.json({success: 2, cter: cter, cters: cters})
 				}
 			})
-		} else {
-			res.json({success: 2, cter: cter})
 		}
 	})
 }

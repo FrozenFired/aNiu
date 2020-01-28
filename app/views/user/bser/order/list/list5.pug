@@ -4,81 +4,84 @@ each order in orders
 		-btnTime="btn-danger";
 
 	each ordfir in order.ordfirs
-		-let pdfir = ordfir.pdfir;
-		-let cter = order.cter;
-		table.table.table-bordered.text-center.mt-4(class="ordTab pdfir-"+pdfir._id+" cter-"+cter._id)
-			tr.bg-light
-				th(colspan=order.sizes.length+2, width="40%")
-					.row
-						.col-3.pt-2
-							h5 #{pdfir.code}
-						.col-3.pt-2
-							a(href="/bsCter/"+cter._id) #{cter.nome}
-						.col-2.pt-1
-							a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
-						if order.status == 0
-							-a;
-							.col-4.text-right
-								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
-									input(type="hidden", name="orderId", value=order._id)
-									input(type="hidden", name="target", value="bsOrderConfirm")
-									input.btn(class=btnTime, type="submit", value="生产")
-						else if order.status == 5
-							- a;
-							.col-2.text-right
-								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data", style="display:none", id="cancelForm-"+order._id)
-									input(type="hidden", name="orderId", value=order._id)
-									input(type="hidden", name="target", value="bsOrderCancel")
-									input.btn.btn-secondary(type="submit", value="取消生产")
-							.col-2.text-right
-								span.btn.btn-success.proding(id="proding-"+order._id) 在产
-							
-				th(width="2%")
-				th(colspan=order.sizes.length+2)
-					.row.text-right
-						.col-2.pt-2 订单日期:
-						.col-2.pt-2.text-left #{moment(order.ctAt).format('MM/DD/YYYY')}
-						if order.status == 5
-							-a;
-							.col-4
-								button.sendBtn.btn(class=btnTime, type="button", id='sendBtn-'+order._id) 发货
-							.col-4
-								form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
-									input(type="hidden", name="orderId", value=order._id)
-									input(type="hidden", name="target", value="bsOrderFinish")
-									input.btn.btn-warning(type="submit", value="完成")
-			tr.bg-light
-				th(width="7%") 颜色
-				each size in order.sizes
-					-a;
-					th #{Conf.sizes[size]}
-				th(width="6%") 合计
-				th.bg-secondary
-				th(width="6%") 颜色
-				each size in order.sizes
-					-a;
-					th #{Conf.sizes[size]}
-				th(width="6%") 合计
-			form(id="sendForm-"+order._id, method="post", action="/bsOrderSend", enctype="multipart/form-data")
-				input(type="hidden", name="obj[orderId]", value=order._id)
-				input(type="hidden", name="obj[ordfirId]", value=ordfir._id)
-				- let k = 0, totquot = totship = 0;
-				each ordsec in ordfir.ordsecs
-					- let pdsec = ordsec.pdsec;
-					- let color = pdsec.color;
-					if color.length > 10
-						- color = color.substr(0, 8)+' ..';
-					tr
-						th.bg-light #{color}
-						include ./input/tdBody
-						td.bg-secondary
-						th.bg-light #{color}
-						include ./output/tdBody
-				tr
-					td(colspan=order.sizes.length+1)
-					td.text-success: h4 #{totquot}
+		if ordfir.pdfir
+			-let pdfir = ordfir.pdfir;
+			-let cter = order.cter;
+			table.table.table-bordered.text-center.mt-4(class="ordTab pdfir-"+pdfir._id+" cter-"+cter._id)
+				tr.bg-light
+					th(colspan=order.sizes.length+2, width="40%")
+						.row
+							.col-3.pt-2
+								h5 #{pdfir.code}
+							.col-3.pt-2
+								a(href="/bsCter/"+cter._id) #{cter.nome}
+							.col-2.pt-1
+								a.btn.btn-link(href="/bsOrder/"+order._id) #{order.code}
+							if order.status == 0
+								-a;
+								.col-4.text-right
+									form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
+										input(type="hidden", name="orderId", value=order._id)
+										input(type="hidden", name="target", value="bsOrderConfirm")
+										input.btn(class=btnTime, type="submit", value="生产")
+							else if order.status == 5
+								- a;
+								.col-2.text-right
+									form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data", style="display:none", id="cancelForm-"+order._id)
+										input(type="hidden", name="orderId", value=order._id)
+										input(type="hidden", name="target", value="bsOrderCancel")
+										input.btn.btn-secondary(type="submit", value="取消生产")
+								.col-2.text-right
+									span.btn.btn-success.proding(id="proding-"+order._id) 在产
+								
+					th(width="2%")
+					th(colspan=order.sizes.length+2)
+						.row.text-right
+							.col-2.pt-2 订单日期:
+							.col-2.pt-2.text-left #{moment(order.ctAt).format('MM/DD/YYYY')}
+							if order.status == 5
+								-a;
+								.col-4
+									button.sendBtn.btn(class=btnTime, type="button", id='sendBtn-'+order._id) 发货
+								.col-4
+									form(method="post", action="/bsOrdChangeSts", enctype="multipart/form-data")
+										input(type="hidden", name="orderId", value=order._id)
+										input(type="hidden", name="target", value="bsOrderFinish")
+										input.btn.btn-warning(type="submit", value="完成")
+				tr.bg-light
+					th(width="7%") 颜色
+					each size in order.sizes
+						-a;
+						th #{Conf.sizes[size]}
+					th(width="6%") 合计
 					th.bg-secondary
-					td(colspan=order.sizes.length+1)
-					td.text-success
-						h4 #{totship}
-						input(id="totship-"+order._id, type="hidden", value=totship)
+					th(width="6%") 颜色
+					each size in order.sizes
+						-a;
+						th #{Conf.sizes[size]}
+					th(width="6%") 合计
+				form(id="sendForm-"+order._id, method="post", action="/bsOrderSend", enctype="multipart/form-data")
+					input(type="hidden", name="obj[orderId]", value=order._id)
+					input(type="hidden", name="obj[ordfirId]", value=ordfir._id)
+					- let k = 0, totquot = totship = 0;
+					each ordsec in ordfir.ordsecs
+						- let pdsec = ordsec.pdsec;
+						- let color = pdsec.color;
+						if color.length > 10
+							- color = color.substr(0, 8)+' ..';
+						tr
+							th.bg-light #{color}
+							include ./input/tdBody
+							td.bg-secondary
+							th.bg-light #{color}
+							include ./output/tdBody
+					tr
+						td(colspan=order.sizes.length+1)
+						td.text-success: h4 #{totquot}
+						th.bg-secondary
+						td(colspan=order.sizes.length+1)
+						td.text-success
+							h4 #{totship}
+							input(id="totship-"+order._id, type="hidden", value=totship)
+		else
+			h2: a.btn.btn-danger(href="/bsOrderDel/"+order._id) #{order.code} 此订单中的产品已经被删除, 点击删除

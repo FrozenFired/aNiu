@@ -22,17 +22,30 @@ exports.bsOrderProdsAjax = function(req, res) {
 	if(req.query.keyword) {
 		keyword = String(req.query.keyword);
 		keyword = keyword.replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-		keyword = new RegExp(keyword + '.*');
+		keywordReg = new RegExp(keyword + '.*');
 	}
-	Pdfir.find({'firm': crUser.firm,'code':  keyword,})
+	Pdfir.find({'firm': crUser.firm,'code':  keywordReg,})
 	.populate({path: 'pdsecs', populate: {path: 'pdthds'}})
 	.populate({path: 'pdsezs', populate: {path: 'pdthds'}})
-	.limit(10)
-	.exec(function(err, pdfirs) { if(err) {
-		res.json({success: 0, info: "bsProdsAjax, Order.find, Error"})
-	} else {
-		res.json({success: 1, pdfirs: pdfirs})
-	} })
+	.limit(5)
+	.exec(function(err, pdfirs) { 
+		if(err) {
+			console.log(err);
+			res.json({success: 0, info: "bsProdsAjax, Order.find, Error"})
+		} else {
+			Pdfir.findOne({'firm': crUser.firm, 'code': keyword})
+			.exec(function(err, pdfir) {
+				if(err) {
+					console.log(err);
+					res.json({success: 0, info: "bsProdsAjax, Order.find, Error"})
+				} else if(!pdfir) {
+					res.json({success: 1, pdfirs: pdfirs})
+				} else {
+					res.json({success: 2, pdfir: pdfir, pdfirs: pdfirs})
+				}
+			})
+		}
+	})
 }
 
 

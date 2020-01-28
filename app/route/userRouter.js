@@ -104,6 +104,7 @@ module.exports = function(app){
 
 	app.get('/bsCterAdd', MdRole.bserIsLogin, Cter.bsCterAdd)
 	app.post('/bsCterNew', MdRole.bserIsLogin, postForm, Cter.bsCterNew)
+	app.get('/bsCterNewAjax', MdRole.bserIsLogin, Cter.bsCterNewAjax)
 
 	app.get('/bsCterIsAjax', MdRole.bserIsLogin, Cter.bsCterIsAjax)
 	app.get('/bsCtersObtAjax', MdRole.bserIsLogin, Cter.bsCtersObtAjax)

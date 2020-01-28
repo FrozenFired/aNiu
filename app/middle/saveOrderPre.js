@@ -39,40 +39,44 @@ exports.pdRelOrderCancel = function(order, checkCode) {
 	for(let i=0; i < ordfirs.length; i++) {
 		let ordfir = ordfirs[i];
 		let pdfir = ordfir.pdfir;
-		let fordfirs = hordfirs = new Array();
-		for(let m=0; m<pdfir.ordfirs.length; m++) {
-			if(String(pdfir.ordfirs[m]) == String(ordfir._id)) continue;
-			fordfirs.push(pdfir.ordfirs[m])
-		}
-		pdfir.ordfirs = fordfirs;
-		if(order.status == 10) {
-			for(let m=0; m<pdfir.hordfirs.length; m++) {
-				if(String(pdfir.hordfirs[m]) == String(ordfir._id)) continue;
-				hordfirs.push(pdfir.hordfirs[m])
+		if(pdfir) {
+			let fordfirs = hordfirs = new Array();
+			for(let m=0; m<pdfir.ordfirs.length; m++) {
+				if(String(pdfir.ordfirs[m]) == String(ordfir._id)) continue;
+				fordfirs.push(pdfir.ordfirs[m])
 			}
-			pdfir.hordfirs = hordfirs;
+			pdfir.ordfirs = fordfirs;
+			if(order.status == 10) {
+				for(let m=0; m<pdfir.hordfirs.length; m++) {
+					if(String(pdfir.hordfirs[m]) == String(ordfir._id)) continue;
+					hordfirs.push(pdfir.hordfirs[m])
+				}
+				pdfir.hordfirs = hordfirs;
+			}
+			dbs.push(pdfir)
 		}
-		dbs.push(pdfir)
 
 		for(let j=0; j<ordfir.ordsecs.length; j++) {
 			let ordsec = ordfir.ordsecs[j];
 			for(let k=0; k<ordsec.ordthds.length; k++) {
 				let ordthd = ordsec.ordthds[k];
 				let pdthd = ordthd.pdthd;
-				let ordthds = hordthds = new Array();
-				for(let m=0; m<pdthd.ordthds.length; m++) {
-					if(String(pdthd.ordthds[m]) == String(ordthd._id)) continue;
-					ordthds.push(pdthd.ordthds[m])
-				}
-				pdthd.ordthds = ordthds;
-				if(order.status == 10) {
-					for(let m=0; m<pdthd.hordthds.length; m++) {
-						if(String(pdthd.hordthds[m]) == String(ordthd._id)) continue;
-						hordthds.push(pdthd.hordthds[m])
+				if(pdthd) {
+					let ordthds = hordthds = new Array();
+					for(let m=0; m<pdthd.ordthds.length; m++) {
+						if(String(pdthd.ordthds[m]) == String(ordthd._id)) continue;
+						ordthds.push(pdthd.ordthds[m])
 					}
-					pdthd.hordthds = hordthds;
+					pdthd.ordthds = ordthds;
+					if(order.status == 10) {
+						for(let m=0; m<pdthd.hordthds.length; m++) {
+							if(String(pdthd.hordthds[m]) == String(ordthd._id)) continue;
+							hordthds.push(pdthd.hordthds[m])
+						}
+						pdthd.hordthds = hordthds;
+					}
+					dbs.push(pdthd)
 				}
-				dbs.push(pdthd)
 			}
 		}
 	}

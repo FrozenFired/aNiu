@@ -32,42 +32,28 @@ $(function() {
 			url: url
 		})
 		.done(function(results) {
-			if(results.success === 1) {
-				selPds = new Array();
-				for(let i in results.pdfirs) {
-					/* ------ 如果订单中 已经有了此产品, 则不显示 ----- */
-					let j = 0;
-					for(; j<ordpds.length; j++) {
-						if(results.pdfirs[i]._id == ordpds[j]._id) {
-							break;
-						}
-					}
-					if(j==ordpds.length) {
-						selPds.push(results.pdfirs[i])
-					}
-					/* ------ 如果订单中 已经有了此产品, 则不显示 ----- */
-
-					/* ------ 是否有完全匹配的产品 ----- */
-					if(results.pdfirs[i].code == code) {
-						selPd = selPds[i];
-					}
-					/* ------ 是否有完全匹配的产品 ----- */
-				}
+			selPds = new Array();
+			selPd = null;
+			if(results.success === 0) {
+				alert(results.info)
+			} else {
 				let str = "";
-				// 首先显示的是正好匹配的数据
-				if(selPd.code) {
-					str += showObjs(selPd)
-				} else {
+				selPds = results.pdfirs;
+				
+				if(results.success === 1) {
 					str += showAddPdBtn();
+				} else if(results.success === 2) {
+					selPd = results.pdfir;
+					// 首先显示的是正好匹配的数据
+					str += showObjs(selPd)
+					// 再显示模糊匹配的数据
 				}
-				// 再显示模糊匹配的数据
+
 				for(let i in selPds) {
 					if(selPds[i].code == code) continue;
 					str += showObjs(selPds[i])
 				}
 				$("#prodPage").append(str);
-			} else {
-				str += showAddPdBtn();
 			}
 		})
 	}

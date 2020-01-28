@@ -48,7 +48,10 @@ table.table.table-borderless.border.border-dark
 						span.ordCont.ordship #{cShip}
 					td.border-right.border-dark(colspan="2")
 			tr
-				td.border-bottom.border-dark #{ordfir.pdfir.code} [#{ordfir.pdfir.nome}]
+				- let pdfir = new Object();
+				if ordfir.pdfir
+					- pdfir = ordfir.pdfir;
+				td.border-bottom.border-dark #{pdfir.code} [#{pdfir.nome}]
 				td.border-bottom.border-dark(colspan=1+order.sizes.length)
 				td.border.border-dark.text-right
 					h4.ordCont.ordquot(style="display:none") #{pdQuot}
