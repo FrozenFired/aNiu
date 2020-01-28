@@ -13,17 +13,17 @@ $(function() {
 	/* ====================== 模特型号输入框，输入型号，模糊获得产品 ====================== */
 	// 输入产品名称，获取pdfirs， 模糊查询，只要有相应的数字全部显示
 	$("#ajaxPdsForm").on('input', '#ajaxPdsCode', function(e) {
-		let str = $(this).val().replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
-		if(str.length > 2){
+		let code = $(this).val().replace(/(\s*$)/g, "").replace( /^\s*/, '').toUpperCase();
+		if(code.length > 2){
 			$('.prodCard').remove(); // 清除上次的ajaxProds
 			$('.prodShow').remove(); // 清除上次的ajaxProds
-			let keyword = encodeURIComponent(str);	// 转化码
+			let keyword = encodeURIComponent(code);	// 转化码
 			let url = '/bsOrderProdsAjax?keyword='+keyword;
-			getObjects(url);
+			getObjects(url, code);
 		}
 	});
 	// 后台获取 模糊 products
-	let getObjects = function(url) {
+	let getObjects = function(url, code) {
 		$.ajax({
 			type: 'get',
 			url: url
@@ -32,6 +32,7 @@ $(function() {
 			if(results.success === 1) {
 				selPds = new Array();
 				for(let i in results.pdfirs) {
+					/* ------ 如果订单中 已经有了此产品, 则不显示 ----- */
 					let j = 0;
 					for(; j<ordpds.length; j++) {
 						if(results.pdfirs[i]._id == ordpds[j]._id) {
@@ -41,21 +42,35 @@ $(function() {
 					if(j==ordpds.length) {
 						selPds.push(results.pdfirs[i])
 					}
+					/* ------ 如果订单中 已经有了此产品, 则不显示 ----- */
+
+					/* ------ 是否有完全匹配的产品 ----- */
+					if(results.pdfirs[i].code == code) {
+						selPd = selPds[i];
+					}
+					/* ------ 是否有完全匹配的产品 ----- */
+				}
+				let str = "";
+				if(selPd.code) {
+					str += showObjs(selPd)
 				}
 				for(let i in selPds) {
-					showObjs(selPds[i])
+					if(selPds[i].code == code) continue;
+					str += showObjs(selPds[i])
 				}
+				$("#prodPage").append(str);
 			}
 		})
 	}
 	// 前端显示获取的 products
 	let showObjs = function(pdfir) {
+		let str = "";
+
 		let price;
 		if(pdfir.price && !isNaN(pdfir.price)){
 			price = (pdfir.price).toFixed(2) + ' €';
 		}
 
-		let str = "";
 		str += '<div class="p-2 my-3 border bg-light prodCard prodCard-'+pdfir._id+'" ';
 		str += 'id="prodCard-'+pdfir._id+'">'
 			str += '<div class="row">'
@@ -85,7 +100,7 @@ $(function() {
 
 		str += '</div>';
 		
-		$("#prodPage").append(str);
+		return str;
 	}
 	/* ====================== 模特型号输入框，输入型号，模糊获得产品 ====================== */
 
