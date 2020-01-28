@@ -205,7 +205,7 @@ $(function() {
 						let color = pdfir.pdsecs[i].color;
 						str += '<div class="col-lg-12 col-xl-6">';
 							str += '<input class="form-check-input colorSel" type="checkbox"'
-							str += 'checked="checked" name="colorSel" value='+color+'>';
+							str += ' name="colorSel" value='+color+'>';
 							str += '<label class="form-check-label">'+color+'</label>'
 						str += '</div>';
 					}
@@ -326,11 +326,13 @@ $(function() {
 	/* ============== 焦点落在添加颜色上，则去除被选中颜色 ============== */
 	/* ============== 在添加新订单的表格中 添加颜色 ============== */
 	$("#orderProducts").on('blur', '.addColor', function(e) {
+		let thisIpt = $(this);
 		if(!selPd || !selPd.pdsecs) {
-			$(this).val('');
+			thisIpt.val('');
 			return;
 		}
 		let color = $(this).val().replace(/\s+/g,"").toUpperCase();
+		thisIpt.val('')
 		if(color.length == 0) return;
 		let symble = null;
 		if(color[0] == '+') {
@@ -342,7 +344,6 @@ $(function() {
 		for(; icl<selPd.pdsecs.length; icl++) {
 			if(selPd.pdsecs[icl].color == color) {
 				$(".color-"+color).addClass("bg-success")
-				$(this).val('')
 				break;
 			}
 		}
@@ -371,7 +372,6 @@ $(function() {
 									let str = '', i = selPd.pdsecs.length;
 									str += showCompletePd(pdsec, i)
 									$("#changeElem").after(str)
-									$(this).val('')
 									selPd.pdsecs.push(pdsec)
 								} else {
 									alert(results.info);
@@ -379,7 +379,8 @@ $(function() {
 							}
 						});
 					} else {
-						alert("模特中没有此颜色, 想要添加颜色, 请在颜色前面加 '+' 符号")
+						thisIpt.val(color);
+						alert("模特中没有此颜色, 想要添加颜色, 请在颜色前面加 '+' 符号");
 					}
 				} else {
 					// console.log('错')

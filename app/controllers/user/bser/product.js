@@ -439,7 +439,19 @@ exports.bsProductGetColor = function(req, res) {
 	// console.log(id)
 	// console.log(color)
 	Pdfir.findOne({'firm': crUser.firm, '_id': id})
-	.populate({path: 'pdsecs', populate: {path: 'pdthds'}})
+	.populate({path: 'pdsecs', populate: [
+		{path: 'pdthds', populate: [
+			{path: 'ordthds'},
+			{path: 'macthds'},
+			// {path: 'tinthds'},
+		]},
+	]})
+	.populate({path: 'pdsezs', populate: [
+		{path: 'macsezs'}, 
+		{path: 'pdthds', populate:[
+			{path: 'ordthds'}, {path: 'tinthds'}
+		]},
+	]})
 	.exec(function(err, pdfir) {
 		if(err) {
 			console.log(err);
