@@ -19,7 +19,7 @@
     "mongoose": "^5.5.4",
     "mongoose-float": "^1.0.4",
     "node-xlsx": "^0.15.0",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "qr-image": "^3.2.0",
     "serve-static": "^1.13.2",
     "socket.io": "^2.2.0",
