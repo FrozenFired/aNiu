@@ -14,7 +14,7 @@
     "express": "^4.16.4",
     "express-pdf": "^1.2.2",
     "express-session": "^1.16.1",
-    "html-pdf": "^2.2.0",
+    "html-pdf": "^3.0.1",
     "moment": "^2.24.0",
     "mongoose": "^5.5.4",
     "mongoose-float": "^1.0.4",
